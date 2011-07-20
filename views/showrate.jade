@@ -1,6 +1,11 @@
 h1= r_title
-p.author= r_author
-p.time= r_dateSave
+p.author author: #{r_author}
+p.time
+  span.year= r_dateSave.getFullYear()
+  -
+  span.mouse= r_dateSave.getMonth()
+  -
+  span.date= r_dateSave.getDate()
 div.actions
   ul
     li

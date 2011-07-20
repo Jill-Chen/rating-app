@@ -5,12 +5,11 @@ h1 All Rates
     - result.forEach(function(item){
     li
       p.title
-        a(href='/getrate/' + item.id)=item.title
+        a(href="/show/#{item._id}")=item.title
 
       p.name
         span=item.author
-      p.other
-        span=item.other
+
       - if (item.rates)
         div.rate
           - item.rates.forEach(function(r){
@@ -21,8 +20,7 @@ h1 All Rates
         span=item._id
 
       p.actions
-        a(href="/show/"+item._id)
-          打开
+        a(href="/show/#{item._id}") 打开
 
       p.score=item.score
     - })
