@@ -3,7 +3,7 @@ body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 .content{
-    width:25em;
+    width:35em;
     margin:0 auto;
 }
 button {
@@ -72,7 +72,7 @@ a {
 .ratelist .rateitem {
     border-bottom:1px solid #888;
     position:relative;
-    padding-left:300px;
+    padding-left:100px;
     min-height:100px;
 }
 .rate .item {
