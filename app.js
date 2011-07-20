@@ -104,7 +104,7 @@ app.get('/show/:rid', function(req, res){
             console.log("querying : " + query);
             collection.findOne(query, function(err,doc){
                 var json, date;
-                if(doc !== null) {
+                if(doc) {
                     date = new Date(doc.ts_save.toNumber());
                     title = decodeURIComponent(doc.title);
                     res.render('showrate', {
@@ -115,6 +115,8 @@ app.get('/show/:rid', function(req, res){
                         rates : doc.rates,
                         _id : doc._id
                     });
+                }else{
+                    res.redirect("/list");
                 }
                 db.close();
             });
