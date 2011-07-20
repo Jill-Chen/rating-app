@@ -4,6 +4,8 @@
 
 var express = require('express');
 var mongod = require('mongodb');
+var BSON = mongod.BSONPure;
+
 
 var app = module.exports = express.createServer(); // Configuration
 var db;
@@ -66,8 +68,7 @@ app.get('/insert/:data', function(req, res){
     doc = JSON.parse(req.params.data);
     doc.name = encodeURIComponent(doc.name);
     doc.title = encodeURIComponent(doc.title);
-    var data = new Date();
-    doc.ts_save = date.getTime();
+    doc.ts_save = new BSON.Timestamp();
 
     if(!doc){
         res.send("error");
@@ -91,27 +92,27 @@ app.get('/create',function(req,res){
   });
 });
 
+app.get('/create-ok/:id',function(req,res){
+  res.render('create-ok', {
+    title: 'Create a Cate',
+    id : req.params.id
+  });
+});
+
 app.post('/create',function(req,res){
     var doc = {};
-    doc.author = encodeURIComponent(req.param("author"));
-    doc.title = encodeURIComponent(req.param("title"));
-    doc.other = encodeURIComponent(req.param("other"));
-    doc.ts_save = new Date().getTime();
-
-    if(!doc){
-        res.send("error");
-        return;
-    }
 
     db.open(function(err,db){
+        doc.author = encodeURIComponent(req.param("author"));
+        doc.title = encodeURIComponent(req.param("title"));
+        doc.other = encodeURIComponent(req.param("other"));
+        doc.rates = [];
+        doc.ts_save = new Date().getTime();
+
         db.collection("rate", function(err,collection){
             collection.insert(doc,function(err, doc){
-                var outdata = {
-                    title : "Success!",
-                    data : doc
-                };
-                res.render('create-ok', outdata);
                 db.close();
+                res.redirect("/create-ok/"+doc[0]._id);
             });
         });
     });
@@ -120,34 +121,26 @@ app.post('/create',function(req,res){
 //show a rate
 app.get('/show/:rid', function(req, res){
     var rateid = req.params.rid;
-    var query = {"_id" : mongod.BSONPure.ObjectID(rateid)};
+    var query = {"_id" : BSON.ObjectID(rateid)};
     var result = {};
 
     db.open(function(err,db){
         db.collection("rate", function(err,collection){
             console.log("querying : " + query);
-            collection.find(query,{limit:1}, function(err,cursor){
-                cursor.each(function(err,rate){
-
-                    var json, date;
-
-                    if(rate !== null) {
-                        result = rate;
-                    }
-
-                    if(rate === null){
-                        console.log(result.ts_save,result.ts_save);
-                        date = new Date(result.ts_save);
-                        res.render('showrate', {
-                            title : result.title + " - rate",
-                            r_dateSave : date.toLocaleDateString() + date.toLocaleTimeString(),
-                            r_title : decodeURIComponent(result.title),
-                            r_author : decodeURIComponent(result.author),
-                            _id : result._id
-                        });
-                        db.close();
-                    }
-                });
+            collection.findOne(query, function(err,doc){
+                var json, date;
+                if(doc !== null) {
+                    date = new Date(doc.ts_save.toNumber());
+                    title = decodeURIComponent(doc.title);
+                    res.render('showrate', {
+                        title : title + " - rate",
+                        r_dateSave : date,
+                        r_title : title,
+                        r_author : decodeURIComponent(doc.author),
+                        _id : doc._id
+                    });
+                }
+                db.close();
             });
         });
     });
@@ -184,6 +177,38 @@ app.get('/getrate/:rid', function(req, res){
     });
 });
 
+app.post("/ratedo", function(req, res){
+
+    var id = req.param("rid");
+
+    var rate1 = parseInt(req.param("rate1"));
+    var rate2 = parseInt(req.param("rate2"));
+    var rate3 = parseInt(req.param("rate3"));
+    var rate4 = parseInt(req.param("rate4"));
+
+    var ratedata = {
+        rate1 : rate1,
+        rate2 : rate2,
+        rate3 : rate3,
+        rate4 : rate4,
+        ts : new Date.getTime()
+    };
+
+    db.open(function(err,db){
+        db.collection("rate", function(err, collection){
+            collection.update({
+                _id : BSON.ObjectId(id)
+            },{
+                $push : {
+                    rates : ratedata
+                }
+            }, function(err, data){
+                db.close();
+                res.redirect("/show/"+id);
+            });
+        });
+    });
+});
 app.get('/list',function(req,res){
     var query = {},
         result = [];
@@ -199,7 +224,7 @@ app.get('/list',function(req,res){
                     cursor.each(function(err,doc){
                         if(doc !== null ){
                             doc.title = decodeURIComponent(doc.title);
-                            doc.name = decodeURIComponent(doc.name);
+                            doc.author = decodeURIComponent(doc.author);
                             result.push(doc);
                             if(doc.rates && doc.rates.length){
                                 doc.score = avi(doc.rates);
@@ -210,7 +235,7 @@ app.get('/list',function(req,res){
                             res.render("list", {
                                 result : result,
                                 title : "All Rate"
-                            })
+                            });
                             db.close();
                         }
                     });
