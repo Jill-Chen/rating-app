@@ -2,13 +2,18 @@
 html
   head
     title= title
+    link(rel='stylesheet', href='http://a.tbcdn.cn/s/kissy/1.1.6/??cssreset/reset-min.css,csscommon/common-min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+  -if(title=="rate")
+    link(rel='stylesheet', href='/stylesheets/rate2.css')
+    script(src='http://a.tbcdn.cn/s/kissy/1.2.0/kissy-min.js')
+    script(src='/js/rate2.js')
   body
-  header
-    nav
+  div.header
+    div.nav
       ul
         li
-          a(href="/create") create
+          a(href="/create") 创建评分
         li
-          a(href="/list") list
+          a(href="/list") 所有评分
   != body

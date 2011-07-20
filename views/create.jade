@@ -1,20 +1,20 @@
-h1 Create
-p Crate a Rate
+h1 创建打分
+p 为一个分享创建打分
 
 form(action='/create', method="post")
   ul.form
-    li
-      label(for="input_user") 用户名
-      br
-      input#input_user(name="author")
-    li
+    li.fi
       label(for="input_title") 分享标题
       br
-      input#input_title(name="title")
-    li
+      input.text#input_title(name="title")
+    li.fi
+      label(for="input_user") 分享者
+      br
+      input.text#input_user(name="author")
+    li.fi
       label(for="input_other") 备注
       br
-      input#input_other(name="other")
-    li
+      input.text#input_other(name="other")
+    li.fi
       button(type="submit") 提交
 

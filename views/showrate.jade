@@ -1,12 +1,26 @@
 h1= r_title
-p.author author: #{r_author}
-p.time
-  span.year= r_dateSave.getFullYear()
-  -
-  span.mouse= r_dateSave.getMonth()
-  -
-  span.date= r_dateSave.getDate()
-div.actions
-  ul
-    li
-      a(href="/rate/#{_id}") 打分
+ul.meta
+  li.author #{r_author}
+  li.time #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
+
+ul.actions
+  li.big
+    a(href="/rate/#{_id}") 打分
+div.records
+  table
+    thead
+      tr
+        th.s 分享者语言表达
+        th.s 分享收获
+        th.s 分享材料准备
+        th.s 分享整体满意度
+        th.ts 评分时间
+    tbody
+      - rates.forEach(function(item){
+        tr
+          td.s= item.rate1
+          td.s= item.rate2
+          td.s= item.rate3
+          td.s= item.rate4
+          td.ts= item.ts
+      -})

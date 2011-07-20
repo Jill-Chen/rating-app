@@ -112,6 +112,7 @@ app.get('/show/:rid', function(req, res){
                         r_dateSave : date,
                         r_title : title,
                         r_author : decodeURIComponent(doc.author),
+                        rates : doc.rates,
                         _id : doc._id
                     });
                 }
@@ -198,13 +199,16 @@ app.get('/list',function(req,res){
                     cursor.each(function(err,doc){
                         if(doc !== null ){
                             doc.title = decodeURIComponent(doc.title);
+                            doc.date = new Date(doc.ts_save.toNumber());
                             doc.author = decodeURIComponent(doc.author);
                             result.push(doc);
+
                             if(doc.rates && doc.rates.length){
                                 doc.score = avi(doc.rates);
                             }else{
                                 doc.score = 0;
                             }
+
                         }else{
                             res.render("list", {
                                 result : result,
@@ -219,8 +223,8 @@ app.get('/list',function(req,res){
 });
 
 app.get('/rate/:rid',function(req,res){
-    res.render('rate',{
-        title:'SUCCESS!',
+    res.render('rate2',{
+        title:'rate',
         rid : req.params.rid
     });
 });

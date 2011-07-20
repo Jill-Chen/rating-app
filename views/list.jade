@@ -3,24 +3,13 @@ h1 All Rates
 - if (result.length)
   ul.ratelist
     - result.forEach(function(item){
-    li
+    li.rateitem
       p.title
-        a(href="/show/#{item._id}")=item.title
+        a(href="/show/#{item._id}") 分享题目： #{item.title}
 
-      p.name
-        span=item.author
-
-      - if (item.rates)
-        div.rate
-          - item.rates.forEach(function(r){
-            span.item=r
-          - })
-          span=item.value
-      p.id _id :
-        span=item._id
-
-      p.actions
-        a(href="/show/#{item._id}") 打开
+      ul.meta
+        li.author #{item.author}
+        li.time #{item.date.getFullYear()}-#{item.date.getMonth()}-#{item.date.getDate()}
 
       p.score=item.score
     - })
