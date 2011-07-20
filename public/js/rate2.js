@@ -1,4 +1,6 @@
-KISSY.ready(function(){
+KISSY.ready(function(S){
+    var ratedata = [];
+
     S.all(".rating-item").on("click",function(ev){
         ev.preventDefault();
         var et = ev.target,
@@ -29,7 +31,7 @@ KISSY.ready(function(){
     });
 
     S.one("#rate-submit").on("click",function(ev){
-        rates.push(ratedata);
+        console.log(ratedata);
         lock = false;
         gotoMain();
     });
