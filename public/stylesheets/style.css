@@ -2,7 +2,10 @@ body {
   padding:0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
-
+.content{
+    width:25em;
+    margin:0 auto;
+}
 button {
     padding:10px 20px;
     font-size:20px;
