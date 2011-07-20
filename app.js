@@ -219,6 +219,11 @@ app.get('/list',function(req,res){
     });
 });
 
+app.get('/rate/:rid',function(req,res){
+  res.render('rate',{
+     title:'SUCCESS!'
+  });
+});
 
 app.listen(3000);
 

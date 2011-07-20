@@ -1,0 +1,33 @@
+h1 Rate
+p Rate for U
+
+form(action="/ratedo", method="post")
+  ul.form
+    li
+      label(for="input_1")准备充分性
+      br
+      input.input_1(name="rate1",type="radio")
+      input.input_1(name="rate1",type="radio")
+      input.input_1(name="rate1",type="radio")
+    li
+      label(for="input_2")深度
+      br
+      input.input_1(name="rate2",type="radio")
+      input.input_1(name="rate2",type="radio")
+      input.input_1(name="rate2",type="radio")
+    li
+      label(for="input_3")牛逼度
+      br
+      input.input_1(name="rate3",type="radio")
+      input.input_1(name="rate3",type="radio")
+      input.input_1(name="rate3",type="radio")
+    li
+      label(for="input_4")精彩程度
+      br
+      input.input_1(name="rate4",type="radio")
+      input.input_1(name="rate4",type="radio")
+      input.input_1(name="rate4",type="radio")
+    li
+      button(type="submit")提交
+
+script(src='/js/rate.js')
