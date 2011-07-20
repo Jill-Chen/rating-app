@@ -61,31 +61,6 @@ app.get('/', function(req, res){
   });
 });
 
-//** jsonp
-app.get('/insert/:data', function(req, res){
-    var doc;
-
-    doc = JSON.parse(req.params.data);
-    doc.name = encodeURIComponent(doc.name);
-    doc.title = encodeURIComponent(doc.title);
-    doc.ts_save = new BSON.Timestamp();
-
-    if(!doc){
-        res.send("error");
-        return;
-    }
-
-    db.open(function(err,db){
-        db.collection("rate", function(err,collection){
-            collection.insert(doc,function(err, doc){
-                res.send(req.param("callback") + "(" + JSON.stringify(doc[0]) + ")");
-                db.close();
-            });
-        });
-    });
-
-});
-
 app.get('/create',function(req,res){
   res.render('create', {
     title: 'Create a Cate'
@@ -180,7 +155,6 @@ app.get('/getrate/:rid', function(req, res){
 app.post("/ratedo", function(req, res){
 
     var id = req.param("rid");
-
     var rate1 = parseInt(req.param("rate1"));
     var rate2 = parseInt(req.param("rate2"));
     var rate3 = parseInt(req.param("rate3"));
@@ -191,13 +165,13 @@ app.post("/ratedo", function(req, res){
         rate2 : rate2,
         rate3 : rate3,
         rate4 : rate4,
-        ts : new Date.getTime()
+        ts : new Date().getTime()
     };
 
     db.open(function(err,db){
         db.collection("rate", function(err, collection){
             collection.update({
-                _id : BSON.ObjectId(id)
+                _id : BSON.ObjectID(id)
             },{
                 $push : {
                     rates : ratedata
