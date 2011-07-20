@@ -1,9 +1,11 @@
 KISSY.ready(function(S){
-    var ratedata = [];
+    var Dom = S.DOM;
+    var ratedata = {
+    };
 
     S.all(".rating-item").on("click",function(ev){
         ev.preventDefault();
-        var et = ev.target,
+        var et = S.one(ev.target),
             ulid,
             rateclass;
 
@@ -30,9 +32,15 @@ KISSY.ready(function(S){
 
     });
 
-    S.one("#rate-submit").on("click",function(ev){
-        console.log(ratedata);
-        lock = false;
-        gotoMain();
+    S.one("#rateform").on("submit",function(ev){
+        ev.halt();
+        var form = S.one("#rateform");
+        S.each(ratedata,function(v,k){
+            form.append(Dom.create("<input type=\"hidden\">",{
+                "name" : k,
+                "value": v
+            }));
+        });
+        form[0].submit();
     });
 });

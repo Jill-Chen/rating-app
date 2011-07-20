@@ -6,7 +6,7 @@ div.mode_rate.mod.rate
         li 挺好
         li 很好
         li 神作
-  ul#rating-ppt.section.rating-item.stars.ks-clear
+  ul#rate1.section.rating-item.stars.ks-clear
     li.s1
       a(href="#") X
     li.s2
@@ -18,7 +18,7 @@ div.mode_rate.mod.rate
     li.s5
       a(href="#") X
 
-  ul#rating-ppt.section.rating-item.stars.ks-clear
+  ul#rate2.section.rating-item.stars.ks-clear
     li.s1
       a(href="#") X
     li.s2
@@ -30,7 +30,7 @@ div.mode_rate.mod.rate
     li.s5
       a(href="#") X
 
-  ul#rating-ppt.section.rating-item.stars.ks-clear
+  ul#rate3.section.rating-item.stars.ks-clear
     li.s1
       a(href="#") X
     li.s2
@@ -42,7 +42,7 @@ div.mode_rate.mod.rate
     li.s5
       a(href="#") X
 
-  ul#rating-ppt.section.rating-item.stars.ks-clear
+  ul#rate4.section.rating-item.stars.ks-clear
     li.s1
       a(href="#") X
     li.s2
@@ -55,4 +55,6 @@ div.mode_rate.mod.rate
       a(href="#") X
 
   .actions
-    button.button.rate-btn#rate-submit 提交打分
+    form#rateform(method="post",action="/ratedo")
+      input(type="hidden",value=rid,name="rid")
+      button.button.rate-btn#rate-submit 提交打分
