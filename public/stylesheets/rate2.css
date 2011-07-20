@@ -1,0 +1,32 @@
+.stars {
+    margin-bottom:10px;
+}
+.stars li {
+    float:left;
+    margin-right:1px;
+}
+.stars li a {
+    display:block;
+    width:4em;
+    height:4em;
+    text-indent:-9999px;
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/star2.png) 50% 50% no-repeat;
+}
+.rate .label li {
+    float:left;
+    margin-right:1px;
+    width:4em;
+    display:block;
+    text-align:center;
+}
+.stars li a:hover {
+    background-color:rgba(255,255,255,0.7)
+}
+
+.r_1 .s1 a,
+.r_2 .s1 a, .r_2 .s2 a,
+.r_3 .s1 a, .r_3 .s2 a, .r_3 .s3 a,
+.r_4 .s1 a, .r_4 .s2 a, .r_4 .s3 a, .r_4 .s4 a,
+.r_5 .s1 a, .r_5 .s2 a, .r_5 .s3 a, .r_5 .s4 a, .r_5 .s5 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/star.png) 50% 50% no-repeat;
+}
