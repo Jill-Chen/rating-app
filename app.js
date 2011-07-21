@@ -11,13 +11,27 @@ var app = module.exports = express.createServer(); // Configuration
 var db;
 
 function avi (arr){
-    var sum = 0;
+    var sum1 = 0,sum2=0,sum3=0,sum4=0,sum=[];
     var len = arr.length;
     arr.forEach(function(v){
-        sum += v;
+        sum1 += v['rate1'];
+        sum2 += v['rate2'];
+        sum3 += v['rate3'];
+        sum4 += v['rate4'];
     });
+    //console.log(sum);
+    //console.log(sum2);
+    //console.log(sum3);
+    //console.log(sum4);
+//    sum = sum1+sum2+sum3+sum4;
     if(len === 0 ) return 0;
-    return Math.round(sum / len * 100)/100;
+    sum.push(Math.round(sum1 / len * 100)/100);
+    sum.push(Math.round(sum2 / len * 100)/100);
+    sum.push(Math.round(sum3 / len * 100)/100);
+    sum.push(Math.round(sum4 / len * 100)/100);
+    console.log(sum);
+    return sum;
+//    return Math.round(sum1 / len * 100)/100;
 }
 
 app.configure(function(){
@@ -199,6 +213,7 @@ app.get('/list',function(req,res){
                 },
                 function(err,cursor){
                     cursor.each(function(err,doc){
+                        console.log(11111);
                         if(doc !== null ){
                             doc.title = decodeURIComponent(doc.title);
                             doc.date = new Date(doc.ts_save.toNumber());

@@ -11,7 +11,27 @@ h1 All Rates
         li.author #{item.author}
         li.time #{item.date.getFullYear()}-#{item.date.getMonth()}-#{item.date.getDate()}
 
-      p.score=item.score
+      ul.score
+        li
+          span 分享者语言表达
+          a
+            span
+              i(style="width:#{item.score[0]}em")
+        li
+          span 分享收获
+          a
+            span
+              i(style="width:#{item.score[1]}em")
+        li
+          span 分享材料准备
+          a
+            span
+              i(style="width:#{item.score[2]}em")
+        li
+          span 分享整体满意度
+          a
+            span
+              i(style="width:#{item.score[3]}em")
     - })
 - else
   p result is empty
