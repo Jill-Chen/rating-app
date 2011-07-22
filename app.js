@@ -14,10 +14,14 @@ function avi (arr){
     var sum1 = 0,sum2=0,sum3=0,sum4=0,sum=[];
     var len = arr.length;
     arr.forEach(function(v){
-        sum1 += v['rate1'];
-        sum2 += v['rate2'];
-        sum3 += v['rate3'];
-        sum4 += v['rate4'];
+        if(v['rate1'] && v['rate2'] && v['rate3'] && v['rate4']){
+            sum1 += v['rate1'];
+            sum2 += v['rate2'];
+            sum3 += v['rate3'];
+            sum4 += v['rate4'];
+        }else{
+            len --;
+        }
     });
     //console.log(sum);
     //console.log(sum2);
@@ -29,7 +33,6 @@ function avi (arr){
     sum.push(Math.round(sum2 / len * 100)/100);
     sum.push(Math.round(sum3 / len * 100)/100);
     sum.push(Math.round(sum4 / len * 100)/100);
-    console.log(sum);
     return sum;
 //    return Math.round(sum1 / len * 100)/100;
 }
@@ -120,7 +123,11 @@ app.get('/show/:rid', function(req, res){
                 var json, date;
                 if(doc) {
                     date = new Date(doc.ts_save.toNumber());
+                    doc.rates.forEach(function(item,idx){
+                        item.tdate = new Date(item.ts.toNumber());
+                    })
                     title = decodeURIComponent(doc.title);
+
                     res.render('showrate', {
                         title : title + " - rate",
                         r_dateSave : date,
@@ -140,30 +147,22 @@ app.get('/show/:rid', function(req, res){
 
 //** jsonp
 app.get('/getrate/:rid', function(req, res){
-    var rateid = req.params.rid;
-    var query = rateid?{"id" : rateid}:{};
-    var callback = req.param("callback");
+    var rid = req.params.rid;
+    var query = {"_id" : BSON.ObjectID(rid)};
     var result = {};
 
     db.open(function(err,db){
         db.collection("rate", function(err,collection){
-            collection.find(query,{limit:1}, function(err,cursor){
-                cursor.each(function(err,rate){
+            collection.findOne(query, function(err,doc){
                     var json;
-                    if(rate !== null) {
-                        result = rate;
+                    if(doc) {
+                        json = JSON.stringify(doc),
+                        res.header('Content-Type', 'data/plain');
+                        res.header('Content-Disposition','attachment; filename='+decodeURIComponent(doc.title)+'.json');
+                        res.send(json);
                     }
-                    if(rate === null){
-                        json = JSON.stringify(result),
-                        res.header('Content-Type','text/plain');
-                        if(callback){
-                            res.send(callback+"("+json+")");
-                        }else{
-                            res.send(json);
-                        }
-                        db.close();
-                    }
-                });
+
+                    db.close();
             });
         });
     });
@@ -229,7 +228,7 @@ app.get('/list',function(req,res){
                         }else{
                             res.render("list", {
                                 result : result,
-                                title : "All Rate"
+                                title : "评分列表"
                             });
                             db.close();
                         }

@@ -5,15 +5,15 @@ ul.meta
 
 ul.actions
   li.big
-    a(href="/rate/#{_id}") 打分
+    a.ratebtn(href="/rate/#{_id}") 开始打分
 div.records
   table
     thead
       tr
-        th.s 分享者语言表达
-        th.s 分享收获
-        th.s 分享材料准备
-        th.s 分享整体满意度
+        th.s 准备工作
+        th.s 分享掌控
+        th.s 分享内容
+        th.s 整体印象
         th.ts 评分时间
     tbody
       - rates.forEach(function(item){
@@ -22,5 +22,6 @@ div.records
           td.s= item.rate2
           td.s= item.rate3
           td.s= item.rate4
-          td.ts= item.ts
+          td.ts #{item.tdate.getMonth()}/#{item.tdate.getDate()} #{item.tdate.getHours()}:#{item.tdate.getMinutes()}
       -})
+  a(href="/getRate/#{_id}") 获取文件

@@ -1,4 +1,4 @@
-h1 All Rates
+h1 评分列表
 #page
 - if (result.length)
   ul.ratelist
@@ -13,25 +13,25 @@ h1 All Rates
 
       ul.score
         li
-          span 分享者语言表达
+          span 准备工作
           a
             span
-              i(style="width:#{item.score[0]}em")
+              i(style="width:#{item.score[0]/0.05}%")
         li
-          span 分享收获
+          span 分享掌控
           a
             span
-              i(style="width:#{item.score[1]}em")
+              i(style="width:#{item.score[1]/0.05}%")
         li
-          span 分享材料准备
+          span 分享内容
           a
             span
-              i(style="width:#{item.score[2]}em")
+              i(style="width:#{item.score[2]/0.05}%")
         li
-          span 分享整体满意度
+          span 整体印象
           a
             span
-              i(style="width:#{item.score[3]}em")
+              i(style="width:#{item.score[3]/0.05}%")
     - })
 - else
   p result is empty

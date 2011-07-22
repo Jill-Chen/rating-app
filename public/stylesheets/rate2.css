@@ -1,5 +1,10 @@
+.mode_rate h3 {
+    background:#888;
+    color:#EEE;
+    padding:5px;
+}
 .stars {
-    margin-bottom:10px;
+    margin-bottom:30px;
 }
 .stars li {
     float:left;
@@ -10,7 +15,21 @@
     width:4em;
     height:4em;
     text-indent:-9999px;
-    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/star2.png) 50% 50% no-repeat;
+}
+.stars .s1 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/1b.png) 50% 50% no-repeat;
+}
+.stars .s2 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/2b.png) 50% 50% no-repeat;
+}
+.stars .s3 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/3b.png) 50% 50% no-repeat;
+}
+.stars .s4 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/4b.png) 50% 50% no-repeat;
+}
+.stars .s5 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/5b.png) 50% 50% no-repeat;
 }
 .rate .label li {
     float:left;
@@ -22,11 +41,19 @@
 .stars li a:hover {
     background-color:rgba(255,255,255,0.7)
 }
+.r_1 .s1 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/1.png) 50% 50% no-repeat;
+}
 
-.r_1 .s1 a,
-.r_2 .s1 a, .r_2 .s2 a,
-.r_3 .s1 a, .r_3 .s2 a, .r_3 .s3 a,
-.r_4 .s1 a, .r_4 .s2 a, .r_4 .s3 a, .r_4 .s4 a,
-.r_5 .s1 a, .r_5 .s2 a, .r_5 .s3 a, .r_5 .s4 a, .r_5 .s5 a {
-    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/star.png) 50% 50% no-repeat;
+.r_2 .s2 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/2.png) 50% 50% no-repeat;
+}
+.r_3 .s3 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/3.png) 50% 50% no-repeat;
+}
+.r_4 .s4 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/4.png) 50% 50% no-repeat;
+}
+.r_5 .s5 a {
+    background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/5.png) 50% 50% no-repeat;
 }

@@ -140,3 +140,8 @@ a {
 .actions {
     margin:10px;
 }
+.ratebtn {
+    font-size:80px;
+    background:#fff;
+    display:block;
+}

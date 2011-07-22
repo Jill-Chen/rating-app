@@ -1,11 +1,5 @@
 h1 请打分
 div.mode_rate.mod.rate
-  ul.label.ks-clear.section
-        li 差
-        li 一般
-        li 挺好
-        li 给力
-        li 神啊
 
   h3 准备工作(比如PPT，案例）
   ul#rate1.section.rating-item.stars.ks-clear
@@ -62,4 +56,6 @@ div.mode_rate.mod.rate
   .actions
     form#rateform(method="post",action="/ratedo")
       input(type="hidden",value=rid,name="rid")
-      button.button.rate-btn#rate-submit 提交打分
+      button.button.rate-btn(type="submit")#rate-submit 提交打分
+      &nbsp;或者&nbsp;
+      a(href="/show/#{rid}") 返回
