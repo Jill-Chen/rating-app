@@ -5,6 +5,7 @@
 var express = require('express');
 var mongod = require('mongodb');
 var BSON = mongod.BSONPure;
+var apptitle = " - 火鸟打分系统";
 
 
 var app = module.exports = express.createServer(); // Configuration
@@ -23,18 +24,12 @@ function avi (arr){
             len --;
         }
     });
-    //console.log(sum);
-    //console.log(sum2);
-    //console.log(sum3);
-    //console.log(sum4);
-//    sum = sum1+sum2+sum3+sum4;
     if(len === 0 ) return 0;
     sum.push(Math.round(sum1 / len * 100)/100);
     sum.push(Math.round(sum2 / len * 100)/100);
     sum.push(Math.round(sum3 / len * 100)/100);
     sum.push(Math.round(sum4 / len * 100)/100);
     return sum;
-//    return Math.round(sum1 / len * 100)/100;
 }
 
 app.configure(function(){
@@ -48,6 +43,7 @@ app.configure(function(){
 
 app.configure('development', function(){
     console.log("development");
+    apptitle += "(dev)"
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
     db = new mongod.Db(
         'firebird_dev',
@@ -74,19 +70,19 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
   res.render('index', {
-    title: 'Express'
+    title: apptitle
   });
 });
 
 app.get('/create',function(req,res){
   res.render('create', {
-    title: 'Create a Cate'
+    title: 'Create a Cate' + apptitle
   });
 });
 
 app.get('/create-ok/:id',function(req,res){
   res.render('create-ok', {
-    title: 'Create a Cate',
+    title: 'Create a Cate' + apptitle,
     id : req.params.id
   });
 });
@@ -118,7 +114,7 @@ app.get('/show/:rid', function(req, res){
 
     db.open(function(err,db){
         db.collection("rate", function(err,collection){
-            console.log("querying : " + query);
+            console.log("querying : " + query._id);
             collection.findOne(query, function(err,doc){
                 var json, date;
                 if(doc) {
@@ -129,7 +125,7 @@ app.get('/show/:rid', function(req, res){
                     title = decodeURIComponent(doc.title);
 
                     res.render('showrate', {
-                        title : title + " - rate",
+                        title : title + apptitle,
                         r_dateSave : date,
                         r_title : title,
                         r_author : decodeURIComponent(doc.author),
@@ -169,7 +165,6 @@ app.get('/getrate/:rid', function(req, res){
 });
 
 app.post("/ratedo", function(req, res){
-
     var id = req.param("rid");
     var rate1 = parseInt(req.param("rate1"));
     var rate2 = parseInt(req.param("rate2"));
@@ -212,7 +207,6 @@ app.get('/list',function(req,res){
                 },
                 function(err,cursor){
                     cursor.each(function(err,doc){
-                        console.log(11111);
                         if(doc !== null ){
                             doc.title = decodeURIComponent(doc.title);
                             doc.date = new Date(doc.ts_save.toNumber());
@@ -228,7 +222,7 @@ app.get('/list',function(req,res){
                         }else{
                             res.render("list", {
                                 result : result,
-                                title : "评分列表"
+                                title : "所有评分" + apptitle
                             });
                             db.close();
                         }
@@ -240,7 +234,7 @@ app.get('/list',function(req,res){
 
 app.get('/rate/:rid',function(req,res){
     res.render('rate2',{
-        title:'rate',
+        title:'rate' + apptitle,
         rid : req.params.rid
     });
 });

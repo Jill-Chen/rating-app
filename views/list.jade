@@ -13,25 +13,21 @@ h1 评分列表
 
       ul.score
         li
-          span 准备工作
-          a
-            span
-              i(style="width:#{item.score[0]/0.05}%")
+          span.score-title 准备工作
+          span.prog
+            i(style="width:#{item.score[0]/0.05}%")
         li
-          span 分享掌控
-          a
-            span
-              i(style="width:#{item.score[1]/0.05}%")
+          span.score-title 分享掌控
+          span.prog
+            i(style="width:#{item.score[1]/0.05}%")
         li
-          span 分享内容
-          a
-            span
-              i(style="width:#{item.score[2]/0.05}%")
+          span.score-title 分享内容
+          span.prog
+            i(style="width:#{item.score[2]/0.05}%")
         li
-          span 整体印象
-          a
-            span
-              i(style="width:#{item.score[3]/0.05}%")
+          span.score-title 整体印象
+          span.prog
+            i(style="width:#{item.score[3]/0.05}%")
     - })
 - else
   p result is empty

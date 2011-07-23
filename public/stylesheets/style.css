@@ -104,20 +104,22 @@ a {
     width:90px;
     padding:5px;
 }
-.ratelist .score li {
-    height:30px;
+.score li .score-title {
+    display:none;
 }
-.ratelist .score li a span{
+.score li:hover .score-title {
+    display:inline;
+}
+.ratelist .score .prog {
     width:80px;
-    height:10px;
     display:inline-block;
     background-color:#ccc;
     border:1px solid #000;
     padding:1px;
 }
-.ratelist .score li a span i{
+.ratelist .score .prog i{
     background-color:#333;
-    height:10px;
+    height:5px;
     display:inline-block;
 }
 .ratelist .id {
