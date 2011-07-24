@@ -11,6 +11,7 @@
     margin-right:1px;
 }
 .stars li a {
+    border:2px solid #f2f2f2;
     display:block;
     width:4em;
     height:4em;
@@ -42,18 +43,23 @@
     background-color:rgba(255,255,255,0.7)
 }
 .r_1 .s1 a {
+    border:2px solid #999;
     background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/1.png) 50% 50% no-repeat;
 }
 
 .r_2 .s2 a {
+    border:2px solid #999;
     background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/2.png) 50% 50% no-repeat;
 }
 .r_3 .s3 a {
+    border:2px solid #999;
     background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/3.png) 50% 50% no-repeat;
 }
 .r_4 .s4 a {
+    border:2px solid #999;
     background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/4.png) 50% 50% no-repeat;
 }
 .r_5 .s5 a {
+    border:2px solid #999;
     background:url(http://fed.ued.taobao.net/2011/sts/firebird/rating/5.png) 50% 50% no-repeat;
 }

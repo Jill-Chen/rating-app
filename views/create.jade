@@ -1,20 +1,24 @@
 h1 创建打分
 p 为一个分享创建打分
-
 form(action='/create', method="post")
+  - if(error.length>0)
+    div.errors
+      - error.forEach(function(item){
+        p= item
+      - })
   ul.form
     li.fi
       label(for="input_title") 分享标题
       br
-      input.text#input_title(name="title")
+      input.text#input_title(name="title",value="#{ratetitle}")
     li.fi
       label(for="input_user") 分享者
       br
-      input.text#input_user(name="author")
+      input.text#input_user(name="author",value="#{rateauthor}")
     li.fi
       label(for="input_other") 备注
       br
-      input.text#input_other(name="other")
+      input.text#input_other(name="other",value="#{rateother}")
     li.fi
       button(type="submit") 提交
 

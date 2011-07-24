@@ -2,6 +2,11 @@ body {
   padding:0;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+h1 {
+    font-size:24px;
+    margin:30px 0;
+    text-shadow:1px 2px 2px rgba(0,0,0,0.6);
+}
 .content{
     width:35em;
     margin:0 auto;
@@ -12,6 +17,18 @@ button {
     background:#ddd;
     border:1px solid #888;
     border-radius:8px;
+}
+.unit {
+    float:left;
+}
+.lastUnit {
+    float:right;
+}
+.u3of4 {
+    width:75%;
+}
+.u1of4 {
+    width:25%;
 }
 button:focus {
     background:#aaa;
@@ -30,6 +47,9 @@ button:hover {
     background:#eee;
     padding:10px;
 }
+.footer {
+    min-height:90px;
+}
 
 table th {
     text-align:left;
@@ -38,10 +58,6 @@ table th {
 }
 table td {
     padding:10px;
-}
-h1 {
-    font-size:24px;
-    margin:10px;
 }
 form {
     padding:20px;
@@ -64,16 +80,12 @@ input.text:focus {
 a {
   color: #00B7FF;
 }
+.queryfield {
+    margin:10px 0;
+}
 .ratelist {
     list-style:none;
     padding:0;
-    border-top:1px solid #888;
-}
-.ratelist .rateitem {
-    border-bottom:1px solid #888;
-    position:relative;
-    padding-left:100px;
-    min-height:130px;
 }
 .rate .item {
     display:inline-block;
@@ -86,39 +98,37 @@ a {
     margin:10px;
     font-size:16px;
 }
+.ratelist .rateitem {
+    border-bottom:1px solid #888;
+    position:relative;
+    margin-bottom:15px;
+    box-shadow:0 0 3px #888;
+    background-color:#f2f2f2;
+}
 .ratelist .title {
+    padding:10px;
     font-weight:bold;
-    padding:5px 0;
     font-size:20px;
 }
 .ratelist .score {
-    position:absolute;
-    bottom:0;
-    left:0;
-    margin:0;
     padding:0;
     font-size:12px;
     font-family:Arial;
-    height:120px;
     color:#AAA;
-    width:90px;
-    padding:5px;
-}
-.score li .score-title {
-    display:none;
-}
-.score li:hover .score-title {
-    display:inline;
 }
 .ratelist .score .prog {
     width:80px;
     display:inline-block;
-    background-color:#ccc;
-    border:1px solid #000;
+    background-color:#333;
+    border:1px solid #555;
+    border-top:0;
+    border-left:0;
+    border-bottom:1px solid #fff;
     padding:1px;
+    box-shadow: 0 0 1px #9ef;
 }
 .ratelist .score .prog i{
-    background-color:#333;
+    background-color:#97E2FF;
     height:5px;
     display:inline-block;
 }
@@ -146,4 +156,11 @@ a {
     font-size:80px;
     background:#fff;
     display:block;
+}
+.errors {
+    margin:10px;
+    border-left:6px solid #900;
+    color:#d00;
+    font-weight:bold;
+    padding:10px;
 }
