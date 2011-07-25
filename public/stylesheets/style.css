@@ -53,6 +53,7 @@ table {
 .footer {
     min-height:90px;
 }
+
 table th {
     text-align:left;
     background:#f2f2f2;
@@ -124,6 +125,7 @@ a {
     font-size:12px;
     margin-bottom:10px;
 }
+}
 .scoredesc li {
     float:left;
     width:24%;
@@ -176,6 +178,13 @@ a {
 }
 .ratebtn:hover {
     text-decoration:none;
+}
+.errors {
+    margin:10px;
+    border-left:6px solid #900;
+    color:#d00;
+    font-weight:bold;
+    padding:10px;
 }
 .errors {
     margin:10px;
