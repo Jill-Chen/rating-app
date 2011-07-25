@@ -176,6 +176,12 @@ app.post("/ratedo", function(req, res){
     var rate3 = parseInt(req.param("rate3"));
     var rate4 = parseInt(req.param("rate4"));
 
+    console.log(rate1);
+    if(isNaN(rate1) || isNaN(rate2) || isNaN(rate3) || isNaN(rate4)) {
+        res.redirect("/rate/"+id);
+        return;
+    }
+
     var ratedata = {
         rate1 : rate1,
         rate2 : rate2,

@@ -7,7 +7,7 @@ body {
     margin:0 auto;
 }
 button {
-    padding:10px 20px;
+    padding:5px 10px;
     font-size:20px;
     background:#ddd;
     border:1px solid #888;
@@ -30,7 +30,9 @@ button:hover {
     background:#eee;
     padding:10px;
 }
-
+table {
+    width:100%;
+}
 table th {
     text-align:left;
     background:#f2f2f2;
@@ -142,6 +144,13 @@ a {
 }
 .ratebtn {
     font-size:80px;
-    background:#fff;
+    background:rgba(0,188,200,0.9);
     display:block;
+    color:white;
+    border:0px solid blue;
+    border-radius:50px;
+    text-align:center;
+}
+.ratebtn:hover {
+    text-decoration:none;
 }
