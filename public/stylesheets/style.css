@@ -116,7 +116,18 @@ a {
     font-family:Arial;
     color:#AAA;
 }
-.ratelist .score .prog {
+.scoredesc {
+    color:#AAA;
+    line-height:12px;
+    font-size:12px;
+    margin-bottom:10px;
+}
+.scoredesc li {
+    float:left;
+    width:24%;
+    text-align:center;
+}
+.score .prog {
     width:80px;
     display:inline-block;
     background-color:#333;
@@ -127,7 +138,7 @@ a {
     padding:1px;
     box-shadow: 0 0 1px #9ef;
 }
-.ratelist .score .prog i{
+.score .prog i{
     background-color:#97E2FF;
     height:5px;
     display:inline-block;
