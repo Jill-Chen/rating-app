@@ -4,10 +4,10 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/base.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
-  -if(title=="rate")
-    link(rel='stylesheet', href='/stylesheets/rate2.css')
-    script(src='/js/kissy-min.js')
-    script(src='/js/rate2.js')
+  -if(typeof css !== "undefined" )
+    -if(css=="rate")
+      link(rel='stylesheet', href='/stylesheets/rate2.css')
+  script(src='/js/kissy-min.js')
   body
   div.header
     div.nav
@@ -18,3 +18,4 @@ html
           a(href="/list") 所有评分
   div.content
     != body
+  div.footer

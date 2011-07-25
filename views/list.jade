@@ -1,37 +1,57 @@
-h1 评分列表
+h1 所有分享
+ul.score.scoredesc.ks-clear
+  li
+    span 准备工作
+    span.prog
+      i(style="width:100%;background:#08F;")
+  li
+    span 分享掌控
+    span.prog
+      i(style="width:100%;background:#6F0;")
+  li
+    span 分享内容
+    span.prog
+      i(style="width:100%;background:#DF0;")
+  li
+    span.title 整体印象
+    span.prog
+      i(style="width:100%;background:#C0F;")
 #page
-- if (result.length)
-  ul.ratelist
-    - result.forEach(function(item){
-    li.rateitem
-      p.title
-        a(href="/show/#{item._id}") 分享题目： #{item.title}
+  - if (query.title || query.author)
+    p.queryfield
+      a(href="/list") 查看所有
+      &nbsp;查询:
+      - if(query.author)
+        span.query 分享者(#{decodeURIComponent(query.author)})
+      - if(query.title)
+        span.query 标题(#{decodeURIComponent(query.title)})
+      的分享
+  - if (result.length)
+    ul.ratelist
+      - result.forEach(function(item){
+      li.rateitem.ks-clear
+        div.unit.u3of4
+          p.title
+            a(href="/show/#{item._id}") #{item.title}
 
-      ul.meta
-        li.author #{item.author}
-        li.time #{item.date.getFullYear()}-#{item.date.getMonth()}-#{item.date.getDate()}
-
-      ul.score
-        li
-          span 准备工作
-          a
-            span
-              i(style="width:#{item.score[0]/0.05}%")
-        li
-          span 分享掌控
-          a
-            span
-              i(style="width:#{item.score[1]/0.05}%")
-        li
-          span 分享内容
-          a
-            span
-              i(style="width:#{item.score[2]/0.05}%")
-        li
-          span 整体印象
-          a
-            span
-              i(style="width:#{item.score[3]/0.05}%")
-    - })
-- else
-  p result is empty
+          ul.meta
+            li.author
+              a(href="/list/?author=#{item.author}") #{item.author}
+            li.time #{item.date.getFullYear()}-#{item.date.getMonth()}-#{item.date.getDate()}
+        div.unit.lastUnit.u1of4
+          ul.score
+            li
+              span.prog(title="准备工作")
+                i(style="width:#{item.score[0]/0.05}%;background:#08F;")
+            li
+              span.prog(title="分享掌控")
+                i(style="width:#{item.score[1]/0.05}%;background:#6F0;")
+            li
+              span.prog(title="分享内容")
+                i(style="width:#{item.score[2]/0.05}%;background:#DF0;")
+            li
+              span.prog(title="整体印象")
+                i(style="width:#{item.score[3]/0.05}%;background:#C0F;")
+      - })
+  - else
+    p result is empty
