@@ -6,7 +6,9 @@ ul.meta
 ul.actions
   li.big
     a.ratebtn(href="/rate/#{_id}") 开始打分
-div.records
+  li
+    a#show_recocords(href="#") 显示评分记录
+div.records#rate_records.ks-hidden
   table
     thead
       tr
@@ -25,3 +27,17 @@ div.records
           td.ts #{item.tdate.getMonth()}/#{item.tdate.getDate()} #{item.tdate.getHours()}:#{item.tdate.getMinutes()}
       -})
   a(href="/getRate/#{_id}") 获取文件
+
+div.disqus-box
+  div#disqus_thread
+  script
+    var disqus_shortname="firebird";
+    var disqus_identifier = "{app_pre}rate_#{_id}";
+    var disqus_developer = 1;
+    (function(){
+      var dsq = document.createElement('script');
+      dsq.type="text/javascript";
+      dsq.async = true;
+      dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
+      document.getElementsByTagName("head")[0].appendChild(dsq);
+    })()

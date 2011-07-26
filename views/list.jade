@@ -1,4 +1,10 @@
-h1 所有分享
+- if (query.author)
+  h1
+    #{decodeURIComponent(query.author)} 的分享
+  p
+    a(href="/list") 返回
+- else
+  h1 所有分享
 ul.score.scoredesc.ks-clear
   li
     span 准备工作
@@ -17,15 +23,6 @@ ul.score.scoredesc.ks-clear
     span.prog
       i(style="width:100%;background:#C0F;")
 #page
-  - if (query.title || query.author)
-    p.queryfield
-      a(href="/list") 查看所有
-      &nbsp;查询:
-      - if(query.author)
-        span.query 分享者(#{decodeURIComponent(query.author)})
-      - if(query.title)
-        span.query 标题(#{decodeURIComponent(query.title)})
-      的分享
   - if (result.length)
     ul.ratelist
       - result.forEach(function(item){

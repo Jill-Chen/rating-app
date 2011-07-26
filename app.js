@@ -31,7 +31,8 @@ app.configure(function(){
 
 app.configure('development', function(){
     console.log('development');
-    apptitle += '(dev)'
+    apptitle += '(dev)';
+    app.set("app_prefix", "dev_");
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
     db = new mongod.Db(
         'firebird_dev',
@@ -45,6 +46,7 @@ app.configure('development', function(){
 app.configure('production', function(){
     console.log('production');
     app.use(express.errorHandler());
+    app.set("app_prefix", "");
     app.set("view cache", true);
     db = new mongod.Db(
         'firebird',
@@ -137,6 +139,7 @@ app.get('/show/:rid', function(req, res){
                     title : title + apptitle,
                     r_dateSave : date,
                     r_title : title,
+                    app_pre : app.set("app_prefix"),
                     r_author : decodeURIComponent(doc.author),
                     rates : doc.rates,
                     _id : doc._id
