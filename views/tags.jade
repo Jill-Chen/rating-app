@@ -1,0 +1,6 @@
+h1= title
+ul.ks-clear.tags
+  - tags.forEach(function(tag){
+  li
+    a(href="/list/?tag=#{tag}")= decodeURIComponent(tag)
+  - });
