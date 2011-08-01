@@ -171,13 +171,13 @@ a {
     margin:10px;
 }
 .ratebtn {
-    font-size:80px;
     background:rgba(0,188,200,0.9);
     display:block;
     color:white;
     border:0px solid blue;
-    border-radius:50px;
+    border-radius:5px;
     text-align:center;
+    margin:20px;
 }
 .ratebtn:hover {
     text-decoration:none;
@@ -199,3 +199,18 @@ a {
 .disqus-box {
     margin-top:90px;
 }
+.tags li {
+    float:left;
+    margin-right:.5em;
+    color:#0ee;
+}
+.tags a {
+    background:#999;
+    text-decoration:none;
+    color:#fff;
+    display:inline-block;
+    border-radius:4px;
+    padding:4px;
+}
+.tags a:hover {
+    background:#AAA;

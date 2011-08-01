@@ -1,10 +1,18 @@
+
 - if (query.author)
   h1
     #{decodeURIComponent(query.author)} 的分享
   p
-    a(href="/list") 返回
+    a(href="/list") 所有分享
+- else if(query.tags)
+  h1
+    标签为 #{decodeURIComponent(query.tags)} 的分享
+  p
+    a(href="/tags") 所有标签
 - else
   h1 所有分享
+
+
 ul.score.scoredesc.ks-clear
   li
     span 准备工作
@@ -33,7 +41,10 @@ ul.score.scoredesc.ks-clear
 
           ul.meta
             li.author
-              a(href="/list/?author=#{item.author}") #{item.author}
+              - item.authors.forEach(function(author){
+                a(href="/list/?author=#{author}") #{author}
+                ,
+              - })
             li.time #{item.date.getFullYear()}-#{item.date.getMonth()}-#{item.date.getDate()}
         div.unit.lastUnit.u1of4
           ul.score

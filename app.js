@@ -4,11 +4,11 @@
 
 var express = require('express');
 var mongod = require('mongodb');
+var _ = require("underscore");
 var BSON = mongod.BSONPure;
 var apptitle = ' - 火鸟打分系统';
-console.log("r", require.resolve('./modules/average'));
 var average = require('./modules/average').average;
-
+var coder = require('./modules/coder');
 
 var app = module.exports = express.createServer(); // Configuration
 var db;
@@ -65,46 +65,80 @@ app.get('/', function(req, res){
   });
 });
 
+app.get('/tags', function(req, res){
+    ratedb(function(err,collection){
+        collection.find({}, {tags : 1}, function(err, cursor){
+            var docs = []
+            cursor.each(function(err,doc){
+                if(doc && doc.tags){
+                    docs.push(doc.tags);
+                }else if(!doc){
+                    //update tag
+                    res.render('tags', {
+                        title : '标签',
+                        tags : _.compact(_.uniq(_.flatten(docs)))
+                    });
+                    db.close();
+                }
+            });
+        });
+    });
+});
+
 app.get('/create',function(req,res){
     res.render('create', {
         title: 'Create a Cate' + apptitle,
         error : [],
         ratetitle : '',
         rateauthor : '',
-        rateother : ''
+        ratetags: ''
     });
 });
 
 app.post('/create',function(req,res){
     var doc = {};
-    var author = req.param('author').trim(),
-        title = req.param('title').trim(),
-        other = req.param('other').trim(),
+    var title = req.param('title').trim(),
+        authors = req.param('author').replace(/，/g,",").split(","),
+        tags = req.param('tags').replace(/，/g,",").split(","),
         error = [];
-    if(!author){
+
+    tags = _(tags).map(function(tag){
+        return tag.trim();
+    })
+    authors = _(authors).map(function(author){
+        return author.trim();
+    })
+
+    tags = _(tags).uniq();
+
+    if(authors.length === 1 && authors[0] === ''){
         error.push("请输入 分享者");
     }
+
     if(!title){
         error.push("请输入 分享标题");
     }
+
     if(error.length > 0){
         res.render('create', {
             title: 'Create a Cate' + apptitle,
             error : error,
             ratetitle : title,
-            rateauthor : author,
-            rateother : other
+            rateauthor : authors.join(", "),
+            ratetags : tags.join(", ")
         });
         return;
     }
-    doc.author = encodeURIComponent(author);
-    doc.title = encodeURIComponent(title);
-    doc.other = encodeURIComponent(other);
+    doc.authors = coder.encode(authors);
+    doc.title = coder.encode(title);
+    doc.tags = coder.encode(tags);
+
     doc.rates = [];
     doc.ts_save = new Date().getTime();
     ratedb(function(err,collection){
         collection.insert(doc,function(err, doc){
             db.close();
+            //update tag
             res.redirect('/create-ok/'+doc[0]._id);
         });
     });
@@ -130,18 +164,23 @@ app.get('/show/:rid', function(req, res){
             var json, date;
             if(doc) {
                 date = new Date(doc.ts_save.toNumber());
+
                 doc.rates.forEach(function(item,idx){
                     item.tdate = new Date(item.ts.toNumber());
                 })
-                title = decodeURIComponent(doc.title);
+
+                title = coder.decode(doc.title);
+
+                tags = coder.decode(doc.tags);
 
                 res.render('showrate', {
                     title : title + apptitle,
                     r_dateSave : date,
                     r_title : title,
                     app_pre : app.set("app_prefix"),
-                    r_author : decodeURIComponent(doc.author),
+                    r_authors : coder.decode(doc.authors),
                     rates : doc.rates,
+                    tags : tags,
                     _id : doc._id
                 });
             }else{
@@ -164,7 +203,7 @@ app.get('/getrate/:rid', function(req, res){
                 if(doc) {
                     json = JSON.stringify(doc),
                     res.header('Content-Type', 'data/plain');
-                    res.header('Content-Disposition','attachment; filename='+decodeURIComponent(doc.title)+'.json');
+                    res.header('Content-Disposition','attachment; filename='+coder.decode(doc.title)+'.json');
                     res.send(json);
                 }
 
@@ -172,28 +211,73 @@ app.get('/getrate/:rid', function(req, res){
         });
     });
 });
+
+app.get('/tag/:tag', function(req,res){
+    var querytag = req.params.tag;
+    ratedb(function(err,collection){
+        collection.find({"tags" : querytag},{ 'sort' : [['ts_save','desc']] }, function(err, cursor){
+            var result = [];
+            cursor.each(function(err,doc){
+                if(doc !== null ){
+                    doc.title = coder.decode(doc.title);
+                    doc.date = new Date(doc.ts_save.toNumber());
+                    doc.authors = coder.decode(doc.authors);
+                    doc.tags = coder.decode(doc.tags);
+                    result.push(doc);
+
+                    if(doc.rates && doc.rates.length){
+                        doc.score = average(doc.rates);
+                    }else{
+                        doc.score = 0;
+                    }
+
+                }else{
+                    res.render('list', {
+                        result : result,
+                        query : query,
+                        title : '所有分享' + apptitle
+                    });
+                    db.close();
+                }
+            });
+        });
+    });
+});
+
+//list the rates
 app.get('/list/:query?',function(req,res){
     var query = {},
         author = req.param("author", ""),
-        title = req.param("title", "");
-    if(author.length > 0){
-        query.author = encodeURIComponent(author);
-    }
-    if(title.length > 0){
-        query.title = encodeURIComponent(title);
-    }
+        title = req.param("title", ""),
+        tag = req.param("tag", "");
+
     console.log("list:", query);
+
+    if(author.length > 0){
+        query.authors = coder.encode(author);
+    }
+
+    if(title.length > 0){
+        query.title = coder.encode(title);
+    }
+
+    if(tag.length > 0){
+        query.tags = coder.encode(tag);
+    }
+
+
     ratedb(function(err,collection){
         collection.find(
             query,
-            { 'sort' : [['ts_save','desc']] },
+            { 'sort' : [['_id','desc']] },
             function(err,cursor){
                 var result = [];
                 cursor.each(function(err,doc){
                     if(doc !== null ){
-                        doc.title = decodeURIComponent(doc.title);
+                        doc.title = coder.decode(doc.title);
                         doc.date = new Date(doc.ts_save.toNumber());
-                        doc.author = decodeURIComponent(doc.author);
+                        doc.authors = coder.decode(doc.authors);
+                        doc.tags = coder.decode(doc.tags);
                         result.push(doc);
 
                         if(doc.rates && doc.rates.length){

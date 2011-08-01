@@ -16,9 +16,10 @@ form(action='/create', method="post")
       br
       input.text#input_user(name="author",value="#{rateauthor}")
     li.fi
-      label(for="input_other") 标签:
+      label(for="input_other") 标签(逗号隔开)
       br
-      input.text#input_other(name="other",value="#{rateother}")
+      input.text#input_other(name="tags",value="#{ratetags}")
+      div.tags ratetags
     li.fi
       button(type="submit") 提交
 

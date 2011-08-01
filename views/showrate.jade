@@ -1,8 +1,13 @@
 h1= r_title
 ul.meta
-  li.author #{r_author}
+  li.author #{r_authors.join(",")}
   li.time #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
-
+- if(tags && tags.length)
+  ul.tags.ks-clear
+    -tags.forEach(function(tag){
+      li
+        a(href="/list/?tag=#{tag}")=tag
+    -})
 ul.actions
   li.big
     a.ratebtn(href="/rate/#{_id}") 开始打分
@@ -41,3 +46,8 @@ div.disqus-box
       dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
       document.getElementsByTagName("head")[0].appendChild(dsq);
     })()
+script
+  KISSY.one("#show_recocords").on("click",function(ev){
+    ev.preventDefault();
+    KISSY.one("#rate_records").toggleClass("ks-hidden");
+  });
