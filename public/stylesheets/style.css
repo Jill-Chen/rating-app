@@ -201,7 +201,7 @@ a {
 }
 .tags li {
     float:left;
-    margin-right:.5em;
+    margin:.2em .5em;
     color:#0ee;
 }
 .tags a {
