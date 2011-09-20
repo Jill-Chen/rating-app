@@ -1,16 +1,40 @@
-h1= r_title
-ul.meta
-  li.author #{r_authors.join(",")}
-  li.time #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
+h1
+  分享: 《#{r_title}》
+ul.tabs
+
+  li.current
+    a(href='/discuss/') 首页
+
+  li
+    a(href='/discuss/') 讨论
+
+  li
+    a(href='/discuss/') 幻灯片
+
+  li
+    a(href='/discuss/') 评分记录
+
+.meta.ks-clear
+  dl.author
+    dt 分享者/
+    dd=r_authors.join(",")
+  .time
+    dt 分享时间/
+    dd #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
 - if(tags && tags.length)
   ul.tags.ks-clear
     -tags.forEach(function(tag){
       li
         a(href="/list/?tag=#{tag}")=tag
     -})
+div.qrcode
+  .bd#qrcode
+  .ft
+    手机扫描此条码直接打分
+
 ul.actions
   li.big
-    a.ratebtn(href="/rate/#{_id}") 开始打分
+    a#rate-btn.ratebtn(href="/rate/#{_id}") 开始打分
   li
     a#show_recocords(href="#") 显示评分记录
 div.records#rate_records.ks-hidden
@@ -50,4 +74,7 @@ script
   KISSY.one("#show_recocords").on("click",function(ev){
     ev.preventDefault();
     KISSY.one("#rate_records").toggleClass("ks-hidden");
+  });
+  KISSY.use('rate/app', function(S,APP){
+      APP.getQRCode('#qrcode', S.one('#rate-btn')[0].href);
   });

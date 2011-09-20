@@ -1,12 +1,15 @@
-
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('list');
+  });
 - if (query.author)
   h1
-    #{decodeURIComponent(query.author)} 的分享
+    #{query.author} 的分享
   p
     a(href="/list") 所有分享
 - else if(query.tags)
   h1
-    标签为 #{decodeURIComponent(query.tags)} 的分享
+    标签为 #{query.tags} 的分享
   p
     a(href="/tags") 所有标签
 - else

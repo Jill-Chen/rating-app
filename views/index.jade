@@ -1,3 +1,13 @@
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('home');
+  });
+script#temp-tags(type='kissy/template')
+  |<ul class='tags'>
+  |  {{#each tags as tag}}
+  |    <li><a href='/list?tag={{tag}}'>{{tag}}</a></li>
+  |  {{/each}}
+  |</ul>
 h1= title
 div.box
   .hd
@@ -6,3 +16,9 @@ div.box
     ul
       li
         a(href="/list/?tag=firebird") 火鸟分享
+div#tags.box
+  .hd
+    h3 标签
+  .bd
+script
+  KISSY.use('rate/home');

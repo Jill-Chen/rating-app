@@ -1,61 +1,71 @@
 div.mode_rate.mod.rate
   h1 请打分
-  h3 准备工作(比如PPT，案例）
-  ul#rate1.section.rating-item.stars.ks-clear
-    li.s1
-      a(href="#") X
-    li.s2
-      a(href="#") X
-    li.s3
-      a(href="#") X
-    li.s4
-      a(href="#") X
-    li.s5
-      a(href="#") X
 
-  h3 分享掌控（语言表达，时间控制，节奏把握）
-  ul#rate2.section.rating-item.stars.ks-clear
-    li.s1
-      a(href="#") X
-    li.s2
-      a(href="#") X
-    li.s3
-      a(href="#") X
-    li.s4
-      a(href="#") X
-    li.s5
-      a(href="#") X
+  form#rateform(method="post",action="/ratedo")
+    h3 准备工作(比如PPT，案例）
+    #rate1.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
+      ul.indicator
+        li(title='有准备过吗？') 差
+        li(title='该有的都有了') 一般
+        li(title='资料充分') 好
+        li(title='很有诚意啊') 很好
+        li(title='准备的太好乐，让人感动') 牛逼
+      .bar
+      .handle
+      p.text 拖动进行打分
+      input(name='rate1',type='hidden')
 
-  h3 分享内容（难易程度，实用性,内容价值）
-  ul#rate3.section.rating-item.stars.ks-clear
-    li.s1
-      a(href="#") X
-    li.s2
-      a(href="#") X
-    li.s3
-      a(href="#") X
-    li.s4
-      a(href="#") X
-    li.s5
-      a(href="#") X
+    h3 分享掌控(比如PPT，案例）
+    #rate2.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
 
-  h3 整体印象 （ 你的直觉， 这次分享有几分）
-  ul#rate4.section.rating-item.stars.ks-clear
-    li.s1
-      a(href="#") X
-    li.s2
-      a(href="#") X
-    li.s3
-      a(href="#") X
-    li.s4
-      a(href="#") X
-    li.s5
-      a(href="#") X
+      ul.indicator
+        li(title='有准备过吗？') 差
+        li(title='该有的都有了') 一般
+        li(title='资料充分') 好
+        li(title='很有诚意啊') 很好
+        li(title='准备的太好乐，让人感动') 牛逼
+      .bar
+      .handle
+      p.text 拖动进行打分
+      input(name='rate2',type='hidden')
 
-  .actions
-    form#rateform(method="post",action="/ratedo")
-      input(type="hidden",value=rid,name="rid")
-      button.button.rate-btn(type="submit")#rate-submit 提交打分
-      &nbsp;或者&nbsp;
-      a(href="/show/#{rid}") 返回
-script(src='/js/rate2.js')
+    h3 分享内容(比如PPT，案例）
+    #rate3.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
+      ul.indicator
+        li(title='有准备过吗？') 差
+        li(title='该有的都有了') 一般
+        li(title='资料充分') 好
+        li(title='很有诚意啊') 很好
+        li(title='准备的太好乐，让人感动') 牛逼
+      .bar
+      .handle
+      p.text 拖动进行打分
+      input(name='rate3',type='hidden')
+
+    h3 整体映像(比如PPT，案例）
+    #rate4.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
+      ul.indicator
+        li(title='有准备过吗？') 差
+        li(title='该有的都有了') 一般
+        li(title='资料充分') 好
+        li(title='很有诚意啊') 很好
+        li(title='准备的太好乐，让人感动') 牛逼
+      .bar
+      .handle
+      p.text 拖动进行打分
+      input(name='rate4',type='hidden')
+
+    .actions
+        input(type="hidden",value=rid,name="rid")
+        button.button.rate-btn(type="submit")#rate-submit 提交打分
+        &nbsp;或者&nbsp;
+        a(href="/show/#{rid}") 返回
+script(src='/js/rate/slider.js')
+script
+  KISSY.use('rate/slider',function(S, Slider){
+    S.all('.rateslider','#rateform').each(function(item){
+      new Slider({
+        elem : item
+      });
+    })
+  });

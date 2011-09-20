@@ -4,22 +4,35 @@ html
     title= title
     link(rel='stylesheet', href='/stylesheets/base.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    meta(name='viewport',content='width = device-width')
+    meta(name='viewport',content='initial-scale = 1.0, user-scalable = no')
   -if(typeof css !== "undefined" )
     -if(css=="rate")
       link(rel='stylesheet', href='/stylesheets/rate2.css')
   script(src='/js/kissy-min.js')
+  script(src='/js/template-pkg-min.js')
+  script(src='/js/rate/app.js')
+  script
+    KISSY.config({
+      packages : [{
+        name : 'rate',
+        path : '/js'
+        }]
+      });
+    KISSY.Config.debug = true;
   body
   div.header
-    div.nav
+    div.nav.ks-clear
       ul
-        li
+        li(id='nav-home')
           a(href="/") 首页
-        li
+        li(id='nav-create')
           a(href="/create") 创建评分
-        li
+        li(id='nav-list')
           a(href="/list") 所有评分
-        li
+        li(id='nav-tags')
           a(href="/tags") 根据标签
-  div.content
-    != body
+  div.content!= body
+    script
+      console.log('title')
   div.footer

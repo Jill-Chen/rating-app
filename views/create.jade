@@ -1,3 +1,13 @@
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('create');
+  });
+script#temp-tags(type='kissy/template')
+  |<ul class='tags'>
+  |  {{#each tags as tag}}
+  |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
+  |  {{/each}}
+  |</ul>
 h1 创建打分
 p 为一个分享创建打分
 form(action='/create', method="post")
@@ -16,10 +26,12 @@ form(action='/create', method="post")
       br
       input.text#input_user(name="author",value="#{rateauthor}")
     li.fi
-      label(for="input_other") 标签(逗号隔开)
+      label(for="input_other") 标签(逗号或空格分格)
       br
-      input.text#input_other(name="tags",value="#{ratetags}")
-      div.tags ratetags
+      input.text#input_tags(name="tags",value="#{ratetags}")
+      div#tagfield.ks-clear
     li.fi
       button(type="submit") 提交
 
+script
+  KISSY.use('rate/create')

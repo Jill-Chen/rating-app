@@ -3,21 +3,16 @@
  */
 
 var express = require('express');
+
 var mongod = require('mongodb');
+var QRcode = require('qrcode');
 var _ = require("underscore");
 var BSON = mongod.BSONPure;
 var apptitle = ' - 火鸟打分系统';
 var average = require('./modules/average').average;
-var coder = require('./modules/coder');
-
 var app = module.exports = express.createServer(); // Configuration
 var db;
-
-function ratedb(callback){
-    db.open(function(err,db){
-        db.collection('rate', callback);
-    });
-}
+var col = null;
 
 
 app.configure(function(){
@@ -26,6 +21,7 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.methodOverride());
   app.use(app.router);
+
   app.use(express.static(__dirname + '/public'));
 });
 
@@ -41,6 +37,11 @@ app.configure('development', function(){
             native_parser:false
         }
     );
+    db.open(function(err,db){
+        db.collection('rate', function(err, collection){
+            col = collection;
+        });
+    });
 });
 
 app.configure('production', function(){
@@ -55,6 +56,11 @@ app.configure('production', function(){
             native_parser:false
         }
     );
+    db.open(function(err,db){
+        db.collection('rate', function(err, collection){
+            col = collection;
+        });
+    });
 });
 
 // Routes
@@ -66,21 +72,35 @@ app.get('/', function(req, res){
 });
 
 app.get('/tags', function(req, res){
-    ratedb(function(err,collection){
-        collection.find({}, {tags : 1}, function(err, cursor){
-            var docs = []
-            cursor.each(function(err,doc){
-                if(doc && doc.tags){
-                    docs.push(doc.tags);
-                }else if(!doc){
-                    //update tag
-                    res.render('tags', {
-                        title : '标签',
-                        tags : _.compact(_.uniq(_.flatten(docs)))
-                    });
-                    db.close();
-                }
-            });
+    col.find({}, { tags : 1 }, function(err, cursor){
+        var docs = []
+        cursor.each(function(err,doc){
+            if(doc && doc.tags){
+                docs.push(doc.tags);
+            }else if(!doc){
+                //update tag
+                res.render('tags', {
+                    title : '标签',
+                    tags : _.compact(_.uniq(_.flatten(docs)))
+                });
+            }
+        });
+    });
+});
+
+app.get('/json/tags', function(req, res){
+    col.find({}, { tags : 1 }, function(err, cursor){
+        var docs = []
+        cursor.each(function(err,doc){
+            if(doc && doc.tags){
+                docs.push(doc.tags);
+            }else if(!doc){
+                //update tag
+                res.send({
+                    isSuccess : true,
+                    tags : _.compact(_.uniq(_.flatten(docs)))
+                });
+            }
         });
     });
 });
@@ -99,17 +119,20 @@ app.post('/create',function(req,res){
     var doc = {};
     var title = req.param('title').trim(),
         authors = req.param('author').replace(/，/g,",").split(","),
-        tags = req.param('tags').replace(/，/g,",").split(","),
+        tags = req.param('tags').replace(/ +/g,",").replace(/，+/g,",").replace(/,+/g,",").split(","),
         error = [];
 
-    tags = _(tags).map(function(tag){
-        return tag.trim();
-    })
+    tags = _(tags).chain()
+        .map(function(tag){
+            return tag.trim();
+        })
+        .without('')
+        .uniq()
+        .value();
+
     authors = _(authors).map(function(author){
         return author.trim();
-    })
-
-    tags = _(tags).uniq();
+    });
 
     if(authors.length === 1 && authors[0] === ''){
         error.push("请输入 分享者");
@@ -129,18 +152,15 @@ app.post('/create',function(req,res){
         });
         return;
     }
-    doc.authors = coder.encode(authors);
-    doc.title = coder.encode(title);
-    doc.tags = coder.encode(tags);
+    doc.authors = authors;
+    doc.title = title;
+    doc.tags = tags;
 
     doc.rates = [];
     doc.ts_save = new Date().getTime();
-    ratedb(function(err,collection){
-        collection.insert(doc,function(err, doc){
-            db.close();
-            //update tag
-            res.redirect('/create-ok/'+doc[0]._id);
-        });
+    col.insert(doc,function(err, doc){
+        //update tag
+        res.redirect('/create-ok/'+doc[0]._id);
     });
 });
 
@@ -158,36 +178,33 @@ app.get('/show/:rid', function(req, res){
     var query = {'_id' : BSON.ObjectID(rateid)};
     var result = {};
 
-    ratedb(function(err,collection){
-        console.log('querying : ' + query._id);
-        collection.findOne(query, function(err,doc){
-            var json, date;
-            if(doc) {
-                date = new Date(doc.ts_save.toNumber());
+    console.log('querying : ' + query._id);
+    col.findOne(query, function(err,doc){
+        var json, date;
+        if(doc) {
+            date = new Date(doc.ts_save.toNumber());
 
-                doc.rates.forEach(function(item,idx){
-                    item.tdate = new Date(item.ts.toNumber());
-                })
+            doc.rates.forEach(function(item,idx){
+                item.tdate = new Date(item.ts.toNumber());
+            })
 
-                title = coder.decode(doc.title);
+            title = doc.title;
 
-                tags = coder.decode(doc.tags);
+            tags = doc.tags;
 
-                res.render('showrate', {
-                    title : title + apptitle,
-                    r_dateSave : date,
-                    r_title : title,
-                    app_pre : app.set("app_prefix"),
-                    r_authors : coder.decode(doc.authors),
-                    rates : doc.rates,
-                    tags : tags,
-                    _id : doc._id
-                });
-            }else{
-                res.redirect('/list');
-            }
-            db.close();
-        });
+            res.render('showrate', {
+                title : title + apptitle,
+                r_dateSave : date,
+                r_title : title,
+                app_pre : app.set("app_prefix"),
+                r_authors : doc.authors,
+                rates : doc.rates,
+                tags : tags,
+                _id : doc._id
+            });
+        }else{
+            res.redirect('/list');
+        }
     });
 });
 
@@ -197,49 +214,44 @@ app.get('/getrate/:rid', function(req, res){
     var query = {'_id' : BSON.ObjectID(rid)};
     var result = {};
 
-    ratedb(function(err,collection){
-        collection.findOne(query, function(err,doc){
-                var json;
-                if(doc) {
-                    json = JSON.stringify(doc),
-                    res.header('Content-Type', 'data/plain');
-                    res.header('Content-Disposition','attachment; filename='+coder.decode(doc.title)+'.json');
-                    res.send(json);
-                }
+    col.findOne(query, function(err,doc){
+            var json;
+            if(doc) {
+                json = JSON.stringify(doc),
+                res.header('Content-Type', 'data/plain');
+                res.header('Content-Disposition','attachment; filename='+doc.title+'.json');
+                res.send(json);
+            }
 
-                db.close();
-        });
     });
 });
 
 app.get('/tag/:tag', function(req,res){
     var querytag = req.params.tag;
-    ratedb(function(err,collection){
-        collection.find({"tags" : querytag},{ 'sort' : [['ts_save','desc']] }, function(err, cursor){
-            var result = [];
-            cursor.each(function(err,doc){
-                if(doc !== null ){
-                    doc.title = coder.decode(doc.title);
-                    doc.date = new Date(doc.ts_save.toNumber());
-                    doc.authors = coder.decode(doc.authors);
-                    doc.tags = coder.decode(doc.tags);
-                    result.push(doc);
 
-                    if(doc.rates && doc.rates.length){
-                        doc.score = average(doc.rates);
-                    }else{
-                        doc.score = 0;
-                    }
+    col.find({"tags" : querytag},{ 'sort' : [['ts_save','desc']] }, function(err, cursor){
+        var result = [];
+        cursor.each(function(err,doc){
+            if(doc !== null ){
+                doc.title = doc.title;
+                doc.date = new Date(doc.ts_save.toNumber());
+                doc.authors = doc.authors;
+                doc.tags = doc.tags;
+                result.push(doc);
 
+                if(doc.rates && doc.rates.length){
+                    doc.score = average(doc.rates);
                 }else{
-                    res.render('list', {
-                        result : result,
-                        query : query,
-                        title : '所有分享' + apptitle
-                    });
-                    db.close();
+                    doc.score = 0;
                 }
-            });
+
+            }else{
+                res.render('list', {
+                    result : result,
+                    query : query,
+                    title : '所有分享' + apptitle
+                });
+            }
         });
     });
 });
@@ -254,61 +266,56 @@ app.get('/list/:query?',function(req,res){
     console.log("list:", query);
 
     if(author.length > 0){
-        query.authors = coder.encode(author);
+        query.authors = author;
     }
 
     if(title.length > 0){
-        query.title = coder.encode(title);
+        query.title = title;
     }
 
     if(tag.length > 0){
-        query.tags = coder.encode(tag);
+        query.tags = tag;
     }
 
 
-    ratedb(function(err,collection){
-        collection.find(
-            query,
-            { 'sort' : [['_id','desc']] },
-            function(err,cursor){
-                var result = [];
-                cursor.each(function(err,doc){
-                    if(doc !== null ){
-                        doc.title = coder.decode(doc.title);
-                        doc.date = new Date(doc.ts_save.toNumber());
-                        doc.authors = coder.decode(doc.authors);
-                        doc.tags = coder.decode(doc.tags);
-                        result.push(doc);
+    col.find(
+        query,
+        { 'sort' : [['_id','desc']] },
+        function(err,cursor){
+            var result = [];
+            cursor.each(function(err,doc){
+                if(doc !== null ){
+                    doc.title = doc.title;
+                    doc.date = new Date(doc.ts_save.toNumber());
+                    doc.authors = doc.authors;
+                    doc.tags = doc.tags;
+                    result.push(doc);
 
-                        if(doc.rates && doc.rates.length){
-                            doc.score = average(doc.rates);
-                        }else{
-                            doc.score = 0;
-                        }
-
+                    if(doc.rates && doc.rates.length){
+                        doc.score = average(doc.rates);
                     }else{
-                        res.render('list', {
-                            result : result,
-                            query : query,
-                            title : '所有分享' + apptitle
-                        });
-                        db.close();
+                        doc.score = 0;
                     }
-                });
-            }
-        );
-    });
+
+                }else{
+                    res.render('list', {
+                        result : result,
+                        query : query,
+                        title : '所有分享' + apptitle
+                    });
+                }
+            });
+        }
+    );
 });
 
 app.post("/ratedo", function(req, res){
-
     var id = req.param("rid");
-    var rate1 = parseInt(req.param("rate1"));
-    var rate2 = parseInt(req.param("rate2"));
-    var rate3 = parseInt(req.param("rate3"));
-    var rate4 = parseInt(req.param("rate4"));
+    var rate1 = Number(req.param("rate1"));
+    var rate2 = Number(req.param("rate2"));
+    var rate3 = Number(req.param("rate3"));
+    var rate4 = Number(req.param("rate4"));
 
-    console.log(rate1);
     if(isNaN(rate1) || isNaN(rate2) || isNaN(rate3) || isNaN(rate4)) {
         res.redirect("/rate/"+id);
         return;
@@ -322,17 +329,24 @@ app.post("/ratedo", function(req, res){
         ts : new Date().getTime()
     };
 
-    ratedb(function(err, collection){
-        collection.update({
-            _id : BSON.ObjectID(id)
-        },{
-            $push : {
-                rates : ratedata
-            }
-        }, function(err, data){
-            db.close();
-            res.redirect("/show/"+id);
-        });
+    col.update({
+        _id : BSON.ObjectID(id)
+    },{
+        $push : {
+            rates : ratedata
+        }
+    }, function(err, data){
+        res.redirect("/show/"+id);
+    });
+});
+
+app.get('/qrcode',function(req,res){
+    var url = req.param('url');
+    QRcode.toDataURL(url,function(err, data){
+        res.send({
+            isSuccess : true,
+            dataURL : data
+        })
     });
 });
 
@@ -344,6 +358,6 @@ app.get('/rate/:rid',function(req,res){
     });
 });
 
-app.listen(3000);
+app.listen(3002);
 
 console.log('Express server listening on port %d', app.address().port);
