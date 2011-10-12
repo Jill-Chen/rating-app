@@ -4,7 +4,9 @@
 
 var express = require('express');
 
-var mongod = require('mongodb'); var QRcode = require('qrcode'); var _ = require("underscore");
+var mongod = require('mongodb');
+var QRcode = require('qrcode');
+var _ = require("underscore");
 var BSON = mongod.BSONPure;
 var apptitle = ' - 火鸟打分系统';
 var average = require('./modules/average').average;
