@@ -31,7 +31,7 @@ KISSY.add('rate/slider',function(S){
             Event.on(docbody, 'mouseup', self.docOnMouseUp, self);
         });
 
-        elc[0].addEventListener('touchstart',function(ev){
+        self.elHandle[0].addEventListener('touchstart',function(ev){
             ev.preventDefault();
             var touches = ev.touches;
             if(!touches.length){return;}
@@ -39,7 +39,7 @@ KISSY.add('rate/slider',function(S){
             self.h_start = parseInt(self.elHandle.css('left'),10);
         });
 
-        elc[0].addEventListener('touchmove', function(ev){
+        self.elHandle[0].addEventListener('touchmove', function(ev){
             self.docOnMove(ev);
         });
 
@@ -58,7 +58,6 @@ KISSY.add('rate/slider',function(S){
             self.elText.html(tip);
 
             S.each(self.indicators, function(item, idx){
-                console.log(idx, index);
                 var node = S.one(item);
                 if(idx !== index){
                     node.removeClass('current');

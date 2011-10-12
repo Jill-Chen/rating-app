@@ -1,58 +1,58 @@
 div.mode_rate.mod.rate
-  h1 请打分
+  h1= share.title
+  h2= share.authors.join(',')
 
   form#rateform(method="post",action="/ratedo")
     h3 准备工作(比如PPT，案例）
     #rate1.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
+      p.text 拖动进行打分
       ul.indicator
-        li(title='有准备过吗？') 差
+        li(title='没有准备嘛') 差
         li(title='该有的都有了') 一般
         li(title='资料充分') 好
         li(title='很有诚意啊') 很好
         li(title='准备的太好乐，让人感动') 牛逼
       .bar
       .handle
-      p.text 拖动进行打分
       input(name='rate1',type='hidden')
 
-    h3 分享掌控(比如PPT，案例）
+    h3 分享掌控(表达能力，控场能力, 时间把握）
     #rate2.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
-
+      p.text 拖动进行打分
       ul.indicator
-        li(title='有准备过吗？') 差
-        li(title='该有的都有了') 一般
-        li(title='资料充分') 好
+        li(title='表达能力欠佳，无法把握时间') 差
+        li(title='表达能力尚可, 分享技能一般') 一般
+        li(title='表达能力挺好的') 好
         li(title='很有诚意啊') 很好
-        li(title='准备的太好乐，让人感动') 牛逼
+        li(title='准备的太好了，让人感动') 牛逼
       .bar
       .handle
-      p.text 拖动进行打分
       input(name='rate2',type='hidden')
 
-    h3 分享内容(比如PPT，案例）
+    h3 分享内容(分享内容对我的帮助，启发）
     #rate3.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
+      p.text 拖动进行打分
       ul.indicator
-        li(title='有准备过吗？') 差
-        li(title='该有的都有了') 一般
-        li(title='资料充分') 好
-        li(title='很有诚意啊') 很好
-        li(title='准备的太好乐，让人感动') 牛逼
+        li(title='没有实质内容，太水了，快要睡着了') 差
+        li(title='分享内容一般，但是也有点亮点') 一般
+        li(title='内容很有意义') 好
+        li(title='内容很好,充实，对我很有帮助') 很好
+        li(title='内容无敌了，对我启发很大') 牛逼
       .bar
       .handle
-      p.text 拖动进行打分
       input(name='rate3',type='hidden')
 
-    h3 整体映像(比如PPT，案例）
+    h3 整体映像(整场分享的大体感受）
     #rate4.rateslider.section.rating-item.stars.ks-clear(tabindex='0')
+      p.text 拖动进行打分
       ul.indicator
-        li(title='有准备过吗？') 差
-        li(title='该有的都有了') 一般
-        li(title='资料充分') 好
-        li(title='很有诚意啊') 很好
-        li(title='准备的太好乐，让人感动') 牛逼
+        li(title='这分享,发生过吗？') 差
+        li(title='分享整体感脚一般') 一般
+        li(title='分享不错') 好
+        li(title='印象很好') 很好
+        li(title='整场分享行云流水啊有木有,牛逼的分享') 牛逼
       .bar
       .handle
-      p.text 拖动进行打分
       input(name='rate4',type='hidden')
 
     .actions

@@ -214,9 +214,6 @@ a {
     font-weight:bold;
     padding:10px;
 }
-.disqus-box {
-    margin-top:90px;
-}
 .tags li {
     float:left;
     margin:0.5em .6em 0 0;
@@ -238,11 +235,14 @@ a {
 .rateslider {
     padding-top:1px;
     position:relative;
+    padding-bottom:20px;
+    margin-bottom:20px;
+    outline:0;
 }
 
 .rateslider .text {
     text-align:center;
-    margin-top:20px;
+    color:#f90;
 }
 
 .rateslider .indicator {
@@ -257,27 +257,40 @@ a {
 }
 .rateslider .bar {
     margin:20px 0 0;
-    background:#000;
+    background:#dbdb57;
+    opacity:0.5;
     height:10px;
 }
 .rateslider .handle {
     width:50px;
     height:50px;
-    background:#f00;
-    opacity:.5;
+    background:rgba(151,92,32,0.8);
     position:absolute;
-    top:10px;
+    bottom:0px;
+    border-radius:15px;
 }
 .rateslider .indicator li {
     transition:all .5s ease;
     -webkit-transition:all .5s ease;
 }
 .rateslider .indicator .current {
-    background:#ffdddd;
+    background:#dbdb57;
+}
+.tabs {
+    margin-bottom:10px;
 }
 .tabs li {
     display:inline;
     margin-left:10px;
+}
+.tabs li a {
+    background:#fff;
+    border-radius:8px;
+    padding:5px 10px;
+}
+.tabs .ks-active a {
+    background:#00a;
+    color:#fff;
 }
 .qrcode {
     text-align:center;

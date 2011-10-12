@@ -1,80 +1,82 @@
 h1
   分享: 《#{r_title}》
-ul.tabs
+#tabs1
+  ul.tabs.ks-switchable-nav
+    li.ks-active
+      a(href='#detail') 首页
+    li
+      a(href='#discuss') 讨论
+    li
+      a(href='#slidshare') 幻灯片
+    li
+      a(href='#record') 评分记录
 
-  li.current
-    a(href='/discuss/') 首页
+  .ks-switchable-content
+    div
+      .meta.ks-clear
+        dl.author
+          dt 分享者/
+          dd=r_authors.join(",")
+        .time
+          dt 分享时间/
+          dd #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
+      - if(tags && tags.length)
+        ul.tags.ks-clear
+          -tags.forEach(function(tag){
+            li
+              a(href="/list/?tag=#{tag}")=tag
+          -})
+      div.qrcode
+        .bd#qrcode
+        .ft
+          手机扫描此条码直接打分
 
-  li
-    a(href='/discuss/') 讨论
+      ul.actions
+        li.big
+          a#rate-btn.ratebtn(href="/rate/#{_id}") 开始打分
 
-  li
-    a(href='/discuss/') 幻灯片
+    div.disqus-box.ks-hidden
+      div#disqus_thread
+      script
+        var disqus_shortname="firebird";
+        var disqus_identifier = "{app_pre}rate_#{_id}";
+        var disqus_developer = 1;
+        (function(){
+          var dsq = document.createElement('script');
+          dsq.type="text/javascript";
+          dsq.async = true;
+          dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
+          document.getElementsByTagName("head")[0].appendChild(dsq);
+        })()
+    div.slideshare.ks-hidden
+      | <div style="width:425px" id="__ss_9249498"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/stevenvanbelleghem/social-media-around-the-world-2011" title="Social media around the world 2011" target="_blank">Social media around the world 2011</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/9249498" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more presentations from <a href="http://www.slideshare.net/stevenvanbelleghem" target="_blank">steven van belleghem</a> </div> </div>
+    div.records#rate_records.ks-hidden
+      table
+        thead
+          tr
+            th.s 准备工作
+            th.s 分享掌控
+            th.s 分享内容
+            th.s 整体印象
+            th.ts 评分时间
+        tbody
+          - rates.forEach(function(item){
+            tr
+              td.s= item.rate1
+              td.s= item.rate2
+              td.s= item.rate3
+              td.s= item.rate4
+              td.ts #{item.tdate.getMonth()}/#{item.tdate.getDate()} #{item.tdate.getHours()}:#{item.tdate.getMinutes()}
+          -})
+      a(href="/getRate/#{_id}") 获取文件
 
-  li
-    a(href='/discuss/') 评分记录
-
-.meta.ks-clear
-  dl.author
-    dt 分享者/
-    dd=r_authors.join(",")
-  .time
-    dt 分享时间/
-    dd #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
-- if(tags && tags.length)
-  ul.tags.ks-clear
-    -tags.forEach(function(tag){
-      li
-        a(href="/list/?tag=#{tag}")=tag
-    -})
-div.qrcode
-  .bd#qrcode
-  .ft
-    手机扫描此条码直接打分
-
-ul.actions
-  li.big
-    a#rate-btn.ratebtn(href="/rate/#{_id}") 开始打分
-  li
-    a#show_recocords(href="#") 显示评分记录
-div.records#rate_records.ks-hidden
-  table
-    thead
-      tr
-        th.s 准备工作
-        th.s 分享掌控
-        th.s 分享内容
-        th.s 整体印象
-        th.ts 评分时间
-    tbody
-      - rates.forEach(function(item){
-        tr
-          td.s= item.rate1
-          td.s= item.rate2
-          td.s= item.rate3
-          td.s= item.rate4
-          td.ts #{item.tdate.getMonth()}/#{item.tdate.getDate()} #{item.tdate.getHours()}:#{item.tdate.getMinutes()}
-      -})
-  a(href="/getRate/#{_id}") 获取文件
-
-div.disqus-box
-  div#disqus_thread
-  script
-    var disqus_shortname="firebird";
-    var disqus_identifier = "{app_pre}rate_#{_id}";
-    var disqus_developer = 1;
-    (function(){
-      var dsq = document.createElement('script');
-      dsq.type="text/javascript";
-      dsq.async = true;
-      dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
-      document.getElementsByTagName("head")[0].appendChild(dsq);
-    })()
+script(src='/js/switchable-min.js');
 script
-  KISSY.one("#show_recocords").on("click",function(ev){
-    ev.preventDefault();
-    KISSY.one("#rate_records").toggleClass("ks-hidden");
-  });
   KISSY.use('rate/app', function(S,APP){
       APP.getQRCode('#qrcode', S.one('#rate-btn')[0].href);
+  });
+  KISSY.use('switchable', function(S){
+    new S.Tabs('#tabs1', {
+      triggerType : 'click'
+    });
   });
