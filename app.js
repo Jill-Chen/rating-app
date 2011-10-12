@@ -135,11 +135,8 @@ app.get('/show/:rid', function(req, res){
     Share.findById(rateid, function(err,doc){
         if(doc) {
 
-            doc.rates.forEach(function(item,idx){
-                item.tdate = new Date(item.ts.toNumber());
-            });
-
             _(doc.rates).each(function(item){
+                item.tdate = new Date(item.ts.toNumber());
                 _(['rate1','rate2','rate3','rate4']).each(function(idx){
                     item[idx] = Math.round(item[idx]*10)/10;
                 });
