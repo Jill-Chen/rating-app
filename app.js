@@ -5,7 +5,7 @@
 var express = require('express');
 
 var mongod = require('mongodb');
-var QRcode = require('qrcode');
+//var QRcode = require('qrcode');
 var _ = require("underscore");
 var BSON = mongod.BSONPure;
 var apptitle = ' - 火鸟打分系统';
@@ -345,15 +345,15 @@ app.post("/ratedo", function(req, res){
     });
 });
 
-app.get('/qrcode',function(req,res){
-    var url = req.param('url');
-    QRcode.toDataURL(url,function(err, data){
-        res.send({
-            isSuccess : true,
-            dataURL : data
-        });
-    });
-});
+//app.get('/qrcode',function(req,res){
+    //var url = req.param('url');
+    //QRcode.toDataURL(url,function(err, data){
+        //res.send({
+            //isSuccess : true,
+            //dataURL : data
+        //});
+    //});
+//});
 
 app.get('/rate/:rid',function(req,res){
     var rateid = req.params.rid,
