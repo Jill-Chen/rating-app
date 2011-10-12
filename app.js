@@ -133,8 +133,8 @@ app.get('/show/:rid', function(req, res){
     var rateid = req.params.rid;
     var result = {};
     Share.findById(rateid, function(err,doc){
-        var json, date, tags, title, rates;
         if(doc) {
+
             doc.rates.forEach(function(item,idx){
                 item.tdate = new Date(item.ts.toNumber());
             });
@@ -147,11 +147,12 @@ app.get('/show/:rid', function(req, res){
 
 
             res.render('showrate', {
-                title : title + apptitle,
+                title : doc.title + apptitle,
                 doc : doc,
                 app_pre : app.set("app_prefix"),
                 rates : doc.rates
             });
+
         }else{
             res.redirect('/list');
         }
