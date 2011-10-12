@@ -345,6 +345,12 @@ app.post("/ratedo", function(req, res){
     });
 });
 
+app.error(function(err, req, res){
+    res.render('500', {
+        error : err
+    })
+})
+
 //app.get('/qrcode',function(req,res){
     //var url = req.param('url');
     //QRcode.toDataURL(url,function(err, data){
