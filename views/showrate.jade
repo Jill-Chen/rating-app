@@ -1,5 +1,5 @@
 h1
-  分享: 《#{r_title}》
+  分享: 《#{doc.title}》
 #tabs1
   ul.tabs.ks-switchable-nav
     li.ks-active
@@ -16,13 +16,17 @@ h1
       .meta.ks-clear
         dl.author
           dt 分享者/
-          dd=r_authors.join(",")
-        .time
+          dd= doc.authors.join(",")
+        dl.time
           dt 分享时间/
-          dd #{r_dateSave.getFullYear()}-#{r_dateSave.getMonth()}-#{r_dateSave.getDate()}
-      - if(tags && tags.length)
+          dd #{doc.ts_save.getFullYear()}-#{doc.ts_save.getMonth()}-#{doc.ts_save.getDate()}
+        dl.desc
+          dt 简介
+          dd=doc.desc
+
+      - if(doc.tags && doc.tags.length)
         ul.tags.ks-clear
-          -tags.forEach(function(tag){
+          -doc.tags.forEach(function(tag){
             li
               a(href="/list/?tag=#{tag}")=tag
           -})
@@ -33,13 +37,13 @@ h1
 
       ul.actions
         li.big
-          a#rate-btn.ratebtn(href="/rate/#{_id}") 开始打分
+          a#rate-btn.ratebtn(href="/rate/#{doc._id}") 开始打分
 
     div.disqus-box.ks-hidden
       div#disqus_thread
       script
         var disqus_shortname="firebird";
-        var disqus_identifier = "{app_pre}rate_#{_id}";
+        var disqus_identifier = "{app_pre}rate_#{doc._id}";
         var disqus_developer = 1;
         (function(){
           var dsq = document.createElement('script');
@@ -68,7 +72,7 @@ h1
               td.s= item.rate4
               td.ts #{item.tdate.getMonth()}/#{item.tdate.getDate()} #{item.tdate.getHours()}:#{item.tdate.getMinutes()}
           -})
-      a(href="/getRate/#{_id}") 获取文件
+      a(href="/getRate/#{doc._id}") 获取文件
 
 script(src='/js/switchable-min.js');
 script

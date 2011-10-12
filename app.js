@@ -4,15 +4,13 @@
 
 var express = require('express');
 
-var mongod = require('mongodb');
 //var QRcode = require('qrcode');
 var _ = require("underscore");
-var BSON = mongod.BSONPure;
 var apptitle = ' - 火鸟打分系统';
 var average = require('./modules/average').average;
 var app = module.exports = express.createServer(); // Configuration
-var db;
-var col = null;
+var db = require('./mods/db');
+var Share = db.Share;
 
 
 app.configure(function(){
@@ -30,18 +28,6 @@ app.configure('development', function(){
     apptitle += '(dev)';
     app.set("app_prefix", "dev_");
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-    db = new mongod.Db(
-        'firebird_dev',
-        new mongod.Server('127.0.0.1', 27017),
-        {
-            native_parser:false
-        }
-    );
-    db.open(function(err,db){
-        db.collection('rate', function(err, collection){
-            col = collection;
-        });
-    });
 });
 
 app.configure('production', function(){
@@ -49,18 +35,6 @@ app.configure('production', function(){
     app.use(express.errorHandler());
     app.set("app_prefix", "");
     app.set("view cache", true);
-    db = new mongod.Db(
-        'firebird',
-        new mongod.Server('127.0.0.1', 27017),
-        {
-            native_parser:false
-        }
-    );
-    db.open(function(err,db){
-        db.collection('rate', function(err, collection){
-            col = collection;
-        });
-    });
 });
 
 // Routes
@@ -72,35 +46,19 @@ app.get('/', function(req, res){
 });
 
 app.get('/tags', function(req, res){
-    col.find({}, { tags : 1 }, function(err, cursor){
-        var docs = [];
-        cursor.each(function(err,doc){
-            if(doc && doc.tags){
-                docs.push(doc.tags);
-            }else if(!doc){
-                //update tag
-                res.render('tags', {
-                    title : '标签',
-                    tags : _.compact(_.uniq(_.flatten(docs)))
-                });
-            }
+    Share.distinct('tags',{}, function(err, docs){
+        res.render('tags', {
+            title : '标签',
+            tags : docs
         });
     });
 });
 
 app.get('/json/tags', function(req, res){
-    col.find({}, { tags : 1 }, function(err, cursor){
-        var docs = [];
-        cursor.each(function(err,doc){
-            if(doc && doc.tags){
-                docs.push(doc.tags);
-            }else if(!doc){
-                //update tag
-                res.send({
-                    isSuccess : true,
-                    tags : _.compact(_.uniq(_.flatten(docs)))
-                });
-            }
+    Share.distinct('tags',{}, function(err, docs){
+        res.send({
+            isSuccess : true,
+            tags : docs
         });
     });
 });
@@ -116,13 +74,17 @@ app.get('/create',function(req,res){
 });
 
 app.post('/create',function(req,res){
-    var doc = {};
-    var title = req.param('title').trim(),
-        authors = req.param('author').replace(/，/g,",").split(","),
-        tags = req.param('tags').replace(/ +/g,",").replace(/，+/g,",").replace(/,+/g,",").split(","),
+    var doc = {
+            title : req.param('title').trim(),
+            authors : req.param('author').replace(/，/g,",").split(","),
+            tags : req.param('tags').replace(/ +/g,",").replace(/，+/g,",").replace(/,+/g,",").split(","),
+            rates : [],
+            desc : '',
+            longdesc : ''
+        },
         error = [];
 
-    tags = _(tags).chain()
+    doc.tags = _(doc.tags).chain()
         .map(function(tag){
             return tag.trim();
         })
@@ -130,15 +92,15 @@ app.post('/create',function(req,res){
         .uniq()
         .value();
 
-    authors = _(authors).map(function(author){
+    doc.authors = _(doc.authors).map(function(author){
         return author.trim();
     });
 
-    if(authors.length === 1 && authors[0] === ''){
+    if(doc.authors.length === 1 && doc.authors[0] === ''){
         error.push("请输入 分享者");
     }
 
-    if(!title){
+    if(!doc.title){
         error.push("请输入 分享标题");
     }
 
@@ -146,21 +108,15 @@ app.post('/create',function(req,res){
         res.render('create', {
             title: 'Create a Cate' + apptitle,
             error : error,
-            ratetitle : title,
-            rateauthor : authors.join(", "),
-            ratetags : tags.join(", ")
+            doc : doc
         });
         return;
     }
-    doc.authors = authors;
-    doc.title = title;
-    doc.tags = tags;
 
-    doc.rates = [];
-    doc.ts_save = new Date().getTime();
-    col.insert(doc,function(err, doc){
-        //update tag
-        res.redirect('/create-ok/'+doc[0]._id);
+    var share = new Share(doc);
+
+    share.save(function(err,doc){
+        res.redirect('/create-ok/' + doc._id);
     });
 });
 
@@ -175,20 +131,13 @@ app.get('/create-ok/:id',function(req,res){
 //show a rate
 app.get('/show/:rid', function(req, res){
     var rateid = req.params.rid;
-    var query = {'_id' : BSON.ObjectID(rateid)};
     var result = {};
-    col.findOne(query, function(err,doc){
+    Share.findById(rateid, function(err,doc){
         var json, date, tags, title, rates;
         if(doc) {
-            date = new Date(doc.ts_save.toNumber());
-
             doc.rates.forEach(function(item,idx){
                 item.tdate = new Date(item.ts.toNumber());
             });
-
-            title = doc.title;
-
-            tags = doc.tags;
 
             _(doc.rates).each(function(item){
                 _(['rate1','rate2','rate3','rate4']).each(function(idx){
@@ -199,13 +148,9 @@ app.get('/show/:rid', function(req, res){
 
             res.render('showrate', {
                 title : title + apptitle,
-                r_dateSave : date,
-                r_title : title,
+                doc : doc,
                 app_pre : app.set("app_prefix"),
-                r_authors : doc.authors,
-                rates : doc.rates,
-                tags : tags,
-                _id : doc._id
+                rates : doc.rates
             });
         }else{
             res.redirect('/list');
@@ -219,7 +164,7 @@ app.get('/getrate/:rid', function(req, res){
     var query = {'_id' : BSON.ObjectID(rid)};
     var result = {};
 
-    col.findOne(query, function(err,doc){
+    Share.findOne(query, function(err,doc){
             var json;
             if(doc) {
                 json = JSON.stringify(doc);
@@ -231,36 +176,6 @@ app.get('/getrate/:rid', function(req, res){
     });
 });
 
-app.get('/tag/:tag', function(req,res){
-    var querytag = req.params.tag;
-
-    col.find({"tags" : querytag},{ 'sort' : [['ts_save','desc']] }, function(err, cursor){
-        var result = [];
-        cursor.each(function(err,doc){
-            if(doc !== null ){
-                doc.title = doc.title;
-                doc.date = new Date(doc.ts_save.toNumber());
-                doc.authors = doc.authors;
-                doc.tags = doc.tags;
-                result.push(doc);
-
-                if(doc.rates && doc.rates.length){
-                    doc.score = average(doc.rates);
-                }else{
-                    doc.score = 0;
-                }
-
-            }else{
-                res.render('list', {
-                    result : result,
-                    query : query,
-                    title : '所有分享' + apptitle
-                });
-            }
-        });
-    });
-});
-
 //list the rates
 app.get('/list/:query?',function(req,res){
     var query = {},
@@ -268,7 +183,6 @@ app.get('/list/:query?',function(req,res){
         title = req.param("title", ""),
         tag = req.param("tag", "");
 
-    console.log("list:", query);
 
     if(author.length > 0){
         query.authors = author;
@@ -282,33 +196,18 @@ app.get('/list/:query?',function(req,res){
         query.tags = tag;
     }
 
-
-    col.find(
+    Share.find(
         query,
-        { 'sort' : [['_id','desc']] },
-        function(err,cursor){
-            var result = [];
-            cursor.each(function(err,doc){
-                if(doc !== null ){
-                    doc.title = doc.title;
-                    doc.date = new Date(doc.ts_save.toNumber());
-                    doc.authors = doc.authors;
-                    doc.tags = doc.tags;
-                    result.push(doc);
+        function(err, docs){
+            docs.forEach(function(doc){
+                doc.score = average(doc.rates);
+            });
 
-                    if(doc.rates && doc.rates.length){
-                        doc.score = average(doc.rates);
-                    }else{
-                        doc.score = 0;
-                    }
 
-                }else{
-                    res.render('list', {
-                        result : result,
-                        query : query,
-                        title : '所有分享' + apptitle
-                    });
-                }
+            res.render('list', {
+                result : docs,
+                query : query,
+                title : '所有分享' + apptitle
             });
         }
     );
@@ -334,8 +233,8 @@ app.post("/ratedo", function(req, res){
         ts : new Date().getTime()
     };
 
-    col.update({
-        _id : BSON.ObjectID(id)
+    Share.update({
+        _id : id
     },{
         $push : {
             rates : ratedata
@@ -348,8 +247,8 @@ app.post("/ratedo", function(req, res){
 app.error(function(err, req, res){
     res.render('500', {
         error : err
-    })
-})
+    });
+});
 
 //app.get('/qrcode',function(req,res){
     //var url = req.param('url');
@@ -362,15 +261,13 @@ app.error(function(err, req, res){
 //});
 
 app.get('/rate/:rid',function(req,res){
-    var rateid = req.params.rid,
-        query = {'_id' : BSON.ObjectID(rateid)};
+    var rateid = req.params.rid;
 
-    col.findOne(query, function(err, doc){
+    Share.findById(rateid, function(err, doc){
         res.render('rate2',{
-            share : doc,
+            doc : doc,
             title :'rate' + apptitle,
-            css : 'rate',
-            rid : req.params.rid
+            css : 'rate'
         });
     });
 });

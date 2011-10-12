@@ -4,6 +4,9 @@
 exports.average = function (arr){
     var sum1 = 0,sum2=0,sum3=0,sum4=0,sum=[];
     var len = arr.length;
+    if(!arr || !arr.length){
+        return 0;
+    }
     arr.forEach(function(v){
         if(v['rate1'] && v['rate2'] && v['rate3'] && v['rate4']){
             sum1 += v['rate1'];

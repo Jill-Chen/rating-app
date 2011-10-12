@@ -6,6 +6,6 @@
       "express": "2.3.11"
     , "jade": ">= 0.0.1"
     , "underscore" : ">= 1.1.7"
-    , "mongodb" : ">= 0.9.6"
+    , "mongoose" : ">= 2.0.4"
   }
 }

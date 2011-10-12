@@ -46,9 +46,8 @@ ul.score.scoredesc.ks-clear
             li.author
               - item.authors.forEach(function(author){
                 a(href="/list/?author=#{author}") #{author}
-                ,
               - })
-            li.time #{item.date.getFullYear()}-#{item.date.getMonth()}-#{item.date.getDate()}
+            li.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
         div.unit.lastUnit.u1of4
           ul.score
             li

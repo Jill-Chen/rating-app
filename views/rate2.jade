@@ -1,6 +1,6 @@
 div.mode_rate.mod.rate
-  h1= share.title
-  h2= share.authors.join(',')
+  h1= doc.title
+  h2= doc.authors.join(',')
 
   form#rateform(method="post",action="/ratedo")
     h3 准备工作(比如PPT，案例）
@@ -56,10 +56,10 @@ div.mode_rate.mod.rate
       input(name='rate4',type='hidden')
 
     .actions
-        input(type="hidden",value=rid,name="rid")
+        input(type="hidden",value=doc._id,name="rid")
         button.button.rate-btn(type="submit")#rate-submit 提交打分
         &nbsp;或者&nbsp;
-        a(href="/show/#{rid}") 返回
+        a(href="/show/#{doc._id}") 返回
 script(src='/js/rate/slider.js')
 script
   KISSY.use('rate/slider',function(S, Slider){
