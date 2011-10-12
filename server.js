@@ -5,7 +5,7 @@ var configs = {
         port : 3002
     },
     normal : {
-        port : 8000
+        port : 80
     }
 };
 var config = configs[type] || configs['normal'];
