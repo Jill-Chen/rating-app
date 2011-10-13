@@ -4,7 +4,7 @@
 
 var express = require('express');
 
-//var QRcode = require('qrcode');
+var QRcode = require('qrcode');
 var _ = require("underscore");
 var apptitle = ' - 火鸟打分系统';
 var average = require('./modules/average').average;
@@ -248,15 +248,15 @@ app.error(function(err, req, res){
     });
 });
 
-//app.get('/qrcode',function(req,res){
-    //var url = req.param('url');
-    //QRcode.toDataURL(url,function(err, data){
-        //res.send({
-            //isSuccess : true,
-            //dataURL : data
-        //});
-    //});
-//});
+app.get('/qrcode',function(req,res){
+    var url = req.param('url');
+    QRcode.toDataURL(url,function(err, data){
+        res.send({
+            isSuccess : true,
+            dataURL : data
+        });
+    });
+});
 
 app.get('/rate/:rid',function(req,res){
     var rateid = req.params.rid;
