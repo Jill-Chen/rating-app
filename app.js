@@ -4,7 +4,7 @@
 
 var express = require('express');
 
-var QRcode = require('qrcode');
+//var QRcode = require('qrcode');
 var _ = require("underscore");
 var apptitle = ' - 火鸟打分系统';
 var average = require('./modules/average').average;
@@ -249,6 +249,8 @@ app.error(function(err, req, res){
 });
 
 app.get('/qrcode',function(req,res){
+    res.send('');
+    return;
     var url = req.param('url');
     QRcode.toDataURL(url,function(err, data){
         res.send({
