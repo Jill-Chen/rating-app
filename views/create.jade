@@ -8,8 +8,7 @@ script#temp-tags(type='kissy/template')
   |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
-h1 创建打分
-p 为一个分享创建打分
+h1 创建
 form(action='/create', method="post")
   - if(error.length>0)
     div.errors
@@ -20,15 +19,15 @@ form(action='/create', method="post")
     li.fi
       label(for="input_title") 分享标题：
       br
-      input.text#input_title(name="title",value="#{ratetitle}")
+      input.text#input_title(name="title",value="#{doc.title}")
     li.fi
       label(for="input_user") 分享者：
       br
-      input.text#input_user(name="author",value="#{rateauthor}")
+      input.text#input_user(name="author",value="#{doc.authors.join(' ')}")
     li.fi
       label(for="input_other") 标签(逗号或空格分格)
       br
-      input.text#input_tags(name="tags",value="#{ratetags}")
+      input.text#input_tags(name="tags",value="#{doc.tags}")
       div#tagfield.ks-clear
     li.fi
       button(type="submit") 提交

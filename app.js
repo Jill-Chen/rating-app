@@ -67,12 +67,17 @@ app.get('/create',function(req,res){
     res.render('create', {
         title: 'Create a Cate' + apptitle,
         error : [],
-        ratetitle : '',
-        rateauthor : '',
-        ratetags: ''
+        doc : {
+            title : '',
+            tags : '',
+            authors : []
+        }
     });
 });
 
+/**
+ * create a share
+ */
 app.post('/create',function(req,res){
     var doc = {
             title : req.param('title').trim(),
@@ -270,6 +275,10 @@ app.get('/rate/:rid',function(req,res){
             css : 'rate'
         });
     });
+});
+
+_(require('./account')).each(function(fn,key){
+    app.get('/account/' + key, errorQuery,  fn);
 });
 
 exports.app = app;
