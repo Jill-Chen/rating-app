@@ -253,7 +253,7 @@ app.error(function(err, req, res){
     });
 });
 
-app.get('/qrcode',function(req,res){
+app.get('/qrcode2',function(req,res){
     res.send('');
     return;
     var url = req.param('url');
