@@ -43,7 +43,7 @@ h1
       div#disqus_thread
       script
         var disqus_shortname="firebird";
-        var disqus_identifier = "{app_pre}rate_#{doc._id}";
+        var disqus_identifier = "rate_#{doc._id}";
         var disqus_developer = 1;
         (function(){
           var dsq = document.createElement('script');
@@ -77,7 +77,7 @@ h1
 script(src='/js/switchable-min.js');
 script
   KISSY.use('rate/app', function(S,APP){
-      APP.getQRCode('#qrcode', S.one('#rate-btn')[0].href);
+      //APP.getQRCode('#qrcode', S.one('#rate-btn')[0].href);
   });
   KISSY.use('switchable', function(S){
     new S.Tabs('#tabs1', {

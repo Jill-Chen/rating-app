@@ -6,12 +6,12 @@ var express = require('express');
 
 //var QRcode = require('qrcode');
 var _ = require("underscore");
-var apptitle = ' - 火鸟打分系统';
+var apptitle = '火鸟打分系统';
 var average = require('./modules/average').average;
-var app = module.exports = express.createServer(); // Configuration
-var db = require('./mods/db');
-var Share = db.Share;
+var modules = require('./modules/');
 
+var app = module.exports = express.createServer(); // Configuration
+var Share = modules.Share;
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
@@ -25,15 +25,12 @@ app.configure(function(){
 
 app.configure('development', function(){
     console.log('development');
-    apptitle += '(dev)';
-    app.set("app_prefix", "dev_");
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
 app.configure('production', function(){
     console.log('production');
     app.use(express.errorHandler());
-    app.set("app_prefix", "");
     app.set("view cache", true);
 });
 
@@ -41,7 +38,7 @@ app.configure('production', function(){
 
 app.get('/', function(req, res){
   res.render('index', {
-    title: '首页 ' + apptitle
+    title: '首页'
   });
 });
 
@@ -65,7 +62,7 @@ app.get('/json/tags', function(req, res){
 
 app.get('/create',function(req,res){
     res.render('create', {
-        title: 'Create a Cate' + apptitle,
+        title: 'Create a Cate',
         error : [],
         doc : {
             title : '',
@@ -111,7 +108,7 @@ app.post('/create',function(req,res){
 
     if(error.length > 0){
         res.render('create', {
-            title: 'Create a Cate' + apptitle,
+            title: 'Create a Cate',
             error : error,
             doc : doc
         });
@@ -127,7 +124,7 @@ app.post('/create',function(req,res){
 
 app.get('/create-ok/:id',function(req,res){
     res.render('create-ok', {
-        title: 'Create a Cate' + apptitle,
+        title: 'Create a Cate',
         id : req.params.id
     });
 });
@@ -139,19 +136,15 @@ app.get('/show/:rid', function(req, res){
     var result = {};
     Share.findById(rateid, function(err,doc){
         if(doc) {
-
             _(doc.rates).each(function(item){
                 item.tdate = new Date(item.ts.toNumber());
                 _(['rate1','rate2','rate3','rate4']).each(function(idx){
                     item[idx] = Math.round(item[idx]*10)/10;
                 });
             });
-
-
             res.render('showrate', {
-                title : doc.title + apptitle,
+                title : doc.title,
                 doc : doc,
-                app_pre : app.set("app_prefix"),
                 rates : doc.rates
             });
 
@@ -210,7 +203,7 @@ app.get('/list/:query?',function(req,res){
             res.render('list', {
                 result : docs,
                 query : query,
-                title : '所有分享' + apptitle
+                title : '所有分享',
             });
         }
     );
@@ -271,14 +264,19 @@ app.get('/rate/:rid',function(req,res){
     Share.findById(rateid, function(err, doc){
         res.render('rate2',{
             doc : doc,
-            title :'rate' + apptitle,
+            title :'rate',
             css : 'rate'
         });
     });
 });
 
-_(require('./account')).each(function(fn,key){
-    app.get('/account/' + key, errorQuery,  fn);
+_(require('./routers/')).each(function(pack,packname){
+
+    _(pack).each(function(fn, key){
+        console.log(packname, key);
+        //app.get('/account/' + key, errorQuery,  fn);
+    });
+
 });
 
 exports.app = app;
