@@ -4,19 +4,96 @@
 
 var express = require('express');
 
+
 //var QRcode = require('qrcode');
 var _ = require("underscore");
 var apptitle = '火鸟打分系统';
 var average = require('./modules/average').average;
 var modules = require('./modules/');
+var everyauth = require('everyauth');
+var sechash  = require('sechash');
+//everyauth.debug = true;
 
 var app = module.exports = express.createServer(); // Configuration
 var Share = modules.Share;
+var User = modules.User;
+
+everyauth.password
+    .loginWith('login')
+    .getLoginPath('/login')
+    .postLoginPath('/login')
+    .loginView('login')
+    .loginLocals({
+        layout : 'layout-auth',
+        title : ' 登录'
+    })
+    .authenticate(function(login, password){
+        var promise = this.Promise();
+        User.findOne({login:login}, function(err, user){
+            if(err){
+                return promise.fulfill([err])
+            }
+            if(!user){
+                return promise.fulfill(['用户名和密码错误'])
+            }
+            if(sechash.testBasicHash('md5',password, user.password)){
+                return promise.fulfill(user);
+            }else{
+                return promise.fulfill(['password not match']);
+            }
+        });
+        return promise;
+    })
+    .getRegisterPath('/register')
+    .postRegisterPath('/register')
+    .registerView('register')
+    .registerLocals({
+        layout : 'layout-auth',
+        title : '注册'
+    })
+    .validateRegistration(function(newUser, errors){
+        console.log(newUser, errors);
+        var promise = this.Promise();
+
+        var user = User.findOne({ login : newUser.login}, function(err, user){
+            console.log(err,user);
+            if(err){
+                errors.push(err)
+                promise.fulfill(errors);
+                return;
+            }
+            if(user){
+                errors.push("用户已经存在")
+                promise.fulfill(errors);
+                return;
+            }
+            promise.fulfill(errors);
+        });
+        return promise;
+    })
+    .registerUser(function(newUser, errors){
+        var promise = this.Promise();
+        newUser.password = sechash.basicHash('md5',newUser.password)
+        var user = new User(newUser);
+        user.save(function(err,doc){
+            if(err)
+                errors.push(err);
+            promise.fulfill(errors);
+            return doc;
+        });
+
+        return promise;
+    })
+    .loginSuccessRedirect('/')
+    .registerSuccessRedirect('/')
 
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
+  app.use(express.cookieParser());
+  app.use(express.session({secret:"Share, Share"}));
+  app.use(everyauth.middleware());
   app.use(express.methodOverride());
   app.use(app.router);
 
@@ -61,14 +138,11 @@ app.get('/json/tags', function(req, res){
 });
 
 app.get('/create',function(req,res){
+    var share = new Share();
     res.render('create', {
         title: 'Create a Cate',
         error : [],
-        doc : {
-            title : '',
-            tags : '',
-            authors : []
-        }
+        share : share
     });
 });
 
@@ -76,33 +150,20 @@ app.get('/create',function(req,res){
  * create a share
  */
 app.post('/create',function(req,res){
-    var doc = {
-            title : req.param('title').trim(),
-            authors : req.param('author').replace(/，/g,",").split(","),
-            tags : req.param('tags').replace(/ +/g,",").replace(/，+/g,",").replace(/,+/g,",").split(","),
-            rates : [],
-            desc : '',
-            longdesc : ''
-        },
+    var share = new Share({
+            title : req.body['share.title'],
+            authors : req.body['share.authors'],
+            tags : req.body['share.tags'],
+            desc : req.body['share.desc']
+        }),
         error = [];
 
-    doc.tags = _(doc.tags).chain()
-        .map(function(tag){
-            return tag.trim();
-        })
-        .without('')
-        .uniq()
-        .value();
-
-    doc.authors = _(doc.authors).map(function(author){
-        return author.trim();
-    });
-
-    if(doc.authors.length === 1 && doc.authors[0] === ''){
+    console.log('post create', share);
+    if(share.authors.length === 0){
         error.push("请输入 分享者");
     }
 
-    if(!doc.title){
+    if(!share.title){
         error.push("请输入 分享标题");
     }
 
@@ -110,15 +171,13 @@ app.post('/create',function(req,res){
         res.render('create', {
             title: 'Create a Cate',
             error : error,
-            doc : doc
+            share : share
         });
         return;
     }
 
-    var share = new Share(doc);
-
-    share.save(function(err,doc){
-        res.redirect('/create-ok/' + doc._id);
+    share.save(function(err,share){
+        res.redirect('/create-ok/' + share._id);
     });
 });
 
@@ -137,7 +196,7 @@ app.get('/show/:rid', function(req, res){
     Share.findById(rateid, function(err,doc){
         if(doc) {
             _(doc.rates).each(function(item){
-                item.tdate = new Date(item.ts.toNumber());
+                item.tdate = new Date(item.ts);
                 _(['rate1','rate2','rate3','rate4']).each(function(idx){
                     item[idx] = Math.round(item[idx]*10)/10;
                 });
@@ -274,9 +333,10 @@ _(require('./routers/')).each(function(pack,packname){
 
     _(pack).each(function(fn, key){
         console.log(packname, key);
-        //app.get('/account/' + key, errorQuery,  fn);
+        app.get('/'+packname+'/' + key, fn);
     });
 
 });
 
+everyauth.helpExpress(app);
 exports.app = app;

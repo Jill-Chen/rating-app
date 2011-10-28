@@ -39,7 +39,7 @@ h1
         li.big
           a#rate-btn.ratebtn(href="/rate/#{doc._id}") 开始打分
 
-    div.disqus-box.ks-hidden
+    div.disqus-box(style='display:none')
       div#disqus_thread
       script
         var disqus_shortname="firebird";
@@ -52,9 +52,10 @@ h1
           dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
-    div.slideshare.ks-hidden
+    div.slideshare(style='display:none')
       | <div style="width:425px" id="__ss_9249498"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/stevenvanbelleghem/social-media-around-the-world-2011" title="Social media around the world 2011" target="_blank">Social media around the world 2011</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/9249498" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more presentations from <a href="http://www.slideshare.net/stevenvanbelleghem" target="_blank">steven van belleghem</a> </div> </div>
-    div.records#rate_records.ks-hidden
+    div.records#rate_records(style='display:none')
+
       table
         thead
           tr

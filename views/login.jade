@@ -1,0 +1,21 @@
+.row.show-grid
+  .span10.offset6
+    form.login(action='/login', method="post")
+      - if('undefined' !== typeof errors && errors.length)
+        .alert-message.block-message.warning
+          a.close(href='#') ×
+          ul.errors
+            - each error in errors
+              li.error= error
+      fieldset
+        legend 登录
+        .clearfix
+          label(for=everyauth.password.loginFormFieldName) 用户名：
+          .input
+            input.text#input_login(type='text',name=everyauth.password.loginFormFieldName)
+        .clearfix
+          label(for=everyauth.password.passwordFormFieldName) 密码：
+          .input
+            input.text#input_password(type='password', name=everyauth.password.passwordFormFieldName)
+        .actions
+          button(type="submit", class='btn primary') 提交

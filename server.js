@@ -8,7 +8,8 @@ var configs = {
         port : 80
     }
 };
-var config = configs[type] || configs['normal'];
+//var config = configs[type] || configs['normal'];
+config = configs['dev'];
 console.log(config);
 app.listen(config.port);
 console.log('Express server listening on port %d', app.address().port);

@@ -1,3 +1,6 @@
 [submodule "support/mongoose"]
 	path = support/mongoose
 	url = git://github.com/LearnBoost/mongoose.git
+[submodule "public/bootstrap"]
+	path = public/bootstrap
+	url = git@github.com:maxbbn/bootstrap.git

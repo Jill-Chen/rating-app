@@ -3,7 +3,7 @@ KISSY.add('rate/app',function(S){
     return {
         nav : function(name){
             var navitem = $('#nav-'+name);
-            if(navitem) navitem.addClass('current');
+            if(navitem) navitem.addClass('active');
         },
         getQRCode : function(el, data){
             var elem = S.one(el)

@@ -10,27 +10,33 @@ script#temp-tags(type='kissy/template')
   |</ul>
 h1 创建
 form(action='/create', method="post")
-  - if(error.length>0)
-    div.errors
-      - error.forEach(function(item){
-        p= item
-      - })
-  ul.form
-    li.fi
-      label(for="input_title") 分享标题：
-      br
-      input.text#input_title(name="title",value="#{doc.title}")
-    li.fi
-      label(for="input_user") 分享者：
-      br
-      input.text#input_user(name="author",value="#{doc.authors.join(' ')}")
-    li.fi
-      label(for="input_other") 标签(逗号或空格分格)
-      br
-      input.text#input_tags(name="tags",value="#{doc.tags}")
-      div#tagfield.ks-clear
-    li.fi
-      button(type="submit") 提交
+  - if('undefined' !== typeof error && error.length)
+    .alert-message.block-message.warning
+      a.close(href='#') ×
+      ul.errors
+        - each err in error
+          li.error= err
+  fieldset
+    legend  创建分享
+    .clearfix
+      label(for="share.title") 分享标题：
+      .input
+        input.text#input_title(name="share.title",value=share.title)
+    .clearfix
+      label(for="share.authers") 分享者：
+      .input
+        input.text#input_user(name="share.authors",value=share.authors.join(' '))
+    .clearfix
+      label(for="share.tag") 标签(逗号或空格分格)
+      .input
+        input.text#input_tags(name="share.tags",value=share.tags.join(' '))
+    .clearfix
+      label(for='share.desc')
+      .input
+        textarea.xxlarge(name='share.desc')= share.desc
+    .clearfix#tagfield
+    .actions
+      button.btn.primary(type="submit") 提交
 
 script
   KISSY.use('rate/create')
