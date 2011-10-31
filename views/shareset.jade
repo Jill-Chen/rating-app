@@ -1,0 +1,28 @@
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('setlist');
+  });
+.navback
+  a(href='/setlist') 返回到分享会列表
+h1 分享会：#{shareset.subject}
+.row
+  .span5
+    dl
+      dt 开始时间
+      dd= dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss')
+      dt 结束时间
+      dd= dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss')
+      dt 分享地点
+      dd= shareset.position
+  .span11
+    - if (shares && shares.length)
+      ul.ratelist
+        - each item in shares
+          li.rateitem
+            h3.title
+              a(href="/show/#{item._id}") #{item.authors.join(', ')}: #{item.title}
+            p.meta
+              span.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
+            div.desc=item.desc
+    .actions
+      a.btn(href='/add-share/#{shareset._id}')添加分享

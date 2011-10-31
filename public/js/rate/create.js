@@ -19,8 +19,11 @@ KISSY.add('rate/create',function(S){
         ev.halt();
         var et = S.one(ev.target),
             elinput = S.one('#input_tags'),
-            eltext = elinput.val();
-        elinput.val(eltext.replace(/ ?$/, ' '+et.text()));
+            eltext = elinput.val().replace(/ ?$/,'');
+        if(eltext.length > 0){
+            eltext += ' ';
+        }
+        elinput.val(eltext + et.text());
         elinput[0].focus();
     });
 });

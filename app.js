@@ -12,12 +12,18 @@ var average = require('./modules/average').average;
 var modules = require('./modules/');
 var everyauth = require('everyauth');
 var sechash  = require('sechash');
+var RedisStore = require('connect-redis')(express);
+var dateFormat = require('dateformat');
 //everyauth.debug = true;
 
 var app = module.exports = express.createServer(); // Configuration
 var Share = modules.Share;
 var User = modules.User;
+var ShareSet = modules.ShareSet;
 
+everyauth.everymodule.findUserById(function(userId, callback){
+    User.findById(userId, callback);
+});
 everyauth.password
     .loginWith('login')
     .getLoginPath('/login')
@@ -52,11 +58,10 @@ everyauth.password
         title : '注册'
     })
     .validateRegistration(function(newUser, errors){
-        console.log(newUser, errors);
+        console.log('validate', newUser, errors);
         var promise = this.Promise();
 
         var user = User.findOne({ login : newUser.login}, function(err, user){
-            console.log(err,user);
             if(err){
                 errors.push(err)
                 promise.fulfill(errors);
@@ -72,14 +77,16 @@ everyauth.password
         return promise;
     })
     .registerUser(function(newUser, errors){
+        console.log('newUser', newUser, errors);
         var promise = this.Promise();
         newUser.password = sechash.basicHash('md5',newUser.password)
         var user = new User(newUser);
         user.save(function(err,doc){
-            if(err)
+            if(err){
                 errors.push(err);
-            promise.fulfill(errors);
-            return doc;
+                promise.fulfill([errors]);
+            }
+            promise.fulfill(user);
         });
 
         return promise;
@@ -87,12 +94,22 @@ everyauth.password
     .loginSuccessRedirect('/')
     .registerSuccessRedirect('/')
 
+function checkauth(req,res,next){
+    if(!req.loggedIn){
+        res.redirect('/login');
+        req.session.goto = req.url;
+        res.end();
+    }else{
+        next();
+    }
+}
+
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.cookieParser());
-  app.use(express.session({secret:"Share, Share"}));
+  app.use(express.session({ secret: "supershare!", store: new RedisStore }));
   app.use(everyauth.middleware());
   app.use(express.methodOverride());
   app.use(app.router);
@@ -114,15 +131,20 @@ app.configure('production', function(){
 // Routes
 
 app.get('/', function(req, res){
+  if(req.session.goto){
+    res.redirect(req.session.goto)
+    delete req.session.goto;
+    return;
+  }
   res.render('index', {
     title: '首页'
   });
 });
 
-app.get('/tags', function(req, res){
+app.get('/explorer', function(req, res){
     Share.distinct('tags',{}, function(err, docs){
-        res.render('tags', {
-            title : '标签',
+        res.render('explorer', {
+            title : '发现',
             tags : docs
         });
     });
@@ -137,79 +159,21 @@ app.get('/json/tags', function(req, res){
     });
 });
 
-app.get('/create',function(req,res){
-    var share = new Share();
-    res.render('create', {
-        title: 'Create a Cate',
-        error : [],
-        share : share
-    });
-});
 
-/**
- * create a share
- */
-app.post('/create',function(req,res){
-    var share = new Share({
-            title : req.body['share.title'],
-            authors : req.body['share.authors'],
-            tags : req.body['share.tags'],
-            desc : req.body['share.desc']
-        }),
-        error = [];
-
-    console.log('post create', share);
-    if(share.authors.length === 0){
-        error.push("请输入 分享者");
-    }
-
-    if(!share.title){
-        error.push("请输入 分享标题");
-    }
-
-    if(error.length > 0){
-        res.render('create', {
-            title: 'Create a Cate',
-            error : error,
-            share : share
-        });
-        return;
-    }
-
-    share.save(function(err,share){
-        res.redirect('/create-ok/' + share._id);
-    });
-});
-
-app.get('/create-ok/:id',function(req,res){
+app.get('/create-ok/:shareId',function(req,res){
     res.render('create-ok', {
-        title: 'Create a Cate',
-        id : req.params.id
+        title: '创建成功',
+        share : req.share
     });
 });
 
 
 //show a rate
-app.get('/show/:rid', function(req, res){
-    var rateid = req.params.rid;
-    var result = {};
-    Share.findById(rateid, function(err,doc){
-        if(doc) {
-            _(doc.rates).each(function(item){
-                item.tdate = new Date(item.ts);
-                _(['rate1','rate2','rate3','rate4']).each(function(idx){
-                    item[idx] = Math.round(item[idx]*10)/10;
-                });
-            });
-            res.render('showrate', {
-                title : doc.title,
-                doc : doc,
-                rates : doc.rates
-            });
-
-        }else{
-            res.redirect('/list');
-        }
+app.get('/show/:shareId', function(req, res){
+    var share = req.share;
+    res.render('showrate', {
+        title : share.authors.join(',') + ':' + share.title,
+        share : share
     });
 });
 
@@ -231,41 +195,99 @@ app.get('/getrate/:rid', function(req, res){
     });
 });
 
+function squery(req, res, next){
+    //console.dir(_.keys(req));
+    var query = req.query;
+    var sharequery = Share.find(query);
+    sharequery.sort('_id',-1);
+    sharequery.exec(function(err,shares){
+        if(err) return next(err);
+        req.results = shares;
+        next();
+    });
+}
+
+function setQuery(req, res, next){
+    //console.dir(_.keys(req));
+    var query = req.query;
+    var sharequery = ShareSet.find(query);
+    sharequery.sort('_id',-1);
+    sharequery.exec(function(err,shares){
+        if(err) return next(err);
+        req.results = shares;
+        next();
+    });
+}
+
+app.param('setId',function(req,res,next,id){
+    ShareSet.findById(id, function(err,shareset){
+        if(err) return next(err)
+        if(!shareset) return next(new Error('ShareSet not found'))
+        req.shareset = shareset;
+        next();
+    });
+});
+
+app.param('shareId', function(req,res,next,id){
+    Share.findById(id, function(err,share){
+        if(err) return next(err)
+        if(!share) return next(new Error('Share not found'))
+        req.share = share;
+        next();
+    });
+});
+app.param('listtype',function(req,res,next,type){
+    if('my' === type){
+        if(!req.loggedIn){
+            req.session.goto = req.url;
+            res.redirect('/login');
+            return res.end();
+
+        }
+        req.query.owner = req.user._id;
+        next();
+    }
+});
+
 //list the rates
-app.get('/list/:query?',function(req,res){
-    var query = {},
-        author = req.param("author", ""),
-        title = req.param("title", ""),
-        tag = req.param("tag", "");
+app.get('/list/:listtype?',squery, function(req,res){
+    res.render('list', {
+        results : req.results,
+        query : req.query,
+        type : req.params.listtype,
+        title : '所有分享'
+    });
+});
 
-
-    if(author.length > 0){
-        query.authors = author;
-    }
-
-    if(title.length > 0){
-        query.title = title;
-    }
-
-    if(tag.length > 0){
-        query.tags = tag;
-    }
-
-    Share.find(
-        query,
-        function(err, docs){
-            docs.forEach(function(doc){
-                doc.score = average(doc.rates);
-            });
-
-
-            res.render('list', {
-                result : docs,
-                query : query,
-                title : '所有分享',
-            });
+app.get('/setlist/:listtype?',setQuery, function(req,res){
+    res.render('setlist', {
+        results : req.results,
+        query : req.query,
+        type : req.params.listtype,
+        title : '所有分享'
+    });
+});
+function getShares(req,res,next){
+    console.log('getShares setId', req.params.setId);
+    Share.find({
+            shareset : req.params.setId
+        },
+        function(err,shares){
+            if(err) return next(err)
+            req.shares = shares;
+            next();
         }
     );
+}
+app.get('/shareset/:setId', getShares, function(req, res){
+    var ss = req.shareset;
+
+    res.render('shareset',{
+        title : ss.subject
+       ,shareset : ss
+       ,shares : req.shares
+    });
+
 });
 
 app.post("/ratedo", function(req, res){
@@ -299,11 +321,34 @@ app.post("/ratedo", function(req, res){
     });
 });
 
-app.error(function(err, req, res){
-    res.render('500', {
-        error : err
-    });
+app.error(function(err, req, res, next){
+    console.log('on error');
+    if(err instanceof NotFound){
+        console.log('on error:not found');
+        res.render('404',{
+            title : 404
+        });
+    }else{
+        next(err);
+    }
 });
+
+function NotFound(msg){
+    this.name = 'NotFound';
+    Error.call(this,msg);
+    Error.captureStackTrace(this, arguments.callee);
+}
+
+NotFound.prototype.__proto__ = Error.prototype;
+
+app.get('/404', function(req,res){
+    throw new NotFound;
+});
+
+app.get('/500', function(req,res){
+    throw new Error('just an small error;');
+});
+
 
 app.get('/qrcode2',function(req,res){
     res.send('');
@@ -317,9 +362,25 @@ app.get('/qrcode2',function(req,res){
     });
 });
 
+app.post('/edit/slider/:shareId',function(req, res){
+    console.log('post ');
+    var share = req.share,
+        slideshare = req.param('slideshare'),
+        url = req.param('url');
+    //get the id out of the slideshare
+    var match = slideshare.match(/\d{6,}/);
+    if(match){
+        share.slider.slideshare = match[0];
+    }
+    share.slider.url = url;
+    share.save(function(err){
+        if(err) return next(err);
+        res.redirect('/show/'+share._id);
+    });
+});
+
 app.get('/rate/:rid',function(req,res){
     var rateid = req.params.rid;
-
     Share.findById(rateid, function(err, doc){
         res.render('rate2',{
             doc : doc,
@@ -329,13 +390,23 @@ app.get('/rate/:rid',function(req,res){
     });
 });
 
-_(require('./routers/')).each(function(pack,packname){
-
-    _(pack).each(function(fn, key){
-        console.log(packname, key);
-        app.get('/'+packname+'/' + key, fn);
+_(require('./routers/manage')).each(function(o, key){
+    _(o).each(function(fn, k){
+        app[k]('/' + key, checkauth, fn);
     });
+});
 
+//_(require('./routers/')).each(function(pack,packname){
+
+    //_(pack).each(function(fn, key){
+        //console.log(packname, key);
+        //app.get('/'+packname+'/' + key, fn);
+    //});
+
+//});
+
+app.helpers({
+    dateFormat : dateFormat
 });
 
 everyauth.helpExpress(app);

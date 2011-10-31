@@ -1,6 +1,6 @@
 script
   KISSY.use('rate/app',function(S,App){
-    App.nav('list');
+    App.nav('list#{type}');
   });
 - if (query.author)
   h1
@@ -11,57 +11,19 @@ script
   h1
     标签为 #{query.tags} 的分享
   p
-    a(href="/tags") 所有标签
+    a(href="/explorer") 所有标签
 - else
   h1 所有分享
 
-
-ul.score.scoredesc.ks-clear
-  li
-    span 准备工作
-    span.prog
-      i(style="width:100%;background:#08F;")
-  li
-    span 分享掌控
-    span.prog
-      i(style="width:100%;background:#6F0;")
-  li
-    span 分享内容
-    span.prog
-      i(style="width:100%;background:#DF0;")
-  li
-    span.title 整体印象
-    span.prog
-      i(style="width:100%;background:#C0F;")
 #page
-  - if (result.length)
+  - if (results.length)
     ul.ratelist
-      - result.forEach(function(item){
-      li.rateitem.ks-clear
-        div.unit.u3of4
+      - each item in results
+        li.rateitem
           h3.title
-            a(href="/show/#{item._id}") #{item.title}
-
-          ul.meta
-            li.author
-              - item.authors.forEach(function(author){
-                a(href="/list/?author=#{author}") #{author}
-              - })
-            li.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
-        div.unit.lastUnit.u1of4
-          ul.score
-            li
-              span.prog(title="准备工作")
-                i(style="width:#{item.score[0]/0.05}%;background:#08F;")
-            li
-              span.prog(title="分享掌控")
-                i(style="width:#{item.score[1]/0.05}%;background:#6F0;")
-            li
-              span.prog(title="分享内容")
-                i(style="width:#{item.score[2]/0.05}%;background:#DF0;")
-            li
-              span.prog(title="整体印象")
-                i(style="width:#{item.score[3]/0.05}%;background:#C0F;")
-      - })
+            a(href="/show/#{item._id}") #{item.authors.join(', ')}: #{item.title}
+          p.meta
+            span.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
+          div.desc=item.desc
   - else
-    p result is empty
+    p results is empty

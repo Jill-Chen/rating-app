@@ -1,3 +1,4 @@
+// 创建分享会
 script
   KISSY.use('rate/app',function(S,App){
     App.nav('create');
@@ -10,33 +11,59 @@ script#temp-tags(type='kissy/template')
   |</ul>
 h1 创建
 form(action='/create', method="post")
-  - if('undefined' !== typeof error && error.length)
+  - if('undefined' !== typeof errors && errors)
     .alert-message.block-message.warning
       a.close(href='#') ×
       ul.errors
-        - each err in error
-          li.error= err
+        - each err in errors
+          li.error= err.type
   fieldset
-    legend  创建分享
+    legend 组织一次分享会
     .clearfix
-      label(for="share.title") 分享标题：
+      label(for="subject") 分享主题
       .input
-        input.text#input_title(name="share.title",value=share.title)
+        input.text#subject(name="subject",value=shareset.subject)
     .clearfix
-      label(for="share.authers") 分享者：
+      label(for="time")  开始时间
       .input
-        input.text#input_user(name="share.authors",value=share.authors.join(' '))
+        input.text.date-time#time-start(name="startTime",value=shareset.startTime)
     .clearfix
-      label(for="share.tag") 标签(逗号或空格分格)
+      label(for="time-end") 结束时间
       .input
-        input.text#input_tags(name="share.tags",value=share.tags.join(' '))
+        input.text.date-time#time-end(name="endTime",value=shareset.endTime)
     .clearfix
-      label(for='share.desc')
+      label(for="position") 分享地址
       .input
-        textarea.xxlarge(name='share.desc')= share.desc
-    .clearfix#tagfield
+        input.text#position(name="position",value=shareset.position)
+    .clearfix
+      label(for='desc') 介绍
+      .input
+        textarea.xxlarge(name='desc')= shareset.desc
     .actions
       button.btn.primary(type="submit") 提交
 
 script
-  KISSY.use('rate/create')
+    KISSY.use('calendar,calendar/assets/base.css',function(S,Calendar){
+      var calendars = [];
+      var $ = S.all;
+      $('.date-time').each(function(el){
+        $el = $(el);
+        var date = S.Date.parse(el.val()) || new Date();
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        var c =  new Calendar(el, {
+          popup : true,
+          selected : date,
+          showTime : true,
+          triggerType : ['focus','click']
+        }).on('timeSelect',function(ev){
+          this.hide();
+          el.val(S.Date.format(ev.date,"yyyy-mm-dd HH:MM:ss"));
+        });
+        calendars.push(c);
+        calendars[0].on('timeSelect',function(ev){
+          calendars[1].render({selected : ev.date});
+        });
+      });
+    })

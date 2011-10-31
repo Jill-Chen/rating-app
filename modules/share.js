@@ -1,54 +1,61 @@
+/**
+ *  Module of 分享
+ */
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var _ = require('underscore');
+var helper = require('./helper')
 
-var split = function(str){
-    var raw;
-    if(str.length === 1){
-        raw = str[0].trim().replace(/ +/g,",").replace(/，/g, ",").replace(/,+/g,",").split(",");
-        raw = _(raw).chain()
-            .map(function(tag){
-                return tag.trim();
-            })
-            .without('')
-            .uniq()
-            .value()
 
-        console.log('raw',raw);
-        return raw;
-    }
-    return str;
-}
 
-mongoose.model('share', new Schema({
-  title   : {
-      type : String,
-      default : ''
+var ShareSchema = new Schema({
+  title : {
+      'type' : String
+     ,'default' : ''
+     ,'set' : helper.trim
   }
  ,ts_save : {
-    type : Date,
-    default : Date.now
+    'type' : Date
+   ,'default' : Date.now
  }
  ,authors : {
-     type : [String],
-     set : split
+     'type' : [String]
+    ,'default':['']
  }
  ,tags : {
-     type : [String],
-     set : split
+     'type' : [String]
+    ,set : helper.split
  }
  ,desc  : {
-      type : String,
-      default : ''
+      'type' : String
+     ,'default' : ''
   }
  ,longdesc  : {
-      type : String,
-      default : ''
+      'type' : String
+     ,'default' : ''
   }
- ,ppt : {
-      type : String,
-      default : ''
+ ,shareset : {
+    type : Schema.Types.ObjectId
+ }
+  /**
+   * {
+   *    slideshare : '9999999',
+   *    file : 'xxx',
+   *    url : 'xxx'
+   * }
+   */
+ ,slider : {
+     slideshare : String
+    ,file : String
+    ,url : String
   }
- ,owner : String
- ,rates : [Schema.Mixed]
-}));
+ ,owner : {
+     'type' : Schema.Types.ObjectId
+ }
+ ,rates : [helper.Rate]
+});
+
+ShareSchema.path('title').validate(helper.noempty,'分享标题不能为空');
+ShareSchema.path('authors').validate(helper.noempty,'分享者不能为空');
+
+mongoose.model('share', ShareSchema);

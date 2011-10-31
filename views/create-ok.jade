@@ -2,15 +2,11 @@ script
   KISSY.use('rate/app',function(S,App){
     App.nav('create');
   });
-h1 成功
-p 创建成功
+h1 分享创建成功
 ul
-  li.big
-    a(href="/show/#{id}") 进入
   li
-    a(href="/rate/#{id}") 继续创建
+    a(href="/shareset/#{share.shareset}") 返回分享会
   li
-    a(href="/rate/#{id}") 开始打分
+    a(href="/show/#{share._id}")  进入分享页
   li
-    a(href="/list/") 查看所有
-
+    a(href="/rate/#{share._id}") 继续创建

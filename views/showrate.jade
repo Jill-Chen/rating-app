@@ -1,62 +1,98 @@
-h1
-  分享: 《#{doc.title}》
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('list');
+  });
+.navback
+  - if(share.shareset)
+    a(href='/shareset/#{share.shareset}') 返回到分享会
+  - else
+    a(href='/list/') 所有分享
+h1 #{share.authors.join(',')}: #{share.title}
 #tabs1
   ul.tabs.ks-switchable-nav
-    li.ks-active
+    li.active
       a(href='#detail') 首页
-    li
-      a(href='#discuss') 讨论
-    li
-      a(href='#slidshare') 幻灯片
     li
       a(href='#record') 评分记录
 
   .ks-switchable-content
-    div
-      .meta.ks-clear
-        dl.author
-          dt 分享者/
-          dd= doc.authors.join(",")
-        dl.time
-          dt 分享时间/
-          dd #{doc.ts_save.getFullYear()}-#{doc.ts_save.getMonth()}-#{doc.ts_save.getDate()}
+    div.row
+      .span10
+        - if(share.slider.slideshare)
+          div.slideshare
+            div.slideshare(style="width:580",id="__ss_#{share.slider.slideshare}")
+              iframe(src="http://www.slideshare.net/slideshow/embed_code/#{share.slider.slideshare}",width="580",height="482",frameborder="0",marginwidth="0",marginheight="0",scrolling="no")
+        - else
+          div.slideshare
+            form.addslider#sliderform(method='post',action='/edit/slider/'+share._id)
+              fieldset
+                legend  添加幻灯片
+                .clearfix#type-slidershare
+                  label(for='d-slidershare') SlideShare Code
+                  .input
+                    textarea#d-slidershare.span5(name='slideshare')
+                .clearfix#type-url
+                  label(for='slider') 网址
+                  .input
+                    input.span6(name='data.url')
+                .clearfix#type-url
+                  label(for='slider') 幻灯片上传
+                  .input
+                    input.span5(type='file',name='data.file')
+                .actions
+                  input.btn.primary(type='submit')
+            script
+              KISSY.user('rate/slider-edit');
         dl.desc
           dt 简介
-          dd=doc.desc
+          dd.editable(data-key='desc',data-type='textarea')=share.desc
+        div.disqus-box
+          div#disqus_thread
+          script
+            var disqus_shortname="firebird";
+            var disqus_identifier = "rate_#{share._id}";
+            var disqus_developer = 1;
+            (function(){
+              var dsq = document.createElement('script');
+              dsq.type="text/javascript";
+              dsq.async = true;
+              dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
+              document.getElementsByTagName("head")[0].appendChild(dsq);
+            })()
+      .span6
+        .meta
+          h3 分享信息
+          dl.author
+            dt 分享者
+            dd= share.authors.join(",")
 
-      - if(doc.tags && doc.tags.length)
-        ul.tags.ks-clear
-          -doc.tags.forEach(function(tag){
-            li
-              a(href="/list/?tag=#{tag}")=tag
-          -})
-      div.qrcode
-        .bd#qrcode
-        .ft
-          手机扫描此条码直接打分
+          dl.time
+            dt 创建时间
+            dd #{share.ts_save.getFullYear()}-#{share.ts_save.getMonth()}-#{share.ts_save.getDate()}
 
-      ul.actions
-        li.big
-          a#rate-btn.ratebtn(href="/rate/#{doc._id}") 开始打分
+          dl
+            dt 分享地点
+            dd.editable(data-key='place')= share.place || '无'
+          dl
+            dt 分享时间
+            dd 2011-20-20 17:00 - 17:30
+        - if(share.tags && share.tags.length);
+          .ftags
+            h3 Tags
+            ul.tags
+              -share.tags.forEach(function(tag){
+                li
+                  a(href="/list/?tags=#{tag}")=tag
+              -})
 
-    div.disqus-box(style='display:none')
-      div#disqus_thread
-      script
-        var disqus_shortname="firebird";
-        var disqus_identifier = "rate_#{doc._id}";
-        var disqus_developer = 1;
-        (function(){
-          var dsq = document.createElement('script');
-          dsq.type="text/javascript";
-          dsq.async = true;
-          dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
-          document.getElementsByTagName("head")[0].appendChild(dsq);
-        })()
-    div.slideshare(style='display:none')
-      | <div style="width:425px" id="__ss_9249498"> <strong style="display:block;margin:12px 0 4px"><a href="http://www.slideshare.net/stevenvanbelleghem/social-media-around-the-world-2011" title="Social media around the world 2011" target="_blank">Social media around the world 2011</a></strong> <iframe src="http://www.slideshare.net/slideshow/embed_code/9249498" width="425" height="355" frameborder="0" marginwidth="0" marginheight="0" scrolling="no"></iframe> <div style="padding:5px 0 12px"> View more presentations from <a href="http://www.slideshare.net/stevenvanbelleghem" target="_blank">steven van belleghem</a> </div> </div>
+        .action
+          p 手机扫描此条码直接打分
+          a.btn.primary.ratebtn(href="/rate/#{share._id}") 开始打分
+
+
     div.records#rate_records(style='display:none')
 
-      table
+      //table
         thead
           tr
             th.s 准备工作
@@ -65,23 +101,16 @@ h1
             th.s 整体印象
             th.ts 评分时间
         tbody
-          - rates.forEach(function(item){
-            tr
-              td.s= item.rate1
-              td.s= item.rate2
-              td.s= item.rate3
-              td.s= item.rate4
-              td.ts #{item.tdate.getMonth()}/#{item.tdate.getDate()} #{item.tdate.getHours()}:#{item.tdate.getMinutes()}
-          -})
-      a(href="/getRate/#{doc._id}") 获取文件
+      a(href="/getRate/#{share._id}") 获取文件
 
 script(src='/js/switchable-min.js');
 script
-  KISSY.use('rate/app', function(S,APP){
+  KISSY.use('rate/app,rate/inplace', function(S,APP){
       //APP.getQRCode('#qrcode', S.one('#rate-btn')[0].href);
   });
   KISSY.use('switchable', function(S){
     new S.Tabs('#tabs1', {
-      triggerType : 'click'
+      triggerType : 'click',
+      activeTriggerCls : 'active'
     });
   });

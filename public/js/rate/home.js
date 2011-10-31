@@ -9,7 +9,6 @@ KISSY.add('rate/home',function(S){
         dataType : 'json',
         type : 'get',
         success : function(data){
-            S.log(data);
             $('#tags .bd').html(tagsTmpl.render(data));
         }
     });

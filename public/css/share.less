@@ -1,0 +1,57 @@
+@import "../bootstrap/lib/bootstrap.less";
+
+#main{
+    padding-top:40px;
+}
+
+.navback {
+    float:right;
+}
+
+.ratelist {
+    .clearfix();
+    margin:0;
+    list-style:none;
+}
+.rateitem {
+    float:left;
+    width:260px;
+    height:260px;
+    border:1px solid #888;
+    margin-left:-1px;
+    margin-top:-1px;
+    padding:10px;
+    .score {
+        display:none;
+    }
+}
+.tags {
+    .clearfix();
+    list-style:none;
+    margin:0;
+    li {
+        float:left;
+        margin-right:10px;
+    }
+}
+.slideshare {
+    width:580px;
+}
+
+.setitem {
+    .border-radius();
+    .box-shadow();
+    #gradient .vertical(#eee,#fff);
+    padding:10px 0;
+    margin-bottom:20px;
+}
+
+//fix calendar
+.ks-cal-call {
+    line-height:1.2;
+    .ct-ok {
+        .btn();
+        padding:2px 5px 3px;
+        margin-left:5px;
+    }
+}
