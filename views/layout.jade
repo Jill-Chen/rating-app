@@ -9,8 +9,8 @@ html
     -if(css=="rate")
       link(rel='stylesheet', href='/stylesheets/rate2.css')
   script(src='http://a.tbcdn.cn/s/kissy/1.2.0/kissy-min.js')
+  script(src='');
   script(src='/js/template-pkg-min.js')
-  script(src='/js/rate/app.js')
   script
     KISSY.config({
       packages : [{
@@ -19,6 +19,8 @@ html
         }]
       });
     KISSY.Config.debug = true;
+  script
+    KISSY.use('rate/app');
   body
   div.topbar(data-dropdown='dropdown')
     div.topbar-inner
@@ -29,16 +31,11 @@ html
           li(id='nav-home')
             a(href="/") 首页
           li(id='nav-setlist')
-            a(href="/setlist") 分享会
+            a(href="/shareset/") 分享会
           li(id='nav-list')
-            a(href="/list") 分享
-          - if(everyauth.loggedIn)
-            li(id='nav-listmy')
-              a(href="/list/my") 我的分享
-            li(id='nav-setlistmy')
-              a(href="/setlist/my") 我的分享会
+            a(href="/share") 分享
           li#nav-create
-            a(href='/create') 组织分享
+            a(href='/shareset/new') 组织分享
         ul.nav.secondary-nav
           - if(!everyauth.loggedIn)
             li.dropdown

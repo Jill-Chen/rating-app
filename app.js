@@ -4,95 +4,23 @@
 
 var express = require('express');
 
-
 //var QRcode = require('qrcode');
 var _ = require("underscore");
 var apptitle = '火鸟打分系统';
 var average = require('./modules/average').average;
 var modules = require('./modules/');
-var everyauth = require('everyauth');
-var sechash  = require('sechash');
+var resource = require('express-resource');
+var auth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var dateFormat = require('dateformat');
-//everyauth.debug = true;
+var form = require('connect-form');
 
-var app = module.exports = express.createServer(); // Configuration
+var app = module.exports = express.createServer(
+        form({keepExtensions : true })
+    ); // Configuration
 var Share = modules.Share;
 var User = modules.User;
 var ShareSet = modules.ShareSet;
-
-everyauth.everymodule.findUserById(function(userId, callback){
-    User.findById(userId, callback);
-});
-everyauth.password
-    .loginWith('login')
-    .getLoginPath('/login')
-    .postLoginPath('/login')
-    .loginView('login')
-    .loginLocals({
-        layout : 'layout-auth',
-        title : ' 登录'
-    })
-    .authenticate(function(login, password){
-        var promise = this.Promise();
-        User.findOne({login:login}, function(err, user){
-            if(err){
-                return promise.fulfill([err])
-            }
-            if(!user){
-                return promise.fulfill(['用户名和密码错误'])
-            }
-            if(sechash.testBasicHash('md5',password, user.password)){
-                return promise.fulfill(user);
-            }else{
-                return promise.fulfill(['password not match']);
-            }
-        });
-        return promise;
-    })
-    .getRegisterPath('/register')
-    .postRegisterPath('/register')
-    .registerView('register')
-    .registerLocals({
-        layout : 'layout-auth',
-        title : '注册'
-    })
-    .validateRegistration(function(newUser, errors){
-        console.log('validate', newUser, errors);
-        var promise = this.Promise();
-
-        var user = User.findOne({ login : newUser.login}, function(err, user){
-            if(err){
-                errors.push(err)
-                promise.fulfill(errors);
-                return;
-            }
-            if(user){
-                errors.push("用户已经存在")
-                promise.fulfill(errors);
-                return;
-            }
-            promise.fulfill(errors);
-        });
-        return promise;
-    })
-    .registerUser(function(newUser, errors){
-        console.log('newUser', newUser, errors);
-        var promise = this.Promise();
-        newUser.password = sechash.basicHash('md5',newUser.password)
-        var user = new User(newUser);
-        user.save(function(err,doc){
-            if(err){
-                errors.push(err);
-                promise.fulfill([errors]);
-            }
-            promise.fulfill(user);
-        });
-
-        return promise;
-    })
-    .loginSuccessRedirect('/')
-    .registerSuccessRedirect('/')
 
 function checkauth(req,res,next){
     if(!req.loggedIn){
@@ -110,10 +38,16 @@ app.configure(function(){
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({ secret: "supershare!", store: new RedisStore }));
-  app.use(everyauth.middleware());
-  app.use(express.methodOverride());
-  app.use(app.router);
+  app.use(auth.middleware());
+  //app.use(express.methodOverride());
+  //app.use(parted({
+    //path : __dirname + '/public/uploads',
+    //limit : 30 * 1024,
+    //diskLimit : 30 * 1024 * 1024,
+    //multiple : true
+  //}));
 
+  app.use(app.router);
   app.use(express.static(__dirname + '/public'));
 });
 
@@ -159,23 +93,37 @@ app.get('/json/tags', function(req, res){
     });
 });
 
+function getShareset(req,res,next){
+    if(req.share.shareset){
+        ShareSet.findById(req.share.shareset, function(err, shareset){
+            if(err) return next(err);
+            req.shareset = shareset;
+            next();
+        });
+    }else{
+        req.shareset = null;
+        next();
+    }
+}
 
-app.get('/create-ok/:shareId',function(req,res){
+app.get('/create-ok/:shareId', getShareset, function(req,res){
     res.render('create-ok', {
         title: '创建成功',
-        share : req.share
+        share : req.share,
+        shareset : req.shareset
     });
 });
 
 
 //show a rate
-app.get('/show/:shareId', function(req, res){
-    var share = req.share;
-    res.render('showrate', {
-        title : share.authors.join(',') + ':' + share.title,
-        share : share
-    });
-});
+//app.get('/share/show/:shareId', getShareset, function(req, res){
+    //var share = req.share;
+    //res.render('showrate', {
+        //title : share.authors.join(',') + ':' + share.title,
+        //share : share,
+        //shareset : req.shareset
+    //});
+//});
 
 //** jsonp
 app.get('/getrate/:rid', function(req, res){
@@ -195,6 +143,15 @@ app.get('/getrate/:rid', function(req, res){
     });
 });
 
+
+Share.load = function(req,id,fn){
+    console.log('sload',req,id,fn);
+}
+
+var shareset = app.resource('shareset', require('./routers/shareset'));
+var share = app.resource('share', require('./routers/share'));
+
+
 function squery(req, res, next){
     //console.dir(_.keys(req));
     var query = req.query;
@@ -210,6 +167,7 @@ function squery(req, res, next){
 function setQuery(req, res, next){
     //console.dir(_.keys(req));
     var query = req.query;
+    query.deleted = {"$ne":true};
     var sharequery = ShareSet.find(query);
     sharequery.sort('_id',-1);
     sharequery.exec(function(err,shares){
@@ -250,23 +208,24 @@ app.param('listtype',function(req,res,next,type){
 });
 
 //list the rates
-app.get('/list/:listtype?',squery, function(req,res){
-    res.render('list', {
-        results : req.results,
-        query : req.query,
-        type : req.params.listtype,
-        title : '所有分享'
-    });
-});
+//app.get('/share/list/:listtype?',squery, function(req,res){
+    //res.render('list', {
+        //results : req.results,
+        //query : req.query,
+        //type : req.params.listtype,
+        //title : '所有分享'
+    //});
+//});
 
-app.get('/setlist/:listtype?',setQuery, function(req,res){
-    res.render('setlist', {
-        results : req.results,
-        query : req.query,
-        type : req.params.listtype,
-        title : '所有分享'
-    });
-});
+//app.get('/shareset/list/:listtype?',setQuery, function(req,res){
+    //res.render('setlist', {
+        //results : req.results,
+        //query : req.query,
+        //type : req.params.listtype,
+        //title : '所有分享'
+    //});
+//});
+
 function getShares(req,res,next){
     console.log('getShares setId', req.params.setId);
     Share.find({
@@ -279,16 +238,14 @@ function getShares(req,res,next){
         }
     );
 }
-app.get('/shareset/:setId', getShares, function(req, res){
-    var ss = req.shareset;
-
-    res.render('shareset',{
-        title : ss.subject
-       ,shareset : ss
-       ,shares : req.shares
-    });
-
-});
+//app.get('/shareset/show/:setId', getShares, function(req, res){
+    //var ss = req.shareset;
+    //res.render('shareset',{
+        //title : ss.subject
+       //,shareset : ss
+       //,shares : req.shares
+    //});
+//});
 
 app.post("/ratedo", function(req, res){
     var id = req.param("rid");
@@ -390,11 +347,12 @@ app.get('/rate/:rid',function(req,res){
     });
 });
 
-_(require('./routers/manage')).each(function(o, key){
-    _(o).each(function(fn, k){
-        app[k]('/' + key, checkauth, fn);
-    });
-});
+//_(require('./routers/manage')).each(function(o, key){
+    //_(o).each(function(fn, k){
+        //console.log(k, key);
+        //app[k](key, checkauth, fn);
+    //});
+//});
 
 //_(require('./routers/')).each(function(pack,packname){
 
@@ -409,5 +367,5 @@ app.helpers({
     dateFormat : dateFormat
 });
 
-everyauth.helpExpress(app);
+auth.helpExpress(app);
 exports.app = app;

@@ -60,22 +60,21 @@ h1 #{share.authors.join(',')}: #{share.title}
               document.getElementsByTagName("head")[0].appendChild(dsq);
             })()
       .span6
+        .action
+          p
+            a.disabled(href='#') 我参加过
+            |  -  
+            a.disabled(href='#') 我想参加
+          p 手机扫描此条码直接打分
         .meta
-          h3 分享信息
           dl.author
             dt 分享者
             dd= share.authors.join(",")
-
-          dl.time
-            dt 创建时间
-            dd #{share.ts_save.getFullYear()}-#{share.ts_save.getMonth()}-#{share.ts_save.getDate()}
-
-          dl
-            dt 分享地点
-            dd.editable(data-key='place')= share.place || '无'
-          dl
-            dt 分享时间
-            dd 2011-20-20 17:00 - 17:30
+          - if(share.shareset)
+            dl
+              dt 分享会
+              dd
+                a(href='/shareset/#{share.shareset}')= shareset.subject
         - if(share.tags && share.tags.length);
           .ftags
             h3 Tags
@@ -85,9 +84,6 @@ h1 #{share.authors.join(',')}: #{share.title}
                   a(href="/list/?tags=#{tag}")=tag
               -})
 
-        .action
-          p 手机扫描此条码直接打分
-          a.btn.primary.ratebtn(href="/rate/#{share._id}") 开始打分
 
 
     div.records#rate_records(style='display:none')

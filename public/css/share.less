@@ -1,11 +1,12 @@
 @import "../bootstrap/lib/bootstrap.less";
-
+@import "./boothack.less";
 #main{
-    padding-top:40px;
+    padding-top:50px;
 }
 
 .navback {
     float:right;
+    padding:10px;
 }
 
 .ratelist {
@@ -31,7 +32,9 @@
     margin:0;
     li {
         float:left;
+        padding:5px;
         margin-right:10px;
+        background:#eee;
     }
 }
 .slideshare {
@@ -39,11 +42,9 @@
 }
 
 .setitem {
-    .border-radius();
-    .box-shadow();
-    #gradient .vertical(#eee,#fff);
     padding:10px 0;
     margin-bottom:20px;
+    border-bottom:1px solid #ddd;
 }
 
 //fix calendar
@@ -54,4 +55,9 @@
         padding:2px 5px 3px;
         margin-left:5px;
     }
+}
+
+.desc {
+    color : @gray;
+    margin-bottom:20px;
 }

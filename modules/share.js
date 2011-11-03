@@ -14,6 +14,10 @@ var ShareSchema = new Schema({
      ,'default' : ''
      ,'set' : helper.trim
   }
+ ,cover : {
+    'type' : String
+   ,'default' : '/img/default-cover.png'
+  }
  ,ts_save : {
     'type' : Date
    ,'default' : Date.now

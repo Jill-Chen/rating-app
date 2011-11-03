@@ -7,6 +7,10 @@ require('./user.js');
 
 var db = mongoose.connect('mongodb://127.0.0.1/ratting');
 
-exports.User = db.model('user');
-exports.Share = db.model('share');
-exports.ShareSet= db.model('shareset');
+var User = db.model('user');
+var Share = db.model('share');
+var ShareSet = db.model('shareset');
+
+exports.User = User;
+exports.Share = Share;
+exports.ShareSet= ShareSet;

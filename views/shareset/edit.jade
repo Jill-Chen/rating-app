@@ -1,0 +1,72 @@
+// 创建分享会
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('create');
+  });
+script#temp-tags(type='text/template')
+  |<ul class='tags'>
+  |  {{#each tags as tag}}
+  |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
+  |  {{/each}}
+  |</ul>
+
+script#temp-errors(type='text/template')
+  |{{#each errors as err}}
+  |<div class='alert-message warning'>
+  |<p>{{err.type}}</p>
+  |</div>
+  |{{/each}}
+
+form.ajax-form(action='/shareset/#{shareset._id}', method="put")
+  .error-holder
+  fieldset
+    legend 编辑
+    .clearfix
+      label(for="subject") 分享主题
+      .input
+        input.text#subject(name="subject",value=shareset.subject)
+    .clearfix
+      label(for="time")  开始时间
+      .input
+        input.text.date-time#time-start(name="startTime",value=dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'))
+    .clearfix
+      label(for="time-end") 结束时间
+      .input
+        input.text.date-time#time-end(name="endTime",value=dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'))
+    .clearfix
+      label(for="position") 分享地址
+      .input
+        input.text#position(name="position",value=shareset.position)
+    .clearfix
+      label(for='desc') 介绍
+      .input
+        textarea.xxlarge(name='desc')= shareset.desc
+    .actions
+      button.btn.primary(type="submit") 提交
+
+script
+    KISSY.use('rate/ajax');
+    KISSY.use('calendar,calendar/assets/base.css',function(S,Calendar){
+      var calendars = [];
+      var $ = S.all;
+      $('.date-time').each(function(el){
+        $el = $(el);
+        var date = S.Date.parse(el.val()) || new Date();
+        date.setMinutes(0);
+        date.setSeconds(0);
+        date.setMilliseconds(0);
+        var c =  new Calendar(el, {
+          popup : true,
+          selected : date,
+          showTime : true,
+          triggerType : ['focus','click']
+        }).on('timeSelect',function(ev){
+          this.hide();
+          el.val(S.Date.format(ev.date,"yyyy-mm-dd HH:MM:ss"));
+        });
+        calendars.push(c);
+        calendars[0].on('timeSelect',function(ev){
+          calendars[1].render({selected : ev.date});
+        });
+      });
+    })

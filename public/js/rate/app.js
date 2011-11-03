@@ -26,4 +26,5 @@ KISSY.add('rate/app',function(S){
             });
         }
     };
-});
+}
+);

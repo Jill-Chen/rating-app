@@ -16,14 +16,12 @@ script
   h1 所有分享
 
 #page
-  - if (results.length)
+  - if (shares.length)
     ul.ratelist
-      - each item in results
+      - each share in shares
         li.rateitem
           h3.title
-            a(href="/show/#{item._id}") #{item.authors.join(', ')}: #{item.title}
-          p.meta
-            span.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
-          div.desc=item.desc
+            a(href="/share/#{share._id}") #{share.authors.join(', ')}: #{share.title}
+          .desc=share.desc
   - else
     p results is empty

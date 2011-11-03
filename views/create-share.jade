@@ -9,7 +9,7 @@ script#temp-tags(type='kissy/template')
   |  {{/each}}
   |</ul>
 h1= shareset.subject
-form(action='/add-share/#{shareset._id}', method="post")
+form(action='/share/add/#{shareset._id}', method="post",enctype='multipart/form-data')
   input(type='hidden',value=setId)
   - if('undefined' !== typeof errors && errors)
     .alert-message.block-message.warning
@@ -34,6 +34,11 @@ form(action='/add-share/#{shareset._id}', method="post")
       .input
         input.text#input_tags(name="tags",value=share.tags.join(' '))
         .tags#tagfield
+    .clearfix
+      label(for='cover') 封面
+      .input
+        input#cover(name='cover',type='file')
+        span.help-block= share.cover
     .clearfix
       label(for='desc') 介绍
       .input

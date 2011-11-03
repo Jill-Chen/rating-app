@@ -3,7 +3,7 @@ script
     App.nav('setlist');
   });
 .navback
-  a(href='/setlist') 返回到分享会列表
+  a(href='/shareset') 返回到分享会列表
 h1 分享会：#{shareset.subject}
 .row
   .span5
@@ -14,15 +14,22 @@ h1 分享会：#{shareset.subject}
       dd= dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss')
       dt 分享地点
       dd= shareset.position
+    .desc= shareset.desc
+    .action
+      a.btn.small(href='/shareset/#{shareset._id}/edit')  编辑
+      |  
+      a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset._id}')  删除
   .span11
     - if (shares && shares.length)
       ul.ratelist
         - each item in shares
           li.rateitem
             h3.title
-              a(href="/show/#{item._id}") #{item.authors.join(', ')}: #{item.title}
+              a(href="/share/#{item._id}") #{item.authors.join(', ')}: #{item.title}
             p.meta
               span.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
             div.desc=item.desc
     .actions
-      a.btn(href='/add-share/#{shareset._id}')添加分享
+      a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
+script
+  KISSY.use('rate/ajax');

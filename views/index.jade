@@ -8,7 +8,6 @@ script#temp-tags(type='kissy/template')
   |    <li><a href='/list?tags={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
-h1= title
 div.box
   .hd
     h3 分享会
@@ -16,6 +15,13 @@ div.box
     ul
       li
         a(href="/list/?tag=firebird") 火鸟分享
+.box
+  .hd
+    h3  常用链接
+  .bd
+    ul.links
+      li
+        a(href='https://is.taobao.org/meeting/')  会议室预定
 div#tags.box
   .hd
     h3 标签

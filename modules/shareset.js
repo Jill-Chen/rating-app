@@ -20,7 +20,6 @@ var ShareSetSchema = new Schema({
   // 分享主题
   subject : {
       'type'    : String
-     ,'default' : ''
   }
   // 创建时间
  ,ts : {
@@ -46,9 +45,21 @@ var ShareSetSchema = new Schema({
  ,owner : {
    'type' : Schema.Types.ObjectId
  }
+ ,deleted : {
+    'type' : Boolean,
+    'default' : false
+ }
  ,rates : [helper.Rate]
 });
 
-ShareSetSchema.path('subject').validate(helper.noempty, '主题不能为空');
 
 mongoose.model('shareset', ShareSetSchema);
+// 必须指定主题
+ShareSetSchema.path('subject').validate(helper.noempty, 'SUBJECT_MISSING');
+// 结束时间必须在开始时间之后
+ShareSetSchema.path('endTime').validate(function(endTime, b, c){
+    return endTime > this.startTime;
+}, 'TIME_ERROR_ENDTIME');
+// 必须先登录
+ShareSetSchema.path('owner').validate(helper.noempty, '请先登录');
+

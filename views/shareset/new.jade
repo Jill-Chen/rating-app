@@ -9,14 +9,16 @@ script#temp-tags(type='kissy/template')
   |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
-h1 创建
-form(action='/create', method="post")
-  - if('undefined' !== typeof errors && errors)
-    .alert-message.block-message.warning
-      a.close(href='#') ×
-      ul.errors
-        - each err in errors
-          li.error= err.type
+script#temp-errors(type='text/template')
+  |{{#each errors as err}}
+  |<div class='alert-message warning'>
+  |<p>{{err.type}}</p>
+  |</div>
+  |{{/each}}
+
+h1  创建分享会
+form.ajax-form(action='/shareset', method="post")
+  .error-holder
   fieldset
     legend 组织一次分享会
     .clearfix
@@ -26,11 +28,11 @@ form(action='/create', method="post")
     .clearfix
       label(for="time")  开始时间
       .input
-        input.text.date-time#time-start(name="startTime",value=shareset.startTime)
+        input.text.date-time#time-start(name="startTime",value=dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'))
     .clearfix
       label(for="time-end") 结束时间
       .input
-        input.text.date-time#time-end(name="endTime",value=shareset.endTime)
+        input.text.date-time#time-end(name="endTime",value=dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'))
     .clearfix
       label(for="position") 分享地址
       .input
@@ -66,4 +68,5 @@ script
           calendars[1].render({selected : ev.date});
         });
       });
-    })
+    });
+    KISSY.use('rate/ajax');
