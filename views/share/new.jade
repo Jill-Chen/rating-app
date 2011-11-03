@@ -8,15 +8,16 @@ script#temp-tags(type='kissy/template')
   |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
+script#temp-errors(type='text/template')
+  |{{#each errors as err}}
+  |<div class='alert-message warning'>
+  |<p>{{err.type}}</p>
+  |</div>
+  |{{/each}}
 h1= shareset.subject
-form(action='/share/add/#{shareset._id}', method="post",enctype='multipart/form-data')
-  input(type='hidden',value=setId)
-  - if('undefined' !== typeof errors && errors)
-    .alert-message.block-message.warning
-      a.close(href='#') ×
-      ul.errors
-        - each err in errors
-          li.error= err.type
+form.ajax-form(action='/share', method="post")
+  .error-holder
+  input(type='hidden',name='shareset', value=share.shareset)
   fieldset
     legend  创建分享
     .clearfix
@@ -29,12 +30,15 @@ form(action='/share/add/#{shareset._id}', method="post",enctype='multipart/form-
         - each author in share.authors
           .input
             input.text#input_user(name="authors",value=author)
+      - else
+        .input
+          input.text#input_user(name="authors",value='')
     .clearfix
       label(for="tag", title='(逗号或空格分格)') 标签
       .input
         input.text#input_tags(name="tags",value=share.tags.join(' '))
         .tags#tagfield
-    .clearfix
+    //.clearfix
       label(for='cover') 封面
       .input
         input#cover(name='cover',type='file')
@@ -49,4 +53,4 @@ form(action='/share/add/#{shareset._id}', method="post",enctype='multipart/form-
       a.btn(href='/shareset/shareset._id') 返回
 
 script
-  KISSY.use('rate/create')
+  KISSY.use('rate/create,rate/ajax')

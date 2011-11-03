@@ -3,12 +3,6 @@ script
   KISSY.use('rate/app',function(S,App){
     App.nav('create');
   });
-script#temp-tags(type='kissy/template')
-  |<ul class='tags'>
-  |  {{#each tags as tag}}
-  |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
-  |  {{/each}}
-  |</ul>
 script#temp-errors(type='text/template')
   |{{#each errors as err}}
   |<div class='alert-message warning'>
@@ -28,11 +22,11 @@ form.ajax-form(action='/shareset', method="post")
     .clearfix
       label(for="time")  开始时间
       .input
-        input.text.date-time#time-start(name="startTime",value=dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'))
+        input.text.date-time#time-start(name="startTime",value=shareset.startTime?dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'):'')
     .clearfix
       label(for="time-end") 结束时间
       .input
-        input.text.date-time#time-end(name="endTime",value=dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'))
+        input.text.date-time#time-end(name="endTime",value=shareset.startTime?dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'):'')
     .clearfix
       label(for="position") 分享地址
       .input
@@ -58,7 +52,7 @@ script
           popup : true,
           selected : date,
           showTime : true,
-          triggerType : ['focus','click']
+          triggerType : ['click']
         }).on('timeSelect',function(ev){
           this.hide();
           el.val(S.Date.format(ev.date,"yyyy-mm-dd HH:MM:ss"));

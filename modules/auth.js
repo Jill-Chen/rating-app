@@ -1,21 +1,23 @@
 var everyauth = require('everyauth');
-var sechash  = require('sechash');
+var hashlib = require('hashlib');
 var User = require('./index').User;
 
 
 exports.everyauth = everyauth;
 
 //everyauth.debug = true;
+//
 everyauth.everymodule.findUserById(function(userId, callback){
     User.findById(userId, callback);
 });
+
 everyauth.password
     .loginWith('login')
     .getLoginPath('/login')
     .postLoginPath('/login')
-    .loginView('login')
+    .loginView('auth/login')
     .loginLocals({
-        layout : 'layout-auth',
+        layout : 'auth/layout',
         title : ' 登录'
     })
     .authenticate(function(login, password){
@@ -27,7 +29,7 @@ everyauth.password
             if(!user){
                 return promise.fulfill(['用户名和密码错误'])
             }
-            if(sechash.testBasicHash('md5',password, user.password)){
+            if(hashlib.md5(password) === user.password){
                 return promise.fulfill(user);
             }else{
                 return promise.fulfill(['password not match']);
@@ -37,9 +39,9 @@ everyauth.password
     })
     .getRegisterPath('/register')
     .postRegisterPath('/register')
-    .registerView('register')
+    .registerView('auth/register')
     .registerLocals({
-        layout : 'layout-auth',
+        layout : 'auth/layout',
         title : '注册'
     })
     .validateRegistration(function(newUser, errors){
@@ -64,7 +66,7 @@ everyauth.password
     .registerUser(function(newUser, errors){
         console.log('newUser', newUser, errors);
         var promise = this.Promise();
-        newUser.password = sechash.basicHash('md5',newUser.password)
+        newUser.password = hashlib.md5(newUser.password);
         var user = new User(newUser);
         user.save(function(err,doc){
             if(err){

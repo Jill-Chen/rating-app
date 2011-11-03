@@ -11,7 +11,6 @@ var helper = require('./helper')
 var ShareSchema = new Schema({
   title : {
       'type' : String
-     ,'default' : ''
      ,'set' : helper.trim
   }
  ,cover : {
@@ -22,9 +21,12 @@ var ShareSchema = new Schema({
     'type' : Date
    ,'default' : Date.now
  }
+ ,deleted : {
+    'type' : Boolean,
+    'default' : false
+ }
  ,authors : {
      'type' : [String]
-    ,'default':['']
  }
  ,tags : {
      'type' : [String]
@@ -59,7 +61,7 @@ var ShareSchema = new Schema({
  ,rates : [helper.Rate]
 });
 
-ShareSchema.path('title').validate(helper.noempty,'分享标题不能为空');
-ShareSchema.path('authors').validate(helper.noempty,'分享者不能为空');
+ShareSchema.path('title').validate(helper.noempty,'TITLE_EMPLTY');
+ShareSchema.path('authors').validate(helper.noempty,'AUTHORS_EMPTY');
 
 mongoose.model('share', ShareSchema);

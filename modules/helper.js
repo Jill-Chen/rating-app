@@ -37,7 +37,7 @@ exports.split = function(str){
         return raw;
     }
     return str;
-}
+};
 
 exports.Rate = new Schema({
     ts : {

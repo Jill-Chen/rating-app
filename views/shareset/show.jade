@@ -29,6 +29,10 @@ h1 分享会：#{shareset.subject}
             p.meta
               span.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
             div.desc=item.desc
+            .act
+              a(href='/share/#{item._id}/edit') 编辑
+              | - 
+              a.ajax-btn(data-type='delete', data-url='/share/#{item._id}', href='/share/#{item._id}') 删除
     .actions
       a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
 script

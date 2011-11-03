@@ -1,0 +1,57 @@
+script
+  KISSY.use('rate/app',function(S,App){
+    App.nav('create');
+  });
+script#temp-tags(type='kissy/template')
+  |<ul class='tags'>
+  |  {{#each tags as tag}}
+  |    <li><a class='tag' href='/list?tag={{tag}}'>{{tag}}</a></li>
+  |  {{/each}}
+  |</ul>
+script#temp-errors(type='text/template')
+  |{{#each errors as err}}
+  |<div class='alert-message warning'>
+  |<p>{{err.type}}</p>
+  |</div>
+  |{{/each}}
+
+form.ajax-form(action='/share', method="post")
+  input(type='hidden',name='shareset', value=share.shareset)
+  .error-holder
+  fieldset
+    legend 编辑分享
+    .clearfix
+      label(for="title") 分享标题
+      .input
+        input.text#input_title(name="title",value=share.title)
+
+    .clearfix
+      label(for="authers") 分享者
+      - if(share.authors.length)
+        - each author in share.authors
+          .input
+            input.text#input_user(name="authors",value=author)
+      - else
+        .input
+          input.text#input_user(name="authors",value=author)
+    .clearfix
+      label(for="tag", title='(逗号或空格分格)') 标签
+      .input
+        input.text#input_tags(name="tags",value=share.tags.join(' '))
+        .tags#tagfield
+    //.clearfix
+      label(for='cover') 封面
+      .input
+        input#cover(name='cover',type='file')
+        span.help-block= share.cover
+    .clearfix
+      label(for='desc') 介绍
+      .input
+        textarea.xxlarge(name='desc',row='3')= share.desc
+    .actions
+      button.btn.primary(type="submit")  修改
+      |  
+      a.btn(href='/shareset/shareset._id') 返回
+
+script
+  KISSY.use('rate/create,rate/ajax')

@@ -13,7 +13,7 @@ KISSY.add('rate/form-error', function(S){
                 errors = msg.errors
             }
 
-            console.log(errors);
+            S.log(errors);
             this.container
                 .html(this.template.render({errors : errors}))
                 .show();;

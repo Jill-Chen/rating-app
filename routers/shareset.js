@@ -38,7 +38,7 @@ exports.create = function(req,res){
     shareset.startTime = req.body.startTime;
     shareset.position = req.body.position;
     shareset.desc = req.body.desc;
-    shareset.owner = req.loggedIn? req.user._id : '';
+    shareset.owner = req.user._id;
 
     shareset.save(function(error,saved){
         if(error){
@@ -58,7 +58,7 @@ exports.create = function(req,res){
 };
 exports.show = function(req,res, next){
     var ss = req.shareset;
-    Share.find({shareset : ss._id}, function(err, docs){
+    Share.find({shareset : ss._id, deleted : {$ne : true}}, function(err, docs){
         if(err) return next(err);
         res.render('shareset/show',{
             title : ss.subject

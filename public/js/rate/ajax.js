@@ -2,6 +2,7 @@ KISSY.add('rate/ajax', function(S, FormError){
     var $ = S.all;
     var actions = {
         redirect : function(res){
+            //S.log(res);
             location.href = res.redirect
         }
     };
@@ -26,9 +27,9 @@ KISSY.add('rate/ajax', function(S, FormError){
                         });
                         return;
                     }
-                    //if(actions[res.action]){
-                        //actions[res.action](res);
-                    //}
+                    if(actions[res.action]){
+                        actions[res.action](res);
+                    }
                 }
             });
         });
@@ -44,6 +45,7 @@ KISSY.add('rate/ajax', function(S, FormError){
         }
         url = $t.attr('data-url');
         type = $t.attr('data-type');
+        S.log($t, url, type)
         if(url && type){
             $t.on('click',function(ev){
                 ev.preventDefault();
