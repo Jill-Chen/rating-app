@@ -2,19 +2,18 @@ script
   KISSY.use('rate/app',function(S,App){
     App.nav('home');
   });
+
 script#temp-tags(type='kissy/template')
   |<ul class='tags'>
   |  {{#each tags as tag}}
   |    <li><a href='/list?tags={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
+
 div.box
   .hd
     h3 分享会
-  .bd
-    ul
-      li
-        a(href="/list/?tag=firebird") 火鸟分享
+  .bd!= partial('partial/links')
 .box
   .hd
     h3  常用链接

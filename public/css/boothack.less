@@ -1,14 +1,22 @@
-.topbar {
-    a {
-        color:@white;
-    }
+// Focus states
+a {
+    color:#3399CC;
+  &:hover {
+    color: #2e89b6;
+  }
 }
+a:focus {
+  outline: thin dotted;
+}
+// Hover & Active
+a:hover,
+a:active {
+  outline: 0;
+}
+
 .topbar div > ul, .nav {
   .active > a {
     background-color: #1d648e;
     background-color: rgba(27,94,134,.5);
-  }
-  .menu-dropdown,.dropdown-menu {
-    background-color:#123e58;
   }
 }
