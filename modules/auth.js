@@ -5,8 +5,6 @@ var User = require('./index').User;
 
 exports.everyauth = everyauth;
 
-//everyauth.debug = true;
-//
 everyauth.everymodule.findUserById(function(userId, callback){
     User.findById(userId, callback);
 });
