@@ -4,7 +4,7 @@ script
   });
 .navback
   a(href='/shareset') 返回到分享会列表
-h1 分享会：#{shareset.subject}
+h1 #{shareset.subject}
 .row
   .span5
     dl
@@ -15,12 +15,13 @@ h1 分享会：#{shareset.subject}
       dt 分享地点
       dd= shareset.position
     .desc= shareset.desc
-    .action
-      a.btn.small(href='/shareset/#{shareset._id}/edit')  编辑
-      |  
-      a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset._id}')  删除
-      |  
-      a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
+    - if(isOwner )
+      .action
+        a.btn.small(href='/shareset/#{shareset._id}/edit')  编辑
+        |  
+        a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset._id}')  删除
+        |  
+        a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
   .span11
     - if (shares && shares.length)
       ul.ratelist!= partial('share', shares)

@@ -59,10 +59,12 @@ exports.create = function(req,res){
 exports.show = function(req,res, next){
     var ss = req.shareset;
     Share.find({shareset : ss._id, deleted : {$ne : true}}, function(err, docs){
+        var isOwner = req.loggedIn && req.user._id.toString() == ss.owner.toString();
         if(err) return next(err);
         res.render('shareset/show',{
             title : ss.subject
            ,shareset : ss
+           ,isOwner : isOwner
            ,shares : docs
         });
     });
@@ -87,13 +89,13 @@ exports.update = function(req,res){
     shareset.save(function(error,saved){
         if(error && error.errors){
             res.send({
-                success : false
-               ,errors : error.errors
+               errors : error.errors
             });
             return;
         }
         res.send({
-            success : true,
+            errors : null,
+            action : 'redirect',
             redirect : '/shareset/' + saved._id
         });
     });

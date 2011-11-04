@@ -8,8 +8,9 @@ li.shareitem
       .act
         span.author
           #{shares[indexInCollection].authors.join(', ')}
-        .btns
-          a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
-          |  
-          a.ajax-btn(data-type='delete', data-url='/share/#{shares[indexInCollection]._id}', href='/share/#{shares[indexInCollection]._id}') 删除
+        - if(isOwner)
+          .btns
+            a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
+            |  
+            a.ajax-btn(data-type='delete', data-url='/share/#{shares[indexInCollection]._id}', href='/share/#{shares[indexInCollection]._id}') 删除
 
