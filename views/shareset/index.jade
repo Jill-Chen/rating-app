@@ -3,26 +3,48 @@ script
   KISSY.use('rate/app',function(S,App){
     App.nav('setlist#{type}');
   });
+script#temp-tags(type='kissy/template')
+  |<ul class='tags'>
+  |  {{#each tags as tag}}
+  |    <li><a href='/share/?tags={{tag}}'>{{tag}}</a></li>
+  |  {{/each}}
+  |</ul>
 h1 所有分享会
 
 #page
-  - if (results.length)
-    .setlist
-      - each item in results
-        .setitem.row
-          .span8
-            h3.title
-              a(href="/shareset/#{item._id}") #{item.subject}
-            div.desc=item.desc
-          .span4
-            dl.meta
-              dt 开始时间
-              dd= dateFormat(item.startTime,'yyyy-mm-dd HH:MM:ss')
-              dt 结束时间
-              dd= dateFormat(item.endTime,'yyyy-mm-dd HH:MM:ss')
-          .span4
-            dl.meta
-              dt 分享地点
-              dd= item.position
-  - else
-    p results is empty
+  .row
+    .span11
+      ul.pills
+        li.active
+          a(href='#') 所有
+        li
+          a(href='#') 即将到来的
+      - if (results.length)
+        .setlist
+          - each item in results
+            .setitem
+              .hd
+              .bd
+                h3.title
+                  a(href="/shareset/#{item._id}") #{item.subject}
+                div.desc=item.desc
+                dl.meta
+                  dt 分享地点
+                  dd= item.position
+                  dt 开始时间
+                  dd= dateFormat(item.startTime,'yyyy-mm-dd HH:MM:ss')
+                  dt 结束时间
+                  dd= dateFormat(item.endTime,'yyyy-mm-dd HH:MM:ss')
+      - else
+        p results is empty
+    .span5
+      .box#tags
+        .hd
+           h3 标签
+        .bd
+      .box#tags
+        .hd
+           h3 分享会
+        .bd!= partial('partial/links')
+script
+  KISSY.use('rate/tags');

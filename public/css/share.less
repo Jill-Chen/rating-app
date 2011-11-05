@@ -3,48 +3,147 @@
 #main{
     padding-top:50px;
 }
+html,body {
+    background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;
+}
 
 .navback {
     float:right;
     padding:10px;
 }
 
+// 分享
 .ratelist {
     .clearfix();
     margin:0;
     list-style:none;
 }
-.rateitem {
+@shareWidth : 195px;
+@shareBorder : 10px;
+@shareBorderRadius:3px;
+.shareitem{
+    width:@shareWidth;
+    height:@shareWidth;
+    margin:0 50px 50px 0;
+    color:#666;
     float:left;
-    width:260px;
-    height:260px;
-    border:1px solid #888;
-    margin-left:-1px;
-    margin-top:-1px;
-    padding:10px;
+    position:relative;
+    .cover {
+        .transition(all .2s ease-in);
+        width:@shareWidth;
+        height:@shareWidth;
+        position:absolute;
+        z-index:1;
+        .border-radius(@shareBorderRadius);
+    }
+    .wrap {
+        border:@shareBorder solid #fff;
+        height:@shareWidth - @shareBorder*2;
+        .border-radius(@shareBorderRadius);
+    }
+    .cnt {
+        .transition(all .2s ease-in);
+        width:@shareWidth;
+        height:@shareWidth;
+        position:absolute;
+        z-index:0;
+        .border-radius(@shareBorderRadius);
+        background-color:rgba(255,255,255,0);
+    }
+    &:hover {
+        .cnt {
+            z-index:2;
+            background-color:rgba(255,255,255,0.5);
+        }
+        .cover {
+            opacity:.3;
+        }
+
+    }
+    h3 {
+        font-size:14px;
+        line-height:1.5;
+        padding:5px;
+    }
     .score {
         display:none;
     }
+    .desc {
+        padding:5px;
+    }
+    .author {
+        font-weight:bold;
+    }
+    .act {
+        padding:5px;
+        position:absolute;
+        bottom:@shareBorder;
+        left:@shareBorder;
+        width:@shareWidth - @shareBorder*2;
+    }
 }
+
+.slideshare {
+    width:580px;
+    background:#fff;
+}
+.desc {
+    color : @gray;
+    margin-bottom:20px;
+}
+
+//  标签
 .tags {
     .clearfix();
     list-style:none;
     margin:0;
     li {
         float:left;
+        margin: 5px 5px 0 0;
+    }
+    a {
+        display:inline-block;
         padding:5px;
-        margin-right:10px;
         background:#eee;
+        #gradient .vertical(#f2f2f2, #ddd);
+    }
+    a:hover {
+        text-decoration:none;
+        color:#fff;
+        #gradient .vertical(#666, #333);
     }
 }
-.slideshare {
-    width:580px;
-}
 
+
+//  分享会
 .setitem {
-    padding:10px 0;
+    margin:20px 0;
+    border-bottom:1px solid #b9b9b9;
+    border-right:1px solid #b9b9b9;
+    border-left:1px solid #b9b9b9;
     margin-bottom:20px;
-    border-bottom:1px solid #ddd;
+    background:#fff;
+    .box-shadow();
+    .hd {
+        background:#d5d5d7;
+        height:24px;
+        border-bottom:1px solid #b7bac1;
+    }
+    .bd {
+        padding:10px;
+    }
+    .a {
+        color:#39c
+    }
+    dl {
+        .clearfix();
+    }
+    dt, dd {
+        float:left;
+    }
+    dd {
+        margin-right:20px;
+    }
 }
 
 //fix calendar
@@ -57,7 +156,3 @@
     }
 }
 
-.desc {
-    color : @gray;
-    margin-bottom:20px;
-}
