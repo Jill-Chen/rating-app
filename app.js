@@ -6,7 +6,6 @@ var express = require('express');
 
 //var QRcode = require('qrcode');
 var _ = require("underscore");
-var average = require('./modules/average').average;
 var modules = require('./modules/');
 var resource = require('express-resource');
 var auth = require('./modules/auth').everyauth;
