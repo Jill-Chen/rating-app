@@ -4,7 +4,7 @@ script
   });
 .navback
   a(href='/shareset') 返回到分享会列表
-h1 分享会：#{shareset.subject}
+h1 #{shareset.subject}
 .row
   .span5
     dl
@@ -15,25 +15,15 @@ h1 分享会：#{shareset.subject}
       dt 分享地点
       dd= shareset.position
     .desc= shareset.desc
-    .action
-      a.btn.small(href='/shareset/#{shareset._id}/edit')  编辑
-      |  
-      a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset._id}')  删除
+    - if(isOwner )
+      .action
+        a.btn.small(href='/shareset/#{shareset._id}/edit')  编辑
+        |  
+        a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset._id}')  删除
+        |  
+        a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
   .span11
     - if (shares && shares.length)
-      ul.ratelist
-        - each item in shares
-          li.rateitem
-            h3.title
-              a(href="/share/#{item._id}") #{item.authors.join(', ')}: #{item.title}
-            p.meta
-              span.time #{item.ts_save.getFullYear()}-#{item.ts_save.getMonth()}-#{item.ts_save.getDate()}
-            div.desc=item.desc
-            .act
-              a(href='/share/#{item._id}/edit') 编辑
-              | - 
-              a.ajax-btn(data-type='delete', data-url='/share/#{item._id}', href='/share/#{item._id}') 删除
-    .actions
-      a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
+      ul.ratelist!= partial('share', shares)
 script
   KISSY.use('rate/ajax');

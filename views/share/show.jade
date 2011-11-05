@@ -9,12 +9,6 @@ script
     a(href='/list/') 所有分享
 h1 #{share.authors.join(',')}: #{share.title}
 #tabs1
-  ul.tabs.ks-switchable-nav
-    li.active
-      a(href='#detail') 首页
-    li
-      a(href='#record') 评分记录
-
   .ks-switchable-content
     div.row
       .span10
@@ -52,12 +46,6 @@ h1 #{share.authors.join(',')}: #{share.title}
               document.getElementsByTagName("head")[0].appendChild(dsq);
             })()
       .span6
-        .action
-          p
-            a.disabled(href='#') 我参加过
-            |  -  
-            a.disabled(href='#') 我想参加
-          p 手机扫描此条码直接打分
         .meta
           dl.author
             dt 分享者
@@ -67,6 +55,13 @@ h1 #{share.authors.join(',')}: #{share.title}
               dt 分享会
               dd
                 a(href='/shareset/#{share.shareset}')= shareset.subject
+
+        .action
+          p
+            a.btn(href='#') 我参加过
+            |  
+            a.btn(href='#') 我想参加
+          //p 手机扫描此条码直接打分
         - if(share.tags && share.tags.length);
           .ftags
             h3 Tags
@@ -90,15 +85,6 @@ h1 #{share.authors.join(',')}: #{share.title}
             th.ts 评分时间
         tbody
       a(href="/getRate/#{share._id}") 获取文件
-
-script(src='/js/switchable-min.js');
 script
   KISSY.use('rate/app,rate/inplace', function(S,APP){
-      //APP.getQRCode('#qrcode', S.one('#rate-btn')[0].href);
-  });
-  KISSY.use('switchable', function(S){
-    new S.Tabs('#tabs1', {
-      triggerType : 'click',
-      activeTriggerCls : 'active'
-    });
   });
