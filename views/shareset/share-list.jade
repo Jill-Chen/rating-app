@@ -1,0 +1,15 @@
+li.share-list-item
+  .cover(style='background-image:url(#{shares[indexInCollection].cover})')
+  .cnt
+    h3.title
+      a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].title}
+    div.desc= shares[indexInCollection].desc
+    .act
+      span.author
+        #{shares[indexInCollection].authors.join(', ')}
+      - if(isOwner)
+        .btns
+          a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
+          |  
+          a.ajax-btn(data-type='delete', data-url='/share/#{shares[indexInCollection]._id}', href='/share/#{shares[indexInCollection]._id}') 删除
+

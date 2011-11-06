@@ -15,10 +15,10 @@ h1 所有分享会
   .row
     .span11
       ul.pills
-        li.active
-          a(href='#') 所有
-        li
-          a(href='#') 即将到来的
+        li(class=!query.tab?"active":'')
+          a(href='/shareset') 所有
+        li(class=query.tab === 'upcoming'?"active":'')
+          a(href='/shareset?tab=upcoming') 即将到来的
       - if (results.length)
         .setlist
           - each item in results
@@ -26,18 +26,21 @@ h1 所有分享会
               .hd
               .bd
                 h3.title
-                  a(href="/shareset/#{item._id}") #{item.subject}
+                  a(href="/shareset/#{item.postname}") #{item.subject}
                 div.desc=item.desc
                 dl.meta
                   dt 分享地点
                   dd= item.position
                   dt 开始时间
-                  dd= dateFormat(item.startTime,'yyyy-mm-dd HH:MM:ss')
+                  dd= dateFormat(item.startTime,'yyyy-mm-dd HH:MM:ss dddd')
                   dt 结束时间
                   dd= dateFormat(item.endTime,'yyyy-mm-dd HH:MM:ss')
       - else
         p results is empty
     .span5
+      .box
+        .bd
+          a.btn.primary(href='/shareset/new') 组织分享会
       .box#tags
         .hd
            h3 标签

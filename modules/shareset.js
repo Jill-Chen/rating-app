@@ -45,6 +45,15 @@ var ShareSetSchema = new Schema({
  ,owner : {
    'type' : Schema.Types.ObjectId
  }
+ ,postname : {
+   'type' : String,
+   'required' : true
+ }
+ //分享会面向受众
+ ,category : {
+    'type' : String
+ }
+ //分享会
  ,deleted : {
     'type' : Boolean,
     'default' : false

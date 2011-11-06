@@ -26,4 +26,6 @@ KISSY.add('rate/create',function(S){
         elinput.val(eltext + et.text());
         elinput[0].focus();
     });
+},{
+    requires : ['template']
 });

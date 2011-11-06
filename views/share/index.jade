@@ -17,11 +17,6 @@ script
 
 #page
   - if (shares.length)
-    ul.ratelist
-      - each share in shares
-        li.rateitem
-          h3.title
-            a(href="/share/#{share._id}") #{share.authors.join(', ')}: #{share.title}
-          .desc=share.desc
+    ul.ratelist!= partial('shareitem', shares)
   - else
     p results is empty

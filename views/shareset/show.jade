@@ -17,13 +17,13 @@ h1 #{shareset.subject}
     .desc= shareset.desc
     - if(isOwner )
       .action
-        a.btn.small(href='/shareset/#{shareset._id}/edit')  编辑
+        a.btn.small(href='/shareset/#{shareset.postname}/edit')  编辑
         |  
-        a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset._id}')  删除
+        a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset.postname}')  删除
         |  
-        a.primary.btn(href='/share/new?shareset=#{shareset._id}')添加分享
+        a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
   .span11
     - if (shares && shares.length)
-      ul.ratelist!= partial('share', shares)
+      ul.ratelist!= partial('share-list', shares)
 script
   KISSY.use('rate/ajax');

@@ -12,4 +12,6 @@ KISSY.add('rate/tags',function(S){
             $('#tags .bd').html(tagsTmpl.render(data));
         }
     });
+},{
+    requires : ['template']
 });

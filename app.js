@@ -11,6 +11,7 @@ var resource = require('express-resource');
 var auth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var dateFormat = require('dateformat');
+require('./datei18n');
 var form = require('connect-form');
 
 var app = module.exports = express.createServer(
@@ -82,9 +83,6 @@ app.get('/json/tags', function(req, res){
     });
 });
 
-
-
-
 var shareset = app.resource('shareset', require('./routers/shareset'));
 var share = app.resource('share', require('./routers/share'));
 //shareset.add(share);
@@ -134,19 +132,70 @@ app.get('/qrcode2',function(req,res){
     });
 });
 
+app.get('/share/:share/like', function(req,res){
+    if(!req.session){
+        res.send({ errors : ["您已经投过票了"]});
+        return;
+    }
+    var liked = req.session.shareliked,
+        share = req.share,
+        shareId = req.params.share;
+
+    if(!liked){
+        liked = [];
+    }
+    console.log(liked);
+
+    if(liked.indexOf(shareId) !== -1){
+        res.send({ errors : ["您已经投过票了"]});
+        return;
+    };
+
+    console.log('like',share.like);
+    share.like += 1;
+    share.save(function(err, doc){
+        if(err) return res.send({
+            errors : err.errors || err
+        });
+        liked.push(shareId);
+        req.session.shareliked = liked;
+        res.send({
+            errors : null,
+            action : 'redirect',
+            redirect : ''
+        });
+    });
+});
 // 编辑幻灯片
-app.post('/edit/slider/:share',function(req, res){
+app.post('/share/:share/editslider',function(req, res){
     var share = req.share,
         slideshare = req.param('slideshare');
     //get the id out of the slideshare
     var match = slideshare.match(/\d{6,}/);
     if(match){
         share.slider.slideshare = match[0];
+    }else{
+        res.send({
+            errors : ['错误的embed Code']
+        });
+        return;
     }
     share.save(function(err){
-        if(err) return next(err);
-        res.redirect('back');
+        if(err) {
+            res.send({
+                errors : ['保存出错']
+            });
+        }
+        res.send({
+            errors : null,
+            action : 'redirect',
+            redirect : ''
+        });
     });
+});
+
+app.post('/api/share/:share/rate', function(req,res){
+
 });
 
 /**

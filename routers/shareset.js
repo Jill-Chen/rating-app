@@ -2,16 +2,26 @@ var ShareSet = require('../modules/').ShareSet;
 var Share = require('../modules/').Share;
 
 exports.load = function(id,next){
-    ShareSet.findById(id,function(err,doc){
+    ShareSet.findOne({
+        postname : id
+    },function(err,doc){
         next(err,doc)
     });
 };
 
 exports.index = function(req,res){
-    var q= req.query;
+    var q= req.query,
+        queryobj = {};
     q.deleted = { "$ne" : true };
-    var query = ShareSet.find(q);
+    if(q.tab === 'upcoming'){
+        queryobj.startTime = {
+            $gt : Date.now()
+           ,$lt : Date.now() + 7*24*60*60*1000
+        }
+    };
+    var query = ShareSet.find(queryobj);
     query.sort('_id',-1);
+    query.limit(20);
     query.exec(function(err,shares){
         if(err) return next(err);
         req.results = shares;
@@ -32,12 +42,16 @@ exports.new = function(req,res){
     });
 };
 exports.create = function(req,res){
-    var shareset = new ShareSet();
-    shareset.subject = req.body.subject;
-    shareset.endTime = req.body.endTime;
-    shareset.startTime = req.body.startTime;
-    shareset.position = req.body.position;
-    shareset.desc = req.body.desc;
+    var shareset = new ShareSet(),
+        reqbody = req.body;
+    shareset.subject = reqbody.subject;
+    shareset.endTime = reqbody.endTime;
+    shareset.startTime = reqbody.startTime;
+    shareset.position = reqbody.position;
+    shareset.desc = reqbody.desc;
+    shareset.postname = reqbody.postname;
+    shareset.category = reqbody.category;
+
     shareset.owner = req.user._id;
 
     shareset.save(function(error,saved){

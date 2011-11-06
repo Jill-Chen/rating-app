@@ -14,3 +14,13 @@ var ShareSet = db.model('shareset');
 exports.User = User;
 exports.Share = Share;
 exports.ShareSet= ShareSet;
+ShareSet.schema.path('postname').validate(function(postname, fn){
+    ShareSet.findOne({postname : postname}, function(err,doc){
+        if(err) return fn(false);
+        if(doc){
+            return fn(false);
+        }
+        return fn(true);
+    });
+    return fn;
+},'POSTNAME_REPEAT');

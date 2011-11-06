@@ -27,10 +27,10 @@ exports.index = function(req,res){
 };
 exports.new = function(req,res){
     var sharesetId = req.query.shareset;
-    var share = new Share({
-        shareset : sharesetId
-    });
-    ShareSet.findById(sharesetId, function(err,shareset){
+    ShareSet.findOne({postname:sharesetId}, function(err,shareset){
+        var share = new Share({
+            shareset :shareset._id
+        });
         res.render('share/new', {
             title: '添加分享到分享会',
             share : share,
@@ -81,10 +81,18 @@ exports.create = function(req,res,next){
             return;
             //return next(error);
         }
-        res.send({
-            errors : null,
-            action : 'redirect',
-            redirect : '/shareset/'+saved.shareset
+        ShareSet.findById(body.shareset, function(err, docs){
+            if(err) return next(err);
+            if(!docs)
+                return res.send({
+                    errors : [{type:"分享会不存在"}]
+                });
+
+            res.send({
+                errors : null,
+                action : 'redirect',
+                redirect : '/shareset/'+ docs.postname
+            });
         });
     });
 
@@ -99,7 +107,7 @@ exports.show = function(req,res){
         });
         return;
     }
-    ShareSet.findById(share.shareset,function(err, doc){
+    ShareSet.findById(share.shareset, function(err, doc){
         if(err) return next(err);
         res.render('share/show', {
             title : share.authors.join(',') + ':' + share.title,
@@ -113,9 +121,13 @@ exports.show = function(req,res){
 exports.edit = function(req,res){
     var share= req.share;
 
-    res.render('share/edit',{
-        title : '编辑 ' + share.title
-       ,share : share
+    ShareSet.findById(share.shareset,function(err,doc){
+        if(err) return next(err);
+        res.render('share/edit',{
+            title : '编辑 ' + share.title
+           ,share : share
+           ,shareset : doc
+        });
     });
 
 }

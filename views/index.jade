@@ -6,7 +6,7 @@ script
 script#temp-tags(type='kissy/template')
   |<ul class='tags'>
   |  {{#each tags as tag}}
-  |    <li><a href='/list?tags={{tag}}'>{{tag}}</a></li>
+  |    <li><a href='/share?tags={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
 
@@ -26,4 +26,4 @@ div#tags.box
     h3 标签
   .bd
 script
-  KISSY.use('rate/home');
+  KISSY.use('rate/tags');

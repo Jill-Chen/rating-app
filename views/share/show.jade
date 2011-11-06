@@ -2,74 +2,82 @@ script
   KISSY.use('rate/app',function(S,App){
     App.nav('list');
   });
+.modal#edit-slider(style='display:none;')
+  .modal-header
+    a.close(href='#') &times;
+    h3 幻灯片
+  form.ajax-form.sliderform(method='post',action='/share/#{share._id}/editslider')
+    .modal-body
+      fieldset
+        legend  添加幻灯片
+        .clearfix#type-slidershare
+          label(for='d-slidershare') SlideShare Code
+          .input
+            textarea#d-slidershare.span5(name='slideshare')
+            span.help-block
+               去 <a href="http://www.slideshare.net/">slidershare</a>上传并获取embed code
+    .modal-footer
+      button.btn.primary(type='submit') 确定
+
 .navback
   - if(share.shareset)
-    a(href='/shareset/#{share.shareset}') 返回到分享会
+    a(href='/shareset/#{shareset.postname}') 返回到分享会
   - else
     a(href='/list/') 所有分享
 h1 #{share.authors.join(',')}: #{share.title}
-#tabs1
-  .ks-switchable-content
-    div.row
-      .span10
+div.row
+  .span12
+    div.slideshare
+      .hd
+      .bd
         - if(share.slider.slideshare)
-          div.slideshare
-            div.slideshare(style="width:580",id="__ss_#{share.slider.slideshare}")
-              iframe(src="http://www.slideshare.net/slideshow/embed_code/#{share.slider.slideshare}",width="580",height="482",frameborder="0",marginwidth="0",marginheight="0",scrolling="no")
-        - else
-          div.slideshare
-            form.addslider#sliderform(method='post',action='/edit/slider/'+share._id)
-              fieldset
-                legend  添加幻灯片
-                .clearfix#type-slidershare
-                  label(for='d-slidershare') SlideShare Code
-                  .input
-                    textarea#d-slidershare.span5(name='slideshare')
-                .actions
-                  input.btn.primary(type='submit')
-            script
-              KISSY.user('rate/slider-edit');
-        dl.desc
-          dt 简介
-          dd.editable(data-key='desc',data-type='textarea')=share.desc
-        div.disqus-box
-          div#disqus_thread
-          script
-            var disqus_shortname="firebird";
-            var disqus_identifier = "rate_#{share._id}";
-            var disqus_developer = 1;
-            (function(){
-              var dsq = document.createElement('script');
-              dsq.type="text/javascript";
-              dsq.async = true;
-              dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
-              document.getElementsByTagName("head")[0].appendChild(dsq);
-            })()
-      .span6
-        .meta
-          dl.author
-            dt 分享者
-            dd= share.authors.join(",")
-          - if(share.shareset)
-            dl
-              dt 分享会
-              dd
-                a(href='/shareset/#{share.shareset}')= shareset.subject
+          div.slideshare(id="__ss_#{share.slider.slideshare}")
+            iframe(src="http://www.slideshare.net/slideshow/embed_code/#{share.slider.slideshare}",width="700",height="584",frameborder="0",marginwidth="0",marginheight="0",scrolling="no")
+      .ft
+        div.boxact
+          - if(share.slider.slideshare)
+            a.btn(href='#',data-controls-modal="edit-slider", data-backdrop="static") 编辑幻灯片
+          - else
+            a.btn(href='#',data-controls-modal="edit-slider", data-backdrop="static")  添加幻灯片
+    dl.desc
+      dt 简介
+      dd(data-key='desc',data-type='textarea')=share.desc
+    div.disqus-box
+      div#disqus_thread
+      script
+        var disqus_shortname="firebird";
+        var disqus_identifier = "rate_#{share._id}";
+        var disqus_developer = 1;
+        (function(){
+          var dsq = document.createElement('script');
+          dsq.type="text/javascript";
+          dsq.async = true;
+          dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
+          document.getElementsByTagName("head")[0].appendChild(dsq);
+        })()
+  .span4
+    .meta
+      dl.author
+        dt 分享者
+        dd= share.authors.join(",")
+      - if(share.shareset)
+        dl
+          dt 分享会
+          dd
+            a(href='/shareset/#{shareset.postname}')= shareset.subject
 
-        .action
-          p
-            a.btn(href='#') 我参加过
-            |  
-            a.btn(href='#') 我想参加
-          //p 手机扫描此条码直接打分
-        - if(share.tags && share.tags.length);
-          .ftags
-            h3 Tags
-            ul.tags
-              -share.tags.forEach(function(tag){
-                li
-                  a(href="/list/?tags=#{tag}")=tag
-              -})
+    .action
+      p
+        a.btn.ajax-btn(href='#',data-type='get',data-url='/share/#{share._id}/like')  喜欢(#{share.like})
+      //p 手机扫描此条码直接打分
+    - if(share.tags && share.tags.length);
+      .ftags
+        h3 Tags
+        ul.tags
+          -share.tags.forEach(function(tag){
+            li
+              a(href="/share/?tags=#{tag}")=tag
+          -})
 
 
 
@@ -86,5 +94,4 @@ h1 #{share.authors.join(',')}: #{share.title}
         tbody
       a(href="/getRate/#{share._id}") 获取文件
 script
-  KISSY.use('rate/app,rate/inplace', function(S,APP){
-  });
+  KISSY.use('rate/app,rate/ajax');

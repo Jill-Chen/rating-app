@@ -13,6 +13,10 @@ var ShareSchema = new Schema({
       'type' : String
      ,'set' : helper.trim
   }
+ ,like : {
+    'type' : Number,
+    'default' : 0
+ }
  ,cover : {
     'type' : String
    ,'default' : '/img/default-cover.png'

@@ -16,7 +16,6 @@ script#temp-errors(type='text/template')
   |{{/each}}
 
 form.ajax-form(action='/share', method="post")
-  input(type='hidden',name='shareset', value=share.shareset)
   .error-holder
   fieldset
     legend 编辑分享
@@ -51,7 +50,7 @@ form.ajax-form(action='/share', method="post")
     .actions
       button.btn.primary(type="submit")  修改
       |  
-      a.btn(href='/shareset/shareset._id') 返回
+      a.btn(href='/shareset/#{shareset.postname}') 返回
 
 script
   KISSY.use('rate/create,rate/ajax')

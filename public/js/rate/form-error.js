@@ -24,4 +24,6 @@ KISSY.add('rate/form-error', function(S){
         }
     });
     return FormError;
+}, {
+    requires : ['template']
 });

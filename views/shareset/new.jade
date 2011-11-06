@@ -1,8 +1,10 @@
 // 创建分享会
+
 script
   KISSY.use('rate/app',function(S,App){
     App.nav('create');
   });
+
 script#temp-errors(type='text/template')
   |{{#each errors as err}}
   |<div class='alert-message warning'>
@@ -16,21 +18,34 @@ form.ajax-form(action='/shareset', method="post")
   fieldset
     legend 组织一次分享会
     .clearfix
-      label(for="subject") 分享主题
+      label(for="subject") 分享主题 *
       .input
         input.text#subject(name="subject",value=shareset.subject)
     .clearfix
-      label(for="time")  开始时间
+      label(for='postname') 个性名称 *
       .input
-        input.text.date-time#time-start(name="startTime",value=shareset.startTime?dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'):'')
+        input.text#postname(type='text',name='postname')= shareset.postname
+        span.help-block http://ourshare/shareset/<strong>your-shareset-name</strong> 不可更改
     .clearfix
-      label(for="time-end") 结束时间
+      label(for="time")  分享时间
       .input
-        input.text.date-time#time-end(name="endTime",value=shareset.startTime?dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'):'')
+        input.text.date-time.span3#time-start(name="startTime",value=shareset.startTime?dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'):'')
+        |  到 
+        input.text.date-time.span3#time-end(name="endTime",value=shareset.startTime?dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'):'')
     .clearfix
       label(for="position") 分享地址
       .input
         input.text#position(name="position",value=shareset.position)
+        span.help-block
+          a(href='https://is.taobao.org/meeting/') 会议室预订平台
+    .clearfix
+      label(for='category') 分类
+      .input
+        select#category(name='category')
+          option(value='') 选择类别
+          option(value='前端') 前端
+          option(value='交互-设计') 交互-设计
+          option(value='Java') Java
     .clearfix
       label(for='desc') 介绍
       .input
