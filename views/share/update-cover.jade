@@ -1,0 +1,10 @@
+.row.login-page
+  .span6.offset5
+    form.form-stacked.login(action='/share/#{share._id}/cover',enctype="multipart/form-data",method="post")
+      fieldset
+        .clearfix
+          label(for='cover') 文件
+          .input
+            input#cover.text(type='file', name='cover')
+        .actions
+          button(type="submit", class='btn primary') 提交
