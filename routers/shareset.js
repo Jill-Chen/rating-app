@@ -65,7 +65,7 @@ exports.create = function(req,res){
         res.send({
             errors : null,
             action : 'redirect',
-            redirect : '/shareset/' + saved._id
+            redirect : '/shareset/' + saved.postname
         });
     });
 
@@ -110,7 +110,7 @@ exports.update = function(req,res){
         res.send({
             errors : null,
             action : 'redirect',
-            redirect : '/shareset/' + saved._id
+            redirect : '/shareset/' + saved.postname
         });
     });
 

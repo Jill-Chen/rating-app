@@ -15,7 +15,7 @@ script#temp-errors(type='text/template')
   |</div>
   |{{/each}}
 
-form.ajax-form(action='/share', method="post")
+form.ajax-form(action='/share/#{share._id}', method="put")
   .error-holder
   fieldset
     legend 编辑分享

@@ -15,9 +15,10 @@ exports.User = User;
 exports.Share = Share;
 exports.ShareSet= ShareSet;
 ShareSet.schema.path('postname').validate(function(postname, fn){
+    var t = this;
     ShareSet.findOne({postname : postname}, function(err,doc){
         if(err) return fn(false);
-        if(doc){
+        if(doc && t._id.toString() !== doc._id.toString()){
             return fn(false);
         }
         return fn(true);

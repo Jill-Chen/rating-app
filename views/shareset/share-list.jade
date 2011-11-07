@@ -2,11 +2,10 @@ li.share-list-item
   .cover(style='background-image:url(#{shares[indexInCollection].cover})')
   .cnt
     h3.title
-      a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].title}
+      a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].authors.join(', ')} : #{shares[indexInCollection].title}
     div.desc= shares[indexInCollection].desc
     .act
       span.author
-        #{shares[indexInCollection].authors.join(', ')}
       - if(isOwner)
         .btns
           a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
