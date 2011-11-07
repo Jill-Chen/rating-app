@@ -1,4 +1,5 @@
 var ShareSet = require('../modules/').ShareSet;
+var _ = require('underscore');
 var Share = require('../modules/').Share;
 
 //auto load
@@ -136,20 +137,23 @@ exports.update = function(req,res){
     _(req.body).each(function(v,k){
         share[k] = v;
     });
-    share.save(function(err){
-        if(error){
+    ShareSet.findById(share.shareset,function(err,ssdoc){
+        share.save(function(err,saved){
+            if(err){
+                res.send({
+                    errors : err.errors || err.message,
+                });
+                return;
+            }
             res.send({
-                errors : error.errors || error.message,
+                errors : null,
+                action : 'redirect',
+                redirect : '/shareset/' + ssdoc.postname
             });
-            return;
-        }
-        res.send({
-            errors : null,
-            action : 'redirect',
-            redirect : '/shareset/'+saved.shareset
         });
     });
-}
+};
+
 exports.destroy = function(req,res, next){
     req.share.deleted = true;
     req.share.save(function(err, doc){
