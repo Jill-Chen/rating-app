@@ -12,10 +12,9 @@ var auth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var dateFormat = require('dateformat');
 require('./datei18n');
-var form = require('connect-form');
+var form = require('formidable');
 
 var app = module.exports = express.createServer(
-        form({keepExtensions : true })
     ); // Configuration
 var Share = modules.Share;
 var User = modules.User;
@@ -34,6 +33,7 @@ function checkauth(req,res,next){
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
+  //app.use(form({ keepExtensions : true }));
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({ secret: "supershare!", store: new RedisStore }));
@@ -165,6 +165,26 @@ app.get('/share/:share/like', function(req,res){
             redirect : ''
         });
     });
+});
+
+
+app.get('/share/:share/cover',function(req,res){
+    res.render('share/update-cover', {
+        title : '上传'
+       ,share : req.share
+    });
+});
+app.post('/share/:share/cover',function(req,res, next){
+    if(req.form){
+        console.dir(req.form);
+        req.form.complete(function(err,fields, filed){
+            if(err) return next(err);
+            res.send('uploaded');
+            console.log('complete', err);
+            console.dir('fields', fields);
+            console.log('files', files);
+        });
+    }
 });
 // 编辑幻灯片
 app.post('/share/:share/editslider',function(req, res){

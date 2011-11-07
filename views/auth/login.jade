@@ -1,6 +1,6 @@
-.row.show-grid
-  .span10.offset6
-    form.login(action='/login', method="post")
+.row.login-page
+  .span6.offset5
+    form.form-stacked.login(action='/login', method="post")
       - if('undefined' !== typeof errors && errors.length)
         .alert-message.block-message.warning
           a.close(href='#') ×

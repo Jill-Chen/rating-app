@@ -1,5 +1,6 @@
-.row
-    form.login(action='/register', method="post")
+.row.login-page
+  .span6.offset5
+    form.form-stacked.login(action='/register', method="post")
       - if('undefined' !== typeof errors && errors.length)
         .alert-message.block-message.warning
           a.close(href='#') ×
