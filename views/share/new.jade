@@ -50,7 +50,7 @@ form.ajax-form(action='/share', method="post")
     .actions
       button.btn.primary(type="submit")  创建分享
       |  
-      a.btn(href='/shareset/shareset._id') 返回
+      a.btn(href='/shareset/#{shareset.postname}') 返回
 
 script
   KISSY.use('rate/create,rate/ajax')
