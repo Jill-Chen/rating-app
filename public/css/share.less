@@ -99,8 +99,24 @@ html,body {
 }
 
 .slideshare {
+    margin-bottom:10px;
 }
 
+.cover-box {
+    width:195px;
+    height:195px;
+    position:relative;
+    .action {
+        display:none;
+        right:5px;
+        top:5px;
+        position:absolute;
+        background-color:#fff;
+    }
+    &:hover .action {
+        display:block;
+    }
+}
 //  标签
 .tags {
     .clearfix();
@@ -174,7 +190,7 @@ html,body {
     margin-bottom:20px;
 }
 
-form.login {
+form.login, form.upload-form {
     background:#fff;
     padding-top:20px;
 }

@@ -12,10 +12,9 @@ var auth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var dateFormat = require('dateformat');
 require('./datei18n');
-var form = require('formidable');
+var form = require('connect-form');
 
-var app = module.exports = express.createServer(
-    ); // Configuration
+var app = module.exports = express.createServer();
 var Share = modules.Share;
 var User = modules.User;
 var ShareSet = modules.ShareSet;
@@ -33,18 +32,15 @@ function checkauth(req,res,next){
 app.configure(function(){
   app.set('views', __dirname + '/views');
   app.set('view engine', 'jade');
-  //app.use(form({ keepExtensions : true }));
+  app.use(form({
+      keepExtensions : true,
+      uploadDir : 'public/upload'
+  }));
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({ secret: "supershare!", store: new RedisStore }));
   app.use(auth.middleware());
-  //app.use(express.methodOverride());
-  //app.use(parted({
-    //path : __dirname + '/public/uploads',
-    //limit : 30 * 1024,
-    //diskLimit : 30 * 1024 * 1024,
-    //multiple : true
-  //}));
+  app.use(express.methodOverride());
 
   app.use(app.router);
   app.use(express.static(__dirname + '/public'));
@@ -174,7 +170,7 @@ app.get('/share/:share/cover',function(req,res){
        ,share : req.share
     });
 });
-app.post('/share/:share/cover',function(req,res, next){
+app.post('/share/:share/cover',function(req, res, next){
     if(req.form){
         console.dir(req.form);
         req.form.complete(function(err,fields, filed){
@@ -210,6 +206,35 @@ app.post('/share/:share/editslider',function(req, res){
             errors : null,
             action : 'redirect',
             redirect : ''
+        });
+    });
+});
+// 封面上传
+app.get('/share/:share/upload-cover', function(req, res){
+    res.render('shareset/share-cover-upload', {
+        title : 'Upload Cover',
+        share : req.share,
+        backurl : req.header('Referer')
+    });
+});
+
+app.post('/share/:share/upload-cover', function(req, res){
+    var share = req.share,
+        form = req.form;
+    form.complete(function(err, filds, files){
+        console.log(' ---- ' ,err, filds, files);
+        if(!files.cover){
+            res.redirect('back');
+            return;
+        }
+        share.cover = files.cover.path.replace(/^public/,'');
+
+        share.save(function(err, saved){
+            res.render('shareset/share-cover-upload',{
+                title : '上传',
+                share : saved,
+                backurl : filds.backurl
+            });
         });
     });
 });

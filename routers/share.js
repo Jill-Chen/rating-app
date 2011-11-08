@@ -166,7 +166,8 @@ exports.destroy = function(req,res, next){
         res.send({
             errors : null,
             action : 'redirect',
-            redirect : '/shareset/'+req.share.shareset
+            // 刷新本页面
+            redirect : ''
         });
     });
 };

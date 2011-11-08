@@ -56,6 +56,10 @@ div.row
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
   .span4
+    .cover-box
+      img(width='195',height='195',src=share.cover)
+      .action
+        a(href='/share/#{share._id}/upload-cover') 更改封面
     .meta
       dl.author
         dt 分享者
@@ -68,7 +72,8 @@ div.row
 
     .action
       p
-        a.btn.ajax-btn(href='#',data-type='get',data-url='/share/#{share._id}/like')  喜欢(#{share.like})
+        a.ajax-btn(href='#',data-type='get',data-url='/share/#{share._id}/like')  喜欢
+        | (#{share.like})
       //p 手机扫描此条码直接打分
     - if(share.tags && share.tags.length);
       .ftags

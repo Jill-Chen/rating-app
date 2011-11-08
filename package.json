@@ -3,14 +3,14 @@
   , "version": "0.0.2"
   , "private": true
   , "dependencies": {
-      "express": "2.3.11"
-    , "jade": ">= 0.0.1"
-    , "underscore" : ">= 1.1.7"
-    , "mongoose" : ">= 2.0.4"
-    , "connect-redis" : ">=1.0.7"
-    , "connect-form" : ">= 0.2.1"
-    , "dateformat" : "1.0.1-1.2.3"
-    , "express-resource" : "0.2.1"
-    , "hashlib" : "1.0.1"
+      "express": "2.3.11"           // framework
+    , "jade": ">= 0.0.1"            // Template Engin
+    , "underscore" : ">= 1.1.7"     // base lib
+    , "mongoose" : ">= 2.0.4"       // DB
+    , "connect-redis" : ">=1.0.7"   // Redis SessiongStore
+    , "connect-form" : ">= 0.2.1"   // 上传
+    , "dateformat" : "1.0.1-1.2.3"  // 日期格式化
+    , "express-resource" : "0.2.1"  // 资源管理
+    , "hashlib" : "1.0.1"           // Password hash
   }
 }

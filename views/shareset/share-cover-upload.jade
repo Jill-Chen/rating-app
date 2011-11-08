@@ -1,0 +1,17 @@
+form.upload-form(action='/share/#{share._id}/upload-cover',method='post',enctype="multipart/form-data")
+  input(type='hidden', value=backurl,name='backurl')
+  fieldset
+    legend= share.title
+    - if(share.cover)
+      .clearfix
+        .input
+          img(src=share.cover)
+    .clearfix
+      label 封面
+      .input
+        input.input-file(type='file', name='cover',multiple="multiple")
+    .actions
+      button.btn.primary(type='submit') 上传
+      |  
+      - if(backurl)
+        a.btn(href=backurl) 返回
