@@ -9,16 +9,18 @@ script#temp-tags(type='kissy/template')
   |    <li><a href='/share/?tags={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
-h1 所有分享会
 
 #page
   .row
     .span11
       ul.pills
         li(class=!query.tab?"active":'')
-          a(href='/shareset') 所有
-        li(class=query.tab === 'upcoming'?"active":'')
-          a(href='/shareset?tab=upcoming') 即将到来的
+          a(href='/shareset') 即将到来
+        li(class=query.tab === 'all'?"active":'')
+          a(href='/shareset?tab=all') 所有分享
+        -if (everyauth.loggedIn)
+          li(class=query.tab === 'my'?"active":'')
+            a(href='/shareset?tab=my') 我创建的
       - if (results.length)
         .setlist
           - each item in results
@@ -32,9 +34,9 @@ h1 所有分享会
                   dt 分享地点
                   dd= item.position
                   dt 开始时间
-                  dd= dateFormat(item.startTime,'yyyy-mm-dd HH:MM:ss dddd')
+                  dd= dateFormat(item.startTime,'mm-dd HH:MM:ss dddd')
                   dt 结束时间
-                  dd= dateFormat(item.endTime,'yyyy-mm-dd HH:MM:ss')
+                  dd= dateFormat(item.endTime,'mm-dd HH:MM:ss dddd')
       - else
         p results is empty
     .span5

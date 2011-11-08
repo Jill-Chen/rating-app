@@ -7,21 +7,24 @@ script
 h1 #{shareset.subject}
 .row
   .span5
-    dl
-      dt 开始时间
-      dd= dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss')
-      dt 结束时间
-      dd= dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss')
-      dt 分享地点
-      dd= shareset.position
-    .desc= shareset.desc
-    - if(isOwner )
-      .action
-        a.btn.small(href='/shareset/#{shareset.postname}/edit')  编辑
-        |  
-        a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset.postname}')  删除
-        |  
-        a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
+    .box-meta
+      dl
+        dt 开始时间
+        dd= dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss dddd')
+        dt 结束时间
+        dd= dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss dddd')
+        dt 分享地点
+        dd= shareset.position
+    .box.box-desc
+      .desc= shareset.desc
+    .box
+      - if(isOwner )
+        .action
+          a.btn.small(href='/shareset/#{shareset.postname}/edit')  编辑
+          |  
+          a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset.postname}')  删除
+          |  
+          a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
   .span11
     - if (shares && shares.length)
       ul.ratelist!= partial('share-list', shares)

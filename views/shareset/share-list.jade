@@ -3,6 +3,14 @@ li.share-list-item
   .cnt
     h3.title
       a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].authors.join(', ')} : #{shares[indexInCollection].title}
+    .meta
+      | #{shares[indexInCollection].like} 喜欢
+      - if(shares[indexInCollection].slider.slideshare)
+        i.icon-slider
+          span 有幻灯片
+      - if(shares[indexInCollection].slider.video )
+        i.icon-video
+          span 有视频
     div.desc= shares[indexInCollection].desc
     .act
       span.author

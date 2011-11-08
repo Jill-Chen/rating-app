@@ -13,12 +13,18 @@ exports.index = function(req,res){
     var q= req.query,
         queryobj = {};
     q.deleted = { "$ne" : true };
-    if(q.tab === 'upcoming'){
+
+    if(!q.tab){
         queryobj.startTime = {
-            $gt : Date.now()
-           ,$lt : Date.now() + 7*24*60*60*1000
+            $gt : new Date()
+           ,$lt : new Date(Date.now() + 7*24*60*60*1000)
         }
-    };
+    }
+
+    if(req.loggedIn && q.tab === 'my'){
+        queryobj.owner = req.user._id;
+    }
+
     var query = ShareSet.find(queryobj);
     query.sort('_id',-1);
     query.limit(20);

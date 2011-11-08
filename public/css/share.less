@@ -4,6 +4,7 @@
     padding-top:50px;
 }
 html,body {
+    font-size:12px;
     background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;
 }
 
@@ -82,11 +83,22 @@ html,body {
         width:@shareWidth - @shareBorder*2;
     }
 }
+.share-list-item {
+    border-top:3px solid #666;
+    margin-bottom:10px;
+    background:#f2f2f2;
+    .box-shadow();
+    padding:20px;
+    a {
+        color:#00f;
+    }
+    .desc {
+        color:#333;
+        margin:10px 0;
+    }
+}
 
 .slideshare {
-}
-.desc {
-    color : @gray;
 }
 
 //  标签
@@ -124,6 +136,7 @@ html,body {
     .hd {
         background:#d5d5d7;
         height:24px;
+        border-top:1px solid #eee;
         border-bottom:1px solid #b7bac1;
     }
     .bd {
@@ -170,4 +183,20 @@ form.login {
         margin-top:100px;
         .box-shadow();
     }
+}
+
+
+.box {
+    margin-bottom:10px;
+}
+.box-meta {
+    background:@red;
+    color:@white;
+    padding:10px;
+    margin-bottom:1px;
+}
+.box-desc {
+    background:#666;
+    color:#fff;
+    padding:10px;
 }
