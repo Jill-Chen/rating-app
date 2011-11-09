@@ -20,6 +20,7 @@ var User = modules.User;
 var ShareSet = modules.ShareSet;
 
 app.configure(function(){
+    app.use(express.static(__dirname + '/public'));
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(form({
@@ -48,7 +49,6 @@ app.configure(function(){
     app.use(everyauth.middleware());
     app.use(express.methodOverride());
     app.use(app.router);
-    app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
