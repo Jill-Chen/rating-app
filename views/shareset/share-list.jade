@@ -1,5 +1,8 @@
 li.share-list-item
-  .cover(style='background-image:url(#{shares[indexInCollection].cover})')
+  - if(shares[indexInCollection].cover)
+    .cover
+      a(href='/share/#{shares[indexInCollection]._id}')
+        img(src=shares[indexInCollection].cover)
   .cnt
     h3.title
       a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].authors.join(', ')} : #{shares[indexInCollection].title}
