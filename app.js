@@ -8,42 +8,47 @@ var express = require('express');
 var _ = require("underscore");
 var modules = require('./modules/');
 var resource = require('express-resource');
-var auth = require('./modules/auth').everyauth;
+var everyauth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
+var form = require('connect-form');
 var dateFormat = require('dateformat');
 require('./datei18n');
-var form = require('connect-form');
 
 var app = module.exports = express.createServer();
 var Share = modules.Share;
 var User = modules.User;
 var ShareSet = modules.ShareSet;
 
-function checkauth(req,res,next){
-    if(!req.loggedIn){
-        res.redirect('/login');
-        req.session.goto = req.url;
-        res.end();
-    }else{
-        next();
-    }
-}
-
 app.configure(function(){
-  app.set('views', __dirname + '/views');
-  app.set('view engine', 'jade');
-  app.use(form({
+    app.set('views', __dirname + '/views');
+    app.set('view engine', 'jade');
+    app.use(form({
       keepExtensions : true,
-      uploadDir : 'public/upload'
-  }));
-  app.use(express.bodyParser());
-  app.use(express.cookieParser());
-  app.use(express.session({ secret: "supershare!", store: new RedisStore }));
-  app.use(auth.middleware());
-  app.use(express.methodOverride());
-
-  app.use(app.router);
-  app.use(express.static(__dirname + '/public'));
+      uploadDir : './public/upload'
+    }));
+    //upload
+    app.use(function(req,res,next){
+        if(req.form && req.is('multipart/form-data')){
+            req.form.complete(function(err, fields, files){
+                if(err) {
+                    console.log('err');
+                    return next(err);
+                }
+                req.fields = fields;
+                req.files = files;
+                next();
+            });
+            return;
+        }
+        next();
+    });
+    app.use(express.bodyParser());
+    app.use(express.cookieParser());
+    app.use(express.session({ secret: "supershare!", store: new RedisStore }));
+    app.use(everyauth.middleware());
+    app.use(express.methodOverride());
+    app.use(app.router);
+    app.use(express.static(__dirname + '/public'));
 });
 
 app.configure('development', function(){
@@ -140,14 +145,11 @@ app.get('/share/:share/like', function(req,res){
     if(!liked){
         liked = [];
     }
-    console.log(liked);
-
     if(liked.indexOf(shareId) !== -1){
         res.send({ errors : ["您已经投过票了"]});
         return;
-    };
+    }
 
-    console.log('like',share.like);
     share.like += 1;
     share.save(function(err, doc){
         if(err) return res.send({
@@ -164,24 +166,6 @@ app.get('/share/:share/like', function(req,res){
 });
 
 
-app.get('/share/:share/cover',function(req,res){
-    res.render('share/update-cover', {
-        title : '上传'
-       ,share : req.share
-    });
-});
-app.post('/share/:share/cover',function(req, res, next){
-    if(req.form){
-        console.dir(req.form);
-        req.form.complete(function(err,fields, filed){
-            if(err) return next(err);
-            res.send('uploaded');
-            console.log('complete', err);
-            console.dir('fields', fields);
-            console.log('files', files);
-        });
-    }
-});
 // 编辑幻灯片
 app.post('/share/:share/editslider',function(req, res){
     var share = req.share,
@@ -196,6 +180,7 @@ app.post('/share/:share/editslider',function(req, res){
         });
         return;
     }
+
     share.save(function(err){
         if(err) {
             res.send({
@@ -220,27 +205,28 @@ app.get('/share/:share/upload-cover', function(req, res){
 
 app.post('/share/:share/upload-cover', function(req, res){
     var share = req.share,
-        form = req.form;
-    form.complete(function(err, filds, files){
-        console.log(' ---- ' ,err, filds, files);
-        if(!files.cover){
-            res.redirect('back');
-            return;
-        }
-        share.cover = files.cover.path.replace(/^public/,'');
+        form = req.form,
+        files;
+    if(!form || !form.files || !form.files){
+        console.log('no files');
+        return res.redirect('back');
+    }
+    files = req.files;
+    if(!files.cover){
+        res.redirect('back');
+        return;
+    }
+    console.log('files', files);
 
-        share.save(function(err, saved){
-            res.render('shareset/share-cover-upload',{
-                title : '上传',
-                share : saved,
-                backurl : filds.backurl
-            });
+    share.cover = files.cover.path.replace(/^public/,'');
+
+    share.save(function(err, saved){
+        res.render('shareset/share-cover-upload',{
+            title : '上传',
+            share : saved,
+            backurl : req.fields.backurl
         });
     });
-});
-
-app.post('/api/share/:share/rate', function(req,res){
-
 });
 
 /**
@@ -250,5 +236,5 @@ app.helpers({
     dateFormat : dateFormat
 });
 
-auth.helpExpress(app);
+everyauth.helpExpress(app);
 exports.app = app;
