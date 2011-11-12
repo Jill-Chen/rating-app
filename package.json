@@ -13,5 +13,6 @@
     , "everyauth" : ">=0.2.18"
     , "express-resource" : "0.2.1"
     , "hashlib" : "1.0.1"
+    , "moment" : ">=1.1.1"
   }
 }

@@ -8,15 +8,19 @@ script
   p
     a(href="/list") 所有分享
 - else if(query.tags)
+  .navback
+    a(href='/share') 所有分享
   h1
     标签为 #{query.tags} 的分享
-  p
-    a(href="/explorer") 所有标签
-- else
-  h1 所有分享
 
 #page
-  - if (shares.length)
-    ul.ratelist!= partial('shareitem', shares)
-  - else
-    p results is empty
+  .row
+    .span11
+      - if (shares.length)
+        ul.ratelist!= partial('shareitem', shares)
+      - else
+        p results is empty
+    .span5
+      != partial('partial/side-tags')
+script
+  KISSY.use('rate/tags');

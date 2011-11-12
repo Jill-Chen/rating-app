@@ -9,10 +9,10 @@ h1 #{shareset.subject}
   .span5
     .box-meta
       dl
-        dt 开始时间
-        dd= dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss dddd')
-        dt 结束时间
-        dd= dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss dddd')
+        dt 日期
+        dd= moment(shareset.startTime).format('YYYY-M-D')
+        dt 分享时间
+        dd.time= moment(shareset.startTime).format('HH:mm:ss') + " - " + moment(shareset.endTime).format('HH:mm:ss')
         dt 分享地点
         dd= shareset.position
     .box.box-desc

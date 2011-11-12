@@ -6,7 +6,7 @@ script
 script#temp-tags(type='kissy/template')
   |<ul class='tags'>
   |  {{#each tags as tag}}
-  |    <li><a href='/share/?tags={{tag}}'>{{tag}}</a></li>
+  |    <li><a title='标签为 {{tag}} 的分享' href='/share/?tags={{tag}}'>{{tag}}</a></li>
   |  {{/each}}
   |</ul>
 
@@ -34,10 +34,12 @@ script#temp-tags(type='kissy/template')
                   dt 分享地点
                   dd= item.position
                 dl.meta
+                  dt 开始日期
+                  dd= moment(item.startTime).fromNow()
                   dt 开始时间
-                  dd= dateFormat(item.startTime,'mm-dd HH:MM:ss dddd')
+                  dd= moment(item.startTime).format('HH : mm : ss')
                   dt 结束时间
-                  dd= dateFormat(item.endTime,'mm-dd HH:MM:ss dddd')
+                  dd= moment(item.endTime).format('HH : mm : ss')
       - else
         p results is empty
     .span5

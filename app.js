@@ -12,6 +12,7 @@ var everyauth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var form = require('connect-form');
 var dateFormat = require('dateformat');
+var moment = require('moment');
 require('./datei18n');
 
 var app = module.exports = express.createServer();
@@ -234,6 +235,7 @@ app.post('/share/:share/upload-cover', function(req, res){
  */
 app.helpers({
     dateFormat : dateFormat
+   ,moment : moment
 });
 
 everyauth.helpExpress(app);

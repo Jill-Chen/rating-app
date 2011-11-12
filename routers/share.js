@@ -19,7 +19,7 @@ exports.index = function(req,res){
         if(err) return next(err);
         res.render('share/index', {
             shares : shares,
-            query : shares,
+            query : query,
             type : req.params.listtype,
             title : '所有分享'
         });

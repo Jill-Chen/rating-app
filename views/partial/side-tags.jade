@@ -1,0 +1,10 @@
+script#temp-tags(type='kissy/template')
+  |<ul class='tags'>
+  |  {{#each tags as tag}}
+  |    <li><a href='/share?tags={{tag}}'>{{tag}}</a></li>
+  |  {{/each}}
+  |</ul>
+div#tags.box
+  .hd
+    h3 标签
+  .bd

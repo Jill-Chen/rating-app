@@ -10,6 +10,7 @@ form.upload-form(action='/share/#{share._id}/upload-cover',method='post',enctype
       label 封面
       .input
         input.input-file(type='file', name='cover',multiple="multiple")
+        span.help-block 为了最好的显示效果，图片分辨率请设为 195px * 195px;
     .actions
       button.btn.primary(type='submit') 上传
       |  
