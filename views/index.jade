@@ -3,23 +3,16 @@ script
     App.nav('home');
   });
 
-script#temp-tags(type='kissy/template')
-  |<ul class='tags'>
-  |  {{#each tags as tag}}
-  |    <li><a href='/share?tags={{tag}}'>{{tag}}</a></li>
-  |  {{/each}}
-  |</ul>
 
+.home-banner 
+  img(src='img/banner.gif')
 .row
   .span10
     div.box
       .hd
         h3 分享会
       .bd!= partial('partial/links')
-    div#tags.box
-      .hd
-        h3 标签
-      .bd
+    != partial('partial/side-tags')
   .span6
     - if(!everyauth.loggedIn)
       form.form-stacked.login(action='/login', method="post")
@@ -46,3 +39,19 @@ script#temp-tags(type='kissy/template')
             a(href='https://is.taobao.org/meeting/')  会议室预定
 script
   KISSY.use('rate/tags');
+  //KISSY.ready(function(S){
+    //var template = '{x}px {y}px 0px #999';
+    //var banner = S.one('.home-banner');
+    //var bWidth = 940;
+    //var bHeight = 218;
+
+    //banner.on('mousemove', function(ev){
+      //var vx = ev.offsetX - bWidth/2;
+      //var vy = ev.offsetY - bHeight/2;
+      //var css = S.substitute(template, {
+        //x : -vx/bWidth*10,
+        //y : -vy/bHeight*10
+      //});
+      //banner.css('text-shadow', css)
+    //});
+  //});
