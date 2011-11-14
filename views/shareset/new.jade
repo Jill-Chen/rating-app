@@ -18,11 +18,11 @@ form.ajax-form(action='/shareset', method="post")
   fieldset
     legend 组织一次分享会
     .clearfix
-      label(for="subject") 分享主题 *
+      label(for="subject") 分享会主题 *
       .input
         input.text#subject(name="subject",value=shareset.subject)
     .clearfix
-      label(for='postname') 个性名称 *
+      label(for='postname') 个性地址 *
       .input
         input.text#postname(type='text',name='postname')= shareset.postname
         span.help-block http://ourshare/shareset/<strong>your-shareset-name</strong> 不可更改

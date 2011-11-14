@@ -72,31 +72,16 @@ div.row
 
     .action
       p
-        a.ajax-btn(href='#',data-type='get',data-url='/share/#{share._id}/like')  喜欢
-        | (#{share.like})
-      //p 手机扫描此条码直接打分
+        a.ajax-btn(href='#',data-type='get',data-url='/share/#{share._id}/like')  喜欢++
+        |  [ #{share.like} ]
     - if(share.tags && share.tags.length);
       .ftags
-        h3 Tags
+        h3 此分享的照片
         ul.tags
           -share.tags.forEach(function(tag){
             li
               a(href="/share/?tags=#{tag}")=tag
           -})
 
-
-
-    div.records#rate_records(style='display:none')
-
-      //table
-        thead
-          tr
-            th.s 准备工作
-            th.s 分享掌控
-            th.s 分享内容
-            th.s 整体印象
-            th.ts 评分时间
-        tbody
-      a(href="/getRate/#{share._id}") 获取文件
 script
   KISSY.use('rate/app,rate/ajax');
