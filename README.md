@@ -1,14 +1,13 @@
-a Simple express app
+Share
 
-requirs:
+#Requirs:
     node
     mongodb
     git
 
-setups the app:
-    1. git clone git@github.com:maxbbn/rating-app.git && cd ratting-app
-    3. npm install -d
-    4. npm install mongodb
+#Setup the app:
+  1. git clone git@github.com:maxbbn/rating-app.git && cd ratting-app
+  3. npm install -d
 
-start the server:
-    cd rating-app && node app.js
+#Start the server:
+  cd node server.js
