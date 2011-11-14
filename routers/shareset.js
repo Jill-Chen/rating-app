@@ -17,7 +17,6 @@ exports.index = function(req,res){
     if(!q.tab){
         queryobj.startTime = {
             $gt : new Date()
-           ,$lt : new Date(Date.now() + 7*24*60*60*1000)
         }
     }
 
@@ -40,6 +39,9 @@ exports.index = function(req,res){
     });
 };
 exports.new = function(req,res){
+    if(!req.user){
+        res.redirect('/login');
+    }
     var shareset = new ShareSet();
     res.render('shareset/new', {
         title: '组织一次分享',
