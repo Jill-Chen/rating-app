@@ -2,7 +2,9 @@ KISSY.add('rate/ajax', function(S, FormError){
     var $ = S.all;
     var actions = {
         redirect : function(res){
-            //S.log(res);
+            if(!res.redirect){
+                location.reload();
+            }
             location.href = res.redirect
         }
     };
@@ -38,23 +40,33 @@ KISSY.add('rate/ajax', function(S, FormError){
     $('.ajax-btn').each(function(btn){
         var $t = $(this),
             url = $t.attr('href'),
-            type;
+            type,
+            cfm;
 
         if(url && !$t.attr('data-url')){
             $t.attr('data-url', url);
         }
         url = $t.attr('data-url');
         type = $t.attr('data-type');
-        S.log($t, url, type)
+        cfm = $t.attr('data-confirm');
+
+
         if(url && type){
             $t.on('click',function(ev){
                 ev.preventDefault();
+                if(cfm){
+                    if(!confirm(cfm)) return;
+                }
                 S.ajax({
                     url : $t.attr('data-url'),
                     type : $t.attr('data-type'),
                     dataType : 'json',
+                    cache : false,
                     success : function(res){
                         if(res.errors){
+                            if(res.errors[0]){
+                                alert(res.errors[0]);
+                            };
                             return;
                         }
                         if(actions[res.action]){
