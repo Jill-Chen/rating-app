@@ -31,6 +31,7 @@ app.configure(function(){
     //upload
     app.use(function(req,res,next){
         if(req.form && req.is('multipart/form-data')){
+            console.log('form', req.form);
             req.form.complete(function(err, fields, files){
                 if(err) {
                     console.log('err');
@@ -38,6 +39,7 @@ app.configure(function(){
                 }
                 req.fields = fields;
                 req.files = files;
+                console.log('form', req.files);
                 next();
             });
             return;
@@ -208,7 +210,7 @@ app.post('/share/:share/upload-cover', function(req, res){
     var share = req.share,
         form = req.form,
         files;
-    if(!form || !form.files || !form.files){
+    if(!form || !req.files){
         console.log('no files');
         return res.redirect('back');
     }
