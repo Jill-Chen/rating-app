@@ -22,7 +22,7 @@ h1 #{shareset.subject}
         .action
           a.btn.small(href='/shareset/#{shareset.postname}/edit')  编辑
           |  
-          a.btn.small.ajax-btn(data-type='delete',href='/shareset/#{shareset.postname}')  删除
+          a.btn.small.ajax-btn(data-type='delete',data-confirm='你确定要删除吗',href='/shareset/#{shareset.postname}')  删除
           |  
           a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
   .span11

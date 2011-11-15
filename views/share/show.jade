@@ -72,8 +72,9 @@ div.row
 
     .action
       p
-        a.ajax-btn(href='#',data-type='get',data-url='/share/#{share._id}/like')  喜欢++
-        |  [ #{share.like} ]
+        a.like.ajax-btn(href='#',data-type='get',title='喜欢',data-url='/share/#{share._id}/like')
+          i ♥
+          span #{share.like}
     - if(share.tags && share.tags.length);
       .ftags
         h3 此分享的照片

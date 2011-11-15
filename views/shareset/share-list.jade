@@ -7,7 +7,9 @@ li.share-list-item
     h3.title
       a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].authors.join(', ')} : #{shares[indexInCollection].title}
     .meta
-      | #{shares[indexInCollection].like} 喜欢
+      span.like
+        i ♥
+        span #{shares[indexInCollection].like}
       - if(shares[indexInCollection].slider.slideshare)
         i.icon-slider
           span 有幻灯片
