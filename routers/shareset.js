@@ -12,7 +12,7 @@ exports.load = function(id,next){
 exports.index = function(req,res){
     var q= req.query,
         queryobj = {};
-    q.deleted = { "$ne" : true };
+    queryobj.deleted = { "$ne" : true };
 
     if(!q.tab){
         queryobj.startTime = {
@@ -27,6 +27,7 @@ exports.index = function(req,res){
     var query = ShareSet.find(queryobj);
     query.sort('_id',-1);
     query.limit(20);
+
     query.exec(function(err,shares){
         if(err) return next(err);
         req.results = shares;
@@ -38,6 +39,7 @@ exports.index = function(req,res){
         });
     });
 };
+
 exports.new = function(req,res){
     if(!req.user){
         res.redirect('/login');
@@ -49,6 +51,7 @@ exports.new = function(req,res){
         shareset : shareset
     });
 };
+
 exports.create = function(req,res){
     var shareset = new ShareSet(),
         reqbody = req.body;
@@ -78,6 +81,7 @@ exports.create = function(req,res){
     });
 
 };
+
 exports.show = function(req,res, next){
     var ss = req.shareset;
     Share.find({shareset : ss._id, deleted : {$ne : true}}, function(err, docs){
@@ -91,6 +95,7 @@ exports.show = function(req,res, next){
         });
     });
 };
+
 exports.edit = function(req,res){
     var shareset = req.shareset;
 
@@ -98,8 +103,8 @@ exports.edit = function(req,res){
         title : '编辑 ' + shareset.subject
        ,shareset : shareset
     });
-
 }
+
 exports.update = function(req,res){
     var shareset = req.shareset;
     shareset.subject = req.body.subject;
@@ -122,7 +127,7 @@ exports.update = function(req,res){
         });
     });
 
-}
+};
 
 exports.destroy = function(req,res, next){
     req.shareset.deleted = true;
@@ -142,81 +147,3 @@ exports.destroy = function(req,res, next){
     });
 };
 
-//exports['/shareset/add']= {
-    //get : function(req,res){
-        //var shareset = new ShareSet();
-        //res.render('create', {
-            //title: '组织一次分享',
-            //error : [],
-            //shareset : shareset
-        //});
-    //},
-    //post : function(req,res){
-        //var shareset = new ShareSet({
-            //subject : req.body.subject,
-            //endTime : req.body.endTime,
-            //startTime : req.body.startTime,
-            //position : req.body.position,
-            //desc : req.body.desc,
-            //owner : req.user._id
-        //});
-
-        //shareset.save(function(error,saved){
-            //if(error && error.errors){
-                //res.render('create', {
-                    //title: 'Create a Cate',
-                    //errors : error.errors,
-                    //shareset : shareset
-                //});
-                //return;
-            //}
-            //res.redirect('/shareset/' + saved._id);
-        //});
-    //}
-//};
-
-//exports['/shareset/edit/:setId'] = {
-    //get : function(req, res){
-        //var shareset = req.shareset;
-
-        //res.render('create',{
-            //title : '编辑 ' + shareset.subject
-           //,shareset : shareset
-           //,shares : req.shares
-        //});
-
-    //},
-    //post : function(req,res){
-
-        //var shareset = req.shareset;
-
-        //shareset.subject = req.body.subject;
-        //shareset.endTime = req.body.endTime;
-        //shareset.startTime = req.body.startTime;
-        //shareset.position = req.body.position;
-        //shareset.desc = req.body.desc;
-
-        //shareset.save(function(error,saved){
-            //if(error && error.errors){
-                //res.render('create', {
-                    //title: 'Create a Cate',
-                    //errors : error.errors,
-                    //shareset : shareset
-                //});
-                //return;
-            //}
-            //res.redirect('/shareset/' + saved._id);
-        //});
-    //}
-//};
-
-//exports['/shareset/delete/$setId'] = {
-   //get : function(req,res,next){
-       //req.shareset.deleted = true;
-
-       //req.save(function(err, doc){
-           //if(err) return next(err);
-           //res.redirect('/shareset/list');
-       //});
-    //}
-//};
