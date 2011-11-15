@@ -3,6 +3,7 @@ script
   KISSY.use('rate/app',function(S,App){
     App.nav('create');
   });
+
 script#temp-errors(type='text/template')
   |{{#each errors as err}}
   |<div class='alert-message warning'>
@@ -10,20 +11,69 @@ script#temp-errors(type='text/template')
   |</div>
   |{{/each}}
 
-form.ajax-form(action='/shareset/#{shareset.postname}', method="put")
+form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', method=!isNew?"put":"post")
   .error-holder
   fieldset
-    legend 编辑
+    legend= !isNew? "编辑" : "组织一次分享会"
     .clearfix
-      label(for="subject") 分享主题
+      label(for="subject") 分享会主题 *
       .input
         input.text#subject(name="subject",value=shareset.subject)
     .clearfix
-      label(for="time")  分享时间
+      label(for='postname') 个性地址 *
       .input
-        input.text.date-time.span3#time-start(name="startTime",value=shareset.startTime?dateFormat(shareset.startTime,'yyyy-mm-dd HH:MM:ss'):'')
+        - if(!isNew)
+          input.text#postname(type='text',disabled='disabled',value=shareset.postname)
+        - else
+          input.text#postname(type='text',name='postname',value=shareset.postname)
+        span.help-block http://ourshare/shareset/<strong>your-shareset-name</strong> 创建后不可更改
+    .clearfix
+      label(for="time")  分享日期
+      .input
+        input.text.ctl-date.span3#date(name="date",value=moment(shareset.date).format('YYYY-MM-DD'))
+
+    .clearfix
+      label  时间
+      .input
+        select.text.date-time.span2(name="startTimeH")
+          option(value=shareset.startTime.split(':')[0])= shareset.startTime.split(':')[0]
+          option(value='08') 08
+          option(value='09') 09
+          option(value='10') 10
+          option(value='11') 11
+          option(value='12') 12
+          option(value='13') 13
+          option(value='14') 14
+          option(value='15') 15
+          option(value='16') 16
+          option(value='17') 17
+          option(value='18') 18
+          option(value='19') 19
+        select.text.date-time.span2(name="startTimeM")
+          option(value=shareset.startTime.split(':')[1])= shareset.startTime.split(':')[1]
+          option(value='00') 00
+          option(value='30') 30
+
         |  到 
-        input.text.date-time.span3#time-end(name="endTime",value=shareset.startTime?dateFormat(shareset.endTime,'yyyy-mm-dd HH:MM:ss'):'')
+        select.text.date-time.span2(name="endTimeH")
+          option(value=shareset.endTime.split(':')[0])= shareset.endTime.split(':')[0]
+          option(value='08') 08
+          option(value='09') 09
+          option(value='10') 10
+          option(value='11') 11
+          option(value='12') 12
+          option(value='13') 13
+          option(value='14') 14
+          option(value='15') 15
+          option(value='16') 16
+          option(value='17') 17
+          option(value='18') 18
+          option(value='19') 19
+
+        select.text.date-time.span2(name="endTimeM")
+          option(value=shareset.endTime.split(':')[1])= shareset.endTime.split(':')[1]
+          option(value='00') 00
+          option(value='30') 30
     .clearfix
       label(for="position") 分享地址
       .input
@@ -36,36 +86,14 @@ form.ajax-form(action='/shareset/#{shareset.postname}', method="put")
           option(value='前端') 前端
           option(value='交互-设计') 交互-设计
           option(value='Java') Java
+
     .clearfix
       label(for='desc') 介绍
       .input
         textarea.xxlarge(name='desc')= shareset.desc
+
     .actions
-      button.btn.primary(type="submit") 提交
+      button.btn.primary(type="submit")= !isNew?"确认修改":"创建分享会";
 
 script
-    KISSY.use('rate/ajax');
-    KISSY.use('calendar,calendar/assets/base.css',function(S,Calendar){
-      var calendars = [];
-      var $ = S.all;
-      $('.date-time').each(function(el){
-        $el = $(el);
-        var date = S.Date.parse(el.val()) || new Date();
-        date.setMinutes(0);
-        date.setSeconds(0);
-        date.setMilliseconds(0);
-        var c =  new Calendar(el, {
-          popup : true,
-          selected : date,
-          showTime : true,
-          triggerType : ['focus','click']
-        }).on('timeSelect',function(ev){
-          this.hide();
-          el.val(S.Date.format(ev.date,"yyyy-mm-dd HH:MM:ss"));
-        });
-        calendars.push(c);
-        calendars[0].on('timeSelect',function(ev){
-          calendars[1].render({selected : ev.date});
-        });
-      });
-    })
+    KISSY.use('rate/ajax,rate/calendar');

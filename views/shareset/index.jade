@@ -35,11 +35,9 @@ script#temp-tags(type='kissy/template')
                   dd= item.position
                 dl.meta
                   dt 开始日期
-                  dd= moment(item.startTime).fromNow()
-                  dt 开始时间
-                  dd= moment(item.startTime).format('HH : mm : ss')
-                  dt 结束时间
-                  dd= moment(item.endTime).format('HH : mm : ss')
+                  dd #{moment(item.date).format('YYYY-MM-DD')} ( #{moment(item.date).fromNow()} )
+                  dt 时间
+                  dd #{item.startTime} - #{item.endTime}
       - else
         p results is empty
     .span5

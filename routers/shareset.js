@@ -15,7 +15,7 @@ exports.index = function(req,res){
     queryobj.deleted = { "$ne" : true };
 
     if(!q.tab){
-        queryobj.startTime = {
+        queryobj.date = {
             $gt : new Date()
         }
     }
@@ -43,12 +43,14 @@ exports.index = function(req,res){
 exports.new = function(req,res){
     if(!req.user){
         res.redirect('/login');
+        return;
     }
     var shareset = new ShareSet();
-    res.render('shareset/new', {
-        title: '组织一次分享',
-        error : [],
-        shareset : shareset
+
+    res.render('shareset/edit', {
+        title: '组织一次分享'
+       ,isNew : true
+       ,shareset : shareset
     });
 };
 
@@ -56,8 +58,9 @@ exports.create = function(req,res){
     var shareset = new ShareSet(),
         reqbody = req.body;
     shareset.subject = reqbody.subject;
-    shareset.endTime = reqbody.endTime;
-    shareset.startTime = reqbody.startTime;
+    shareset.date = reqbody.date;
+    shareset.startTime = (reqbody.startTimeH||'00')+":"+(reqbody.startTimeM||'00');
+    shareset.endTime  = (reqbody.endTimeH||'00')+":"+(reqbody.endTimeM||'00');
     shareset.position = reqbody.position;
     shareset.desc = reqbody.desc;
     shareset.postname = reqbody.postname;
@@ -99,19 +102,23 @@ exports.show = function(req,res, next){
 exports.edit = function(req,res){
     var shareset = req.shareset;
 
+    console.log(shareset);
     res.render('shareset/edit',{
         title : '编辑 ' + shareset.subject
+       ,isNew : false
        ,shareset : shareset
     });
 }
 
 exports.update = function(req,res){
-    var shareset = req.shareset;
-    shareset.subject = req.body.subject;
-    shareset.endTime = req.body.endTime;
-    shareset.startTime = req.body.startTime;
-    shareset.position = req.body.position;
-    shareset.desc = req.body.desc;
+    var shareset = req.shareset,
+        reqbody = req.body;
+    shareset.subject = reqbody.subject;
+    shareset.date = reqbody.date;
+    shareset.startTime = (reqbody.startTimeH||'00')+":"+(reqbody.startTimeM||'00');
+    shareset.endTime  = (reqbody.endTimeH||'00')+":"+(reqbody.endTimeM||'00');
+    shareset.position = reqbody.position;
+    shareset.desc = reqbody.desc;
 
     shareset.save(function(error,saved){
         if(error && error.errors){

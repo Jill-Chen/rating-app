@@ -26,11 +26,16 @@ var ShareSetSchema = new Schema({
     'type' : Date
    ,'default' : Date.now
  }
- ,startTime : {
+ ,date : {
     'type' : Date
  }
+ ,startTime : {
+    'type' : String
+   ,'default' : ' : '
+ }
  ,endTime : {
-   'type' : Date
+   'type' : String
+   ,'default' : ' : '
  }
  ,position : {
    'type' : String
@@ -66,9 +71,9 @@ mongoose.model('shareset', ShareSetSchema);
 // 必须指定主题
 ShareSetSchema.path('subject').validate(helper.noempty, 'SUBJECT_MISSING');
 // 结束时间必须在开始时间之后
-ShareSetSchema.path('endTime').validate(function(endTime, b, c){
-    return endTime > this.startTime;
-}, 'TIME_ERROR_ENDTIME');
+//ShareSetSchema.path('endTime').validate(function(endTime, b, c){
+    //return endTime > this.startTime;
+//}, 'TIME_ERROR_ENDTIME');
 // 必须先登录
 ShareSetSchema.path('owner').validate(helper.noempty, '请先登录');
 

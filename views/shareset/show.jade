@@ -10,9 +10,9 @@ h1 #{shareset.subject}
     .box-meta
       dl
         dt 日期
-        dd= moment(shareset.startTime).format('YYYY-M-D')
+        dd= moment(shareset.date).format('YYYY-M-D')
         dt 分享时间
-        dd.time= moment(shareset.startTime).format('HH:mm:ss') + " - " + moment(shareset.endTime).format('HH:mm:ss')
+        dd.time= shareset.startTime + " - " + shareset.endTime
         dt 分享地点
         dd= shareset.position
     .box.box-desc
