@@ -13,10 +13,14 @@ exports.index = function(req,res){
     var q= req.query,
         queryobj = {};
     queryobj.deleted = { "$ne" : true };
-
+    var today = new Date();
+    today.setHours(0);
+    today.setMinutes(0);
+    today.setSeconds(0);
+    today.setMilliseconds(0);
     if(!q.tab){
         queryobj.date = {
-            $gt : new Date()
+            $gte : today
         }
     }
 

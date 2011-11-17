@@ -85,6 +85,16 @@ html,body {
         width:@shareWidth - @shareBorder*2;
     }
 }
+
+.box .hd h3 {
+    color:#666;
+    font-size:14px;
+}
+
+ul.links {
+    list-style:none;
+    margin:0 0 0 10px;
+}
 .share-list-item {
     border-top:3px solid #666;
     margin-bottom:10px;
@@ -132,12 +142,17 @@ html,body {
         display:inline-block;
         padding:5px;
         background:#eee;
-        #gradient .vertical(#f2f2f2, #ddd);
+        color:#666;
+        border:1px solid #999;
+        border-right:2px solid #278ac4;
+        .border-radius(3px 0 0 3px);
+        .box-shadow(0 1px 0px #ddd);
+        #gradient .vertical(#f8f8f8, #f1f1f1);
     }
     a:hover {
         text-decoration:none;
-        color:#fff;
-        #gradient .vertical(#666, #333);
+        color:#999;
+        /*#gradient .vertical(#f8f8f8, #f1f1f1);*/
     }
 }
 
@@ -179,15 +194,6 @@ html,body {
     }
 }
 
-//fix calendar
-.ks-cal-call {
-    line-height:1.2;
-    .ct-ok {
-        .btn();
-        padding:2px 5px 3px;
-        margin-left:5px;
-    }
-}
 .sliderform {
     padding:0;
     margin:0;
@@ -222,24 +228,49 @@ form.login, form.upload-form {
     margin-bottom:10px;
 }
 .box-meta {
-    background:darken(@red,30%);
-    color:@white;
     padding:10px;
     margin-bottom:1px;
 
-    dt {
-        color:#EEE;
-    }
     dd {
         font-size:20px;
-        font-family:arial;
-        margin-bottom:10px;
     }
 }
 .box-desc {
     background:#666;
     color:#fff;
     padding:10px;
+}
+
+.calendar {
+    .box();
+    padding:4px;
+    position:relative;
+    width:100px;
+    background:#fff;
+    border-top:3px solid #dd3333;
+    .box-shadow();
+    .time {
+        text-align:center;
+    }
+    .year {
+        position:absolute;
+        top:5px;
+        left:10px;
+    }
+    .month {
+        position:absolute;
+        top:5px;
+        right:10px;
+    }
+    .date {
+        font-family:'Days One', cursive;
+        text-shadow:1px 1px 3px #999;
+        color:#666;
+        margin:30px 0 15px;
+        font-size:50px;
+        line-height:50px;
+        text-align:center;
+    }
 }
 
 
@@ -274,3 +305,6 @@ a.like:hover {
 a.like:hover i {
     color:lighten(#f00 ,20%);
 }
+
+
+

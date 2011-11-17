@@ -1,6 +1,6 @@
 // 分享会列表
 script
-  KISSY.use('rate/app',function(S,App){
+ KISSY.use('rate/app',function(S,App){
     App.nav('setlist#{type}');
   });
 script#temp-tags(type='kissy/template')
@@ -34,10 +34,12 @@ script#temp-tags(type='kissy/template')
                   dt 分享地点
                   dd= item.position
                 dl.meta
-                  dt 开始日期
-                  dd #{moment(item.date).format('YYYY-MM-DD')} ( #{moment(item.date).fromNow()} )
+                  dt 日期
+                  dd #{moment(item.date).format('YYYY-MM-DD')} 
+                    | ( #{moment(item.date.getTime()).hours(item.startTime.split(':')[0]).minutes(item.startTime.split(':')[1]).fromNow()} )
                   dt 时间
                   dd #{item.startTime} - #{item.endTime}
+              .ft
       - else
         p results is empty
     .span5

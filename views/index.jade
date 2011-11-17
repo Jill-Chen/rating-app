@@ -9,27 +9,21 @@ script
 .row
   .span10
     div.box
+      .hd 
+        h3 分享平台能帮你做什么？
+      .bd
+        ul
+          li 更轻松的组织分享会
+          li 发现优质分享
+          li 收集反馈, 帮助组织者，与改善分享
+          li 分享沉淀: 幻灯片，视频， 图片，文档
+          li 讨论
+    div.box
       .hd
-        h3 分享会
+        h3 热门分享
       .bd!= partial('partial/links')
     != partial('partial/side-tags')
   .span6
-    - if(!everyauth.loggedIn)
-      form.form-stacked.login(action='/login', method="post")
-        fieldset
-          legend 登录
-          .clearfix
-            label(for=everyauth.password.loginFormFieldName) 用户名：
-            .input
-              input.text#input_login(type='text',name=everyauth.password.loginFormFieldName)
-          .clearfix
-            label(for=everyauth.password.passwordFormFieldName) 密码：
-            .input
-              input.text#input_password(type='password', name=everyauth.password.passwordFormFieldName)
-          .actions
-            button(type="submit", class='btn primary') 提交
-            |  要组织分享, 先去
-            a(href='/register') 注册一下
     .box
       .hd
         h3  常用链接
@@ -39,19 +33,3 @@ script
             a(href='https://is.taobao.org/meeting/')  会议室预定
 script
   KISSY.use('rate/tags');
-  //KISSY.ready(function(S){
-    //var template = '{x}px {y}px 0px #999';
-    //var banner = S.one('.home-banner');
-    //var bWidth = 940;
-    //var bHeight = 218;
-
-    //banner.on('mousemove', function(ev){
-      //var vx = ev.offsetX - bWidth/2;
-      //var vy = ev.offsetY - bHeight/2;
-      //var css = S.substitute(template, {
-        //x : -vx/bWidth*10,
-        //y : -vy/bHeight*10
-      //});
-      //banner.css('text-shadow', css)
-    //});
-  //});

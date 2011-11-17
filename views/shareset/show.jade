@@ -7,12 +7,13 @@ script
 h1 #{shareset.subject}
 .row
   .span5
+    .calendar
+      .year #{shareset.date.getFullYear()} 年
+      .month #{shareset.date.getMonth()+1} 月
+      .date= shareset.date.getDate()
+      .time= shareset.startTime + " - " + shareset.endTime
     .box-meta
       dl
-        dt 日期
-        dd= moment(shareset.date).format('YYYY-M-D')
-        dt 分享时间
-        dd.time= shareset.startTime + " - " + shareset.endTime
         dt 分享地点
         dd= shareset.position
     .box.box-desc
