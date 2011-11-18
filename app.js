@@ -13,7 +13,6 @@ var RedisStore = require('connect-redis')(express);
 var form = require('connect-form');
 var dateFormat = require('dateformat');
 var moment = require('moment');
-require('./datei18n');
 
 var app = module.exports = express.createServer();
 var Share = modules.Share;
