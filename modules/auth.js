@@ -10,7 +10,7 @@ everyauth.everymodule.findUserById(function(userId, callback){
 });
 
 everyauth.password
-    .loginWith('login')
+    .loginWith('email')
     .getLoginPath('/login')
     .postLoginPath('/login')
     .loginView('auth/login')
@@ -20,7 +20,8 @@ everyauth.password
     })
     .authenticate(function(login, password){
         var promise = this.Promise();
-        User.findOne({login:login}, function(err, user){
+        console.log(login, password);
+        User.findOne({email:login}, function(err, user){
             if(err){
                 return promise.fulfill([err])
             }
@@ -42,11 +43,10 @@ everyauth.password
         layout : 'auth/layout',
         title : '注册'
     })
-    .validateRegistration(function(newUser, errors){
-        console.log('validate', newUser, errors);
+    .validateRegistration(function(user, errors){
         var promise = this.Promise();
 
-        var user = User.findOne({ login : newUser.login}, function(err, user){
+        var user = User.findOne({ email : user.email}, function(err, user){
             if(err){
                 errors.push(err)
                 promise.fulfill(errors);
@@ -62,7 +62,7 @@ everyauth.password
         return promise;
     })
     .registerUser(function(newUser, errors){
-        console.log('newUser', newUser, errors);
+        console.log(newUser);
         var promise = this.Promise();
         newUser.password = hashlib.md5(newUser.password);
         var user = new User(newUser);
@@ -76,5 +76,18 @@ everyauth.password
 
         return promise;
     })
-    .loginSuccessRedirect('/')
-    .registerSuccessRedirect('/')
+    .respondToLoginSucceed(autoredirect)
+    .respondToRegistrationSucceed(autoredirect);
+/**
+ * 登录完成后，根据session.redirectTo 自动重定向
+ */
+function autoredirect (res, user, req){
+    if(user){
+        if(req.session.redirectTo){
+            res.redirect(req.session.redirectTo);
+            req.session.redirectTo = null;
+            return;
+        }
+        res.redirect('/');
+    }
+}

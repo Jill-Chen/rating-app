@@ -18,51 +18,34 @@ exports.index = function(req,res){
     sharequery.exec(function(err,shares){
         if(err) return next(err);
         res.render('share/index', {
-            shares : shares,
-            query : query,
-            type : req.params.listtype,
-            title : '所有分享'
+            shares : shares
+           ,query  : query
+           ,navtab : 'share'
+           ,type   : req.params.listtype
+           ,title  : '所有分享'
         });
     });
 
 };
 exports.new = function(req,res){
+    if(!req.user){
+        res.redirect('/login?redirect=' + req.url);
+        return;
+    }
     var sharesetId = req.query.shareset;
     ShareSet.findOne({postname:sharesetId}, function(err,shareset){
         var share = new Share({
             shareset :shareset._id
         });
         res.render('share/new', {
-            title: '添加分享到分享会',
-            share : share,
-            shareset : shareset
+            title: '添加分享到分享会'
+           ,share : share
+           ,navtab : 'share'
+           ,shareset : shareset
         });
     })
 };
 exports.create = function(req,res,next){
-
-    //req.form.complete(function(err, fields, files){
-        //console.log('complete', err);
-        //if(err){
-            //next(err);
-        //}else{
-            //console.dir('fields', fields);
-            //console.log('upload ', files.cover.filename, files.cover.path);
-            //var share = new Share({
-                //title : req.body['title']
-               //,authors : req.body['authors']
-               //,tags : req.body['tags']
-               //,desc : req.body['desc']
-               //,owner : req.user._id
-               //,shareset : req.params.setId
-            //});
-        //}
-    //});
-
-    //req.form.on('progress', function(bytesReceived, bytesExpected){
-        //var percent = (bytesReceived / bytesExpected * 100) | 0;
-        //console.log('Uploading: %' + percent + '\r');
-    //});
 
     var body = req.body;
     var share = new Share({
@@ -102,18 +85,20 @@ exports.show = function(req,res){
     var share = req.share;
     if(!share.shareset){
         res.render('share/show', {
-            title : share.authors.join(',') + ':' + share.title,
-            share : share,
-            shareset : null
+            title : share.authors.join(',') + ':' + share.title
+           ,share : share
+           ,navtab : 'share'
+           ,shareset : null
         });
         return;
     }
     ShareSet.findById(share.shareset, function(err, doc){
         if(err) return next(err);
         res.render('share/show', {
-            title : share.authors.join(',') + ':' + share.title,
-            share : share,
-            shareset : doc
+            title : share.authors.join(',') + ':' + share.title
+           ,share : share
+           ,navtab : 'share'
+           ,shareset : doc
         });
 
     });
@@ -121,12 +106,16 @@ exports.show = function(req,res){
 };
 exports.edit = function(req,res){
     var share= req.share;
-
+    if(!req.user){
+        res.redirect('/login?redirect=' + req.url);
+        return;
+    }
     ShareSet.findById(share.shareset,function(err,doc){
         if(err) return next(err);
         res.render('share/edit',{
             title : '编辑 ' + share.title
            ,share : share
+           ,navtab : 'share'
            ,shareset : doc
         });
     });

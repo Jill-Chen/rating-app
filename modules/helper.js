@@ -1,15 +1,9 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var _ = require('underscore');
-var dateFormat = require('dateformat');
 
 exports.trim = function(v){
     return v.trim();
-}
-
-exports.dateformat = function(v){
-    console.log('dataformat',v,typeof v);
-    return dateFormat(v, "yyyy-mm-dd HH:MM:ss");
 }
 
 exports.noempty = function(v){

@@ -1,33 +1,22 @@
-script
-  KISSY.use('rate/app',function(S,App){
-    App.nav('setlist');
-  });
-.navback
-  a(href='/shareset') 返回到分享会列表
+- var isOwner = everyauth.loggedIn && everyauth.user._id.toString() == shareset.owner._id.toString()
 h1 #{shareset.subject}
+p.desc= shareset.desc
+.row.shareset-detail
+    p.datetime #{moment(shareset.date).format('YYYY 年 MM 月 DD 日')} #{shareset.startTime} - #{shareset.endTime}
+    p.location  位于 <strong>#{shareset.position}<strong>
+    p.owner 由 <a href='mailto:#{shareset.owner.email}'>#{shareset.owner.email}</a> 组织
 .row
-  .span5
-    .calendar
-      .year #{shareset.date.getFullYear()} 年
-      .month #{shareset.date.getMonth()+1} 月
-      .date= shareset.date.getDate()
-      .time= shareset.startTime + " - " + shareset.endTime
-    .box-meta
-      dl
-        dt 分享地点
-        dd= shareset.position
-    .box.box-desc
-      .desc= shareset.desc
-    .box
-      - if(isOwner )
-        .action
-          a.btn.small(href='/shareset/#{shareset.postname}/edit')  编辑
-          |  
-          a.btn.small.ajax-btn(data-type='delete',data-confirm='你确定要删除吗',href='/shareset/#{shareset.postname}')  删除
-          |  
-          a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
-  .span11
+  .span16
     - if (shares && shares.length)
       ul.ratelist!= partial('share-list', shares)
+.row
+  .span16
+    - if(isOwner)
+      .action
+        a.btn.small(href='/shareset/#{shareset.postname}/edit')  编辑
+        |  
+        a.btn.small.ajax-btn(data-type='delete',data-confirm='你确定要删除吗',href='/shareset/#{shareset.postname}')  删除
+        |  
+        a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
 script
   KISSY.use('rate/ajax');

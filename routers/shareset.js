@@ -2,9 +2,12 @@ var ShareSet = require('../modules/').ShareSet;
 var Share = require('../modules/').Share;
 
 exports.load = function(id,next){
-    ShareSet.findOne({
+    ShareSet
+    .findOne({
         postname : id
-    },function(err,doc){
+    })
+    .populate('owner')
+    .run(function(err,doc){
         next(err,doc)
     });
 };
@@ -36,17 +39,18 @@ exports.index = function(req,res){
         if(err) return next(err);
         req.results = shares;
         res.render('shareset/index', {
-            results : req.results,
-            query : req.query,
-            type : req.params.listtype,
-            title : '所有分享'
+            results : req.results
+           ,navtab : 'shareset'
+           ,query : req.query
+           ,type : req.params.listtype
+           ,title : '分享会'
         });
     });
 };
 
 exports.new = function(req,res){
     if(!req.user){
-        res.redirect('/login');
+        res.redirect('/login?redirect=' + req.url);
         return;
     }
     var shareset = new ShareSet();
@@ -54,6 +58,7 @@ exports.new = function(req,res){
     res.render('shareset/edit', {
         title: '组织一次分享'
        ,isNew : true
+       ,navtab : 'create'
        ,shareset : shareset
     });
 };
@@ -92,12 +97,13 @@ exports.create = function(req,res){
 exports.show = function(req,res, next){
     var ss = req.shareset;
     Share.find({shareset : ss._id, deleted : {$ne : true}}, function(err, docs){
-        var isOwner = req.loggedIn && req.user._id.toString() == ss.owner.toString();
+        //var isOwner = req.loggedIn && req.user._id.toString() == ss.owner.toString();
         if(err) return next(err);
         res.render('shareset/show',{
             title : ss.subject
            ,shareset : ss
-           ,isOwner : isOwner
+           ,navtab : 'shareset'
+           //,isOwner : isOwner
            ,shares : docs
         });
     });
@@ -110,6 +116,7 @@ exports.edit = function(req,res){
     res.render('shareset/edit',{
         title : '编辑 ' + shareset.subject
        ,isNew : false
+       ,navtab : 'shareset'
        ,shareset : shareset
     });
 }

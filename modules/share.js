@@ -40,10 +40,14 @@ var ShareSchema = new Schema({
       'type' : String
      ,'default' : ''
   }
- ,longdesc  : {
+ ,content : {
       'type' : String
      ,'default' : ''
   }
+ ,contentHTML : {
+    'type' : String
+   ,'default' : ''
+ }
  ,shareset : {
     type : Schema.Types.ObjectId
  }

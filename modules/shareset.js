@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 var Schema   = mongoose.Schema;
 var helper = require('./helper')
+var User = require('./user');
 
 
 var Rate = new Schema({
@@ -49,6 +50,7 @@ var ShareSetSchema = new Schema({
   // 创建者
  ,owner : {
    'type' : Schema.Types.ObjectId
+  ,'ref' : 'user'
  }
  ,postname : {
    'type' : String,
@@ -76,4 +78,3 @@ ShareSetSchema.path('subject').validate(helper.noempty, 'SUBJECT_MISSING');
 //}, 'TIME_ERROR_ENDTIME');
 // 必须先登录
 ShareSetSchema.path('owner').validate(helper.noempty, '请先登录');
-

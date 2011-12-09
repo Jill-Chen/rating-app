@@ -4,6 +4,7 @@
     padding-top:50px;
 }
 html,body {
+    font-family:"Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体";
     font-size:12px;
     background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;
 }
@@ -96,11 +97,23 @@ ul.links {
     margin:0 0 0 10px;
 }
 .share-list-item {
-    border-top:3px solid #666;
-    margin-bottom:10px;
-    background:#f2f2f2;
-    .box-shadow();
-    padding:20px;
+    margin-bottom:20px;
+    .clearfix();
+    .cover {
+        float:left;
+        margin-right:10px;
+    }
+    .cover a, .cover img {
+        display:block;
+    }
+    .cnt {
+        overflow:hidden;
+        zoom:1;
+    }
+    .border-radius(5px);
+    border:1px solid @grayLight;
+    background:@grayLighter;
+    overflow:hidden;
     a {
         color:#00f;
     }
@@ -108,7 +121,14 @@ ul.links {
         color:#333;
         margin:10px 0;
     }
+    .btns {
+        visibility:hidden;
+    }
+    &:hover .btns {
+        visibility:visible;
+    }
 }
+
 
 .slideshare {
     margin-bottom:10px;
@@ -200,16 +220,6 @@ ul.links {
 }
 
 .share-list-item {
-    margin-bottom:20px;
-    .clearfix();
-    .cover {
-        float:left;
-        margin-right:10px;
-    }
-    .cnt {
-        overflow:hidden;
-        zoom:1;
-    }
 }
 
 form.login, form.upload-form {
@@ -220,6 +230,9 @@ form.login, form.upload-form {
     .login {
         margin-top:100px;
         .box-shadow();
+    }
+    .alert-message {
+        margin-right:20px;
     }
 }
 
@@ -264,7 +277,8 @@ form.login, form.upload-form {
         right:10px;
     }
     .date {
-        font-family:'Days One', cursive;
+        /*font-family:Arial cursive;*/
+        font-weight:bold;
         text-shadow:1px 1px 3px #999;
         color:#666;
         margin:30px 0 15px;
@@ -274,6 +288,24 @@ form.login, form.upload-form {
     }
 }
 
+.share-content {
+    .ft {
+        text-align:right;
+        border-top:1px solid @gray;
+        padding:10px;
+    }
+    textarea {
+        font-family:monospace;
+        background:#000;
+        color:@green;
+    }
+}
+.disqus-box {
+    margin-top:50px;
+    #dsq-subscribe {
+        display:none;
+    }
+}
 
 .like {
     background:#333;
@@ -307,5 +339,8 @@ a.like:hover i {
     color:lighten(#f00 ,20%);
 }
 
-
-
+.shareset-detail {
+    padding:20px;
+    background:lighten(@orange,20%);
+    margin-bottom:20px;
+}

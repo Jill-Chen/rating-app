@@ -1,8 +1,4 @@
-script
-  KISSY.use('rate/app',function(S,App){
-    App.nav('list');
-  });
-.modal#edit-slider(style='display:none;')
+.hidemodal#edit-slider(style='display:none;')
   .modal-header
     a.close(href='#') &times;
     h3 幻灯片
@@ -27,22 +23,42 @@ script
 h1 #{share.authors.join(',')}: #{share.title}
 div.row
   .span12
+    div.share-content.content-editor
+      .hd 分享详情
+      .bd!= share.contentHTML
+      .editor(style='display:none;')
+        form(method='post',action='/share/' + share._id + '/content')
+          h3  编辑
+          p 支持 markdown 语法编辑
+            a.toggle-tips(href='#') 显示语法提示
+          pre.tips-block(style='display:none;')
+            | 标题：
+            |   #Text
+            |   ##Text
+            |   ...
+            | 链接:
+            |   [text](/path/to/link) 链接
+            | 图片:
+            |   ![alt text](/path/to/image.jpg "Optional title")  图片
+            | 行内代码:
+            |   ``var I = me``
+            | 代码块:
+            |   行前有四个缩进
+          textarea.span12(name='content',style='height:300px')= share.content
+          br
+          br
+          button(type='submit').btn.primary 确定
+          | &nbsp;
+          a.edit(href='#') 取消
+      .ft
+        a.edit(href='edit') 编辑
     div.slideshare
       .hd
       .bd
         - if(share.slider.slideshare)
           div.slideshare(id="__ss_#{share.slider.slideshare}")
             iframe(src="http://www.slideshare.net/slideshow/embed_code/#{share.slider.slideshare}",width="700",height="584",frameborder="0",marginwidth="0",marginheight="0",scrolling="no")
-      .ft
-        div.boxact
-          - if(share.slider.slideshare)
-            a.btn(href='#',data-controls-modal="edit-slider", data-backdrop="static") 编辑幻灯片
-          - else
-            a.btn(href='#',data-controls-modal="edit-slider", data-backdrop="static")  添加幻灯片
-    dl.desc
-      dt 简介
-      dd(data-key='desc',data-type='textarea')=share.desc
-    div.disqus-box
+    div.disqus-box.mt20
       div#disqus_thread
       script
         var disqus_shortname="firebird";
@@ -56,14 +72,14 @@ div.row
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
   .span4
+    dl.author
+      dt 分享者
+      dd= share.authors.join(",")
     .cover-box
       img(width='195',height='195',src=share.cover)
       .action
         a(href='/share/#{share._id}/upload-cover') 更改封面
     .meta
-      dl.author
-        dt 分享者
-        dd= share.authors.join(",")
       - if(share.shareset)
         dl
           dt 分享会
@@ -77,7 +93,7 @@ div.row
           span #{share.like}
     - if(share.tags && share.tags.length);
       .ftags
-        h3 此分享的照片
+        h3 此分享的标签
         ul.tags
           -share.tags.forEach(function(tag){
             li
@@ -85,4 +101,4 @@ div.row
           -})
 
 script
-  KISSY.use('rate/app,rate/ajax');
+  KISSY.use('rate/app,rate/ajax,rate/share');

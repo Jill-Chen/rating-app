@@ -1,10 +1,4 @@
-script
-  KISSY.use('rate/app',function(S,App){
-    App.nav('home');
-  });
-
-
-.home-banner 
+.home-banner
   img(src='img/banner.gif')
 .row
   .span10
@@ -24,6 +18,25 @@ script
       .bd!= partial('partial/links')
     != partial('partial/side-tags')
   .span6
+    - if(!everyauth.loggedIn)
+      .box
+        .hd
+          h3
+            登录
+        form.bd(action="/login",method='post')
+          input#current_url(type='hidden',value='',name='redirect')
+          script
+            KISSY.one('#current_url').val(location.href)
+          input.span3(type='text',name='email',placeholder='email')
+          br
+          br
+          input.span2(type='password',name='password',placeholder='password')
+          br
+          br
+          button.btn.small(type='submit',style='padding:4px 9px;') 登录
+          br
+          br
+          a(href='/register') 注册
     .box
       .hd
         h3  常用链接
