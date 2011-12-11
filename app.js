@@ -12,6 +12,8 @@ var RedisStore = require('connect-redis')(express);
 var form = require('connect-form');
 var moment = require('moment');
 var markdown = require('markdown').markdown;
+var ejs = require('ejs');
+var jade = require('jade');
 
 var app = module.exports = express.createServer();
 var Share = modules.Share;
@@ -229,6 +231,81 @@ app.post('/share/:share/content',function(req,res){
     req.share.save(function(err,share){
         if(err) return next(err);
         res.redirect('back');
+    });
+});
+
+app.get('/shareset/:shareset/ics',function(req,res, next){
+    /**
+     * format date as UTC format as  '20000101T133000Z'
+     * @param {Date|Moment} date object
+     */
+    function utcFormat(date){
+        if(date.native){
+            date = date.native();
+        }
+        var mo = moment(date);
+        console.log('format ',mo.format('YYYYMMDD-HHmmss'));
+
+        var timezoneOffset = date.getTimezoneOffset();
+        var str = mo
+            .add('minutes',timezoneOffset)
+            .format('YYYYMMDDTHHmmssZ');
+        return str;
+    }
+
+    /**
+     * get of the array of hours and minutes from string '00:00'
+     * @param {String} strTime
+     * @return {Array}
+     */
+    function parseTime(strTime){
+        var arr = strTime.split(':');
+        if(arr.length < 2) return;
+
+        return _(arr).map(function(d){
+            return parseInt(d,10)
+        });
+    }
+
+    var shareset = req.shareset
+       ,date = shareset.date
+       ,startTime =  parseTime(shareset.startTime)
+       ,endTime  = parseTime(shareset.endTime)
+
+       ,dtstart = moment(date.getTime())
+            .hours(startTime[0])
+            .minutes(startTime[1])
+
+       ,dtend = moment(date.getTime())
+            .hours(endTime[0])
+            .minutes(endTime[1]);
+
+    Share.find({shareset:shareset._id,deleted : {$ne : true}},function(err,shares){
+        if(err)
+            return next(err);
+
+        jade.renderFile('./views/invite-cnt.jade',{
+                shareset : shareset
+               ,shares : shares
+            },function(err,htmlcnt){
+                if(err)
+                    return next(err);
+                console.log(htmlcnt);
+                console.log(htmlcnt.replace(/\n|\r\n/g,''));
+                ejs.renderFile('./views/invite.ics.ejs',{
+                    shareset : req.shareset
+                   ,dtstamp : utcFormat(new Date)
+                   ,dtstart : utcFormat(dtstart)
+                   ,cnt : htmlcnt.replace(/\n|\r\n/g,'')
+                   ,dtend : utcFormat(dtend)
+                },function(err,str){
+                    if(err) return next(err);
+                    res.send(str,{
+                        'Content-Type':'text/calendar'
+                       ,'Content-Disposition' : 'attachment; filename="' + shareset.subject + '.ics"'
+                    }, 201);
+                });
+        });
     });
 });
 

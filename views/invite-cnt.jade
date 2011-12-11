@@ -1,0 +1,21 @@
+!!!
+html
+  body
+    p
+      b
+        font(face='微软雅黑',size=6)= shareset.subject
+    p
+      font(face='微软雅黑',color='#666666')= shareset.desc
+    p
+      b
+        font(face='微软雅黑') 本期有下面分享:
+    each share in shares
+
+      p
+        font(face='微软雅黑')
+          b
+            a(href='http://192.168.1.196:3002/share/#{share._id}') #{share.title}
+          &nbsp;
+          font(color='#666666')= share.authors.join(', ')
+      p
+        font(face='微软雅黑')= share.desc

@@ -1,17 +1,19 @@
 {
     "name": "ShareTime"
-  , "version": "0.0.2"
+  , "version": "0.0.3"
   , "private": true
   , "dependencies": {
       "express": "2.3.11"
-    , "jade": ">= 0.0.1"
+    , "jade": ">= 0.19.0"
     , "underscore" : ">= 1.1.7"
     , "mongoose" : ">= 2.0.4"
     , "connect-redis" : ">=1.0.7"
     , "connect-form" : ">= 0.2.1"
-    , "everyauth" : ">=0.2.18"
+    , "everyauth" : ">= 0.2.18"
     , "express-resource" : "0.2.1"
     , "hashlib" : "1.0.1"
-    , "moment" : ">=1.1.1"
+    , "moment" : ">= 1.1.1"
+    , 'markdown' : ">= 0.3.1"
+    , 'ejs' : '>= 0.6.1'
   }
 }

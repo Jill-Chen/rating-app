@@ -1,0 +1,21 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+METHOD:PUBLISH
+PRODID:-//ourshare/cal//NONSGML v1.0//EN
+BEGIN:VEVENT
+UID:shareset-<%= shareset._id%>
+SUMMARY:<%= shareset.subject %>
+DTSTAMP:<%= dtstamp %>
+ORGANIZER;CN=<%= shareset.owner.name%>:MAILTO:<%= shareset.owner.email %>
+DTSTART:<%= dtstart %>
+DTEND:<%= dtend %>
+LOCATION:<%= shareset.position %>
+DESCRIPTION:<%= shareset.desc %>
+X-ALT-DESC;FMTTYPE=text/html:<%- cnt %>
+END:VEVENT
+BEGIN:VALARM
+TRIGGER:-PT15M
+ACTION:DISPLAY
+DESCRIPTION:Reminder
+END:VALARM
+END:VCALENDAR
