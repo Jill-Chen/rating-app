@@ -1,15 +1,3 @@
-var app = require('./app');
-var type = process.argv[2];
-var configs = {
-    dev : {
-        port : 3002
-    },
-    normal : {
-        port : 80
-    }
-};
-//var config = configs[type] || configs['normal'];
-config = configs['dev'];
-console.log(config);
-app.listen(config.port);
+var app = require('./app')
+app.listen(8000);
 console.log('Express server listening on port %d', app.address().port);
