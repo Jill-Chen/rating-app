@@ -23,6 +23,12 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           input.text#postname(type='text',name='postname',value=shareset.postname)
         span.help-block http://<script>document.write(location.hostname)</script>/shareset/<strong>your-shareset-name</strong> 创建后不可更改
     .clearfix
+      label(for="position") 会议室
+      .input
+        input.text#position(name="position",value=shareset.position)
+        span.help-block
+            a(href='https://is.taobao.org/meeting/')  会议室预定
+    .clearfix
       label(for="time")  分享日期
       .input
         input.text.ctl-date.span3#date(name="date",value=moment(shareset.date).format('YYYY-MM-DD'))
@@ -70,17 +76,16 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='00') 00
           option(value='30') 30
     .clearfix
-      label(for="position") 分享地址
-      .input
-        input.text#position(name="position",value=shareset.position)
-    .clearfix
       label(for='category') 分类
       .input
         select#category(name='category')
           option(value='') 选择类别
           option(value='前端') 前端
-          option(value='交互-设计') 交互-设计
+          option(value='设计') 交互-设计
           option(value='Java') Java
+          option(value='运营') 运营
+          option(value='产品') 产品
+          option(value='其他') 其他
 
     .clearfix
       label(for='desc') 简介
