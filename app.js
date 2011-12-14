@@ -14,11 +14,15 @@ var moment = require('moment');
 var markdown = require('markdown').markdown;
 var ejs = require('ejs');
 var jade = require('jade');
+var debug = false;
 
 var app = module.exports = express.createServer();
-var Share = modules.Share;
+
 var User = modules.User;
+var File = modules.File;
+var Share = modules.Share;
 var ShareSet = modules.ShareSet;
+var Post = modules.Post;
 
 function redirect(req, res, next){
     if(req.param('redirect')){
@@ -36,7 +40,13 @@ app.configure(function(){
       keepExtensions : true,
       uploadDir : './public/upload'
     }));
-    //upload
+    app.use(express.bodyParser());
+    app.use(express.cookieParser());
+    app.use(express.session({ secret: "supershare!", store: new RedisStore }));
+
+    app.use(redirect);
+    app.use(everyauth.middleware());
+
     app.use(function(req,res,next){
         if(req.form && req.is('multipart/form-data')){
             req.form.complete(function(err, fields, files){
@@ -45,28 +55,35 @@ app.configure(function(){
                 }
                 req.fields = fields;
                 req.files = files;
+
+                _(files).each(function(oFile){
+                    var file = new File({
+                        name : oFile.name
+                       ,size : oFile.size
+                       ,path : oFile.path
+                       ,type : oFile.type
+                       ,uploader : req.loggedIn?req.user._id : null
+                    });
+                    file.save();
+                });
+
                 next();
             });
             return;
         }
         next();
     });
-    app.use(express.bodyParser());
-    app.use(express.cookieParser());
-    app.use(express.session({ secret: "supershare!", store: new RedisStore }));
-    app.use(redirect);
-    app.use(everyauth.middleware());
     app.use(express.methodOverride());
     app.use(app.router);
 });
 
 app.configure('development', function(){
     console.log('development');
+    debug = true;
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
 app.configure('production', function(){
-    console.log('production');
     app.use(express.errorHandler());
     app.set("view cache", true);
 });
@@ -233,12 +250,30 @@ app.post('/share/:share/upload-cover', function(req, res){
 });
 
 app.post('/share/:share/content',function(req,res){
-    req.share.content = req.param('content');
-    req.share.contentHTML = markdown.toHTML(req.share.content);
-    req.share.save(function(err,share){
-        if(err) return next(err);
-        res.redirect('back');
+    var so = req.param('content')
+       ,so_cache = markdown.toHTML(so)
+       ,post;
+
+    req.share.content = so;
+    req.share.contentHTML = so_cache;
+
+    //for 历史记录
+    post = new Post({
+        share : req.share._id
+       ,source : so
+       ,cached : so_cache
     });
+
+    req.share.save(function(err,share){
+        if(err) return req.next(err);
+
+        post.save(function(err, p){
+            if(err) return req.next(err);
+            res.redirect('back');
+        });
+
+    });
+
 });
 
 app.get('/shareset/:shareset/ics',function(req,res, next){
@@ -251,7 +286,6 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
             date = date.native();
         }
         var mo = moment(date);
-        console.log('format ',mo.format('YYYYMMDD-HHmmss'));
 
         var timezoneOffset = date.getTimezoneOffset();
         var str = mo
@@ -297,8 +331,6 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
             },function(err,htmlcnt){
                 if(err)
                     return next(err);
-                console.log(htmlcnt);
-                console.log(htmlcnt.replace(/\n|\r\n/g,''));
                 ejs.renderFile('./views/invite.ics.ejs',{
                     shareset : req.shareset
                    ,dtstamp : utcFormat(new Date)
@@ -321,7 +353,8 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
  */
 app.helpers({
     moment : moment,
-    markdown : markdown
+    markdown : markdown,
+    debug : debug
 });
 
 everyauth.helpExpress(app);

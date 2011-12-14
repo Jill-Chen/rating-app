@@ -6,28 +6,26 @@ var Schema   = mongoose.Schema;
 var _ = require('underscore');
 var helper = require('./helper')
 
-var FileSchema = new Schema({
-  name : {
-      'type' : String
-     ,'set' : helper.trim
+var PostSchema = new Schema({
+  share : {
+    'type' : Schema.ObjectId,
+    'ref' : 'share'
   }
 
- ,path : {
+ , source : {
     'type' : String
+   ,'default' : ''
  }
 
- ,uploader : {
-    'type' : Schema.ObjectId,
-    'ref' : 'user'
+ , cached : {
+    'type' : String
+   ,'default' : ''
  }
- , type : {
-    'typ' : String
- }
- ,ts : {
+ , ts : {
     'type' : Date
    ,'default' : Date.now
  }
 
 });
 
-mongoose.model('file', FileSchema);
+mongoose.model('post', PostSchema);
