@@ -33,15 +33,15 @@ html
             a(href="/share") 分享
           li(class=(navtab==='create')?'active':'')
             a(href='/shareset/new') 组织分享会
-        - if(!everyauth.loggedIn)
-
-          ul.nav.secondary-nav
+        ul.nav.secondary-nav
+          li(class=(navtab==='feedback')?'active':'')
+            a(href='/feedback') 反馈
+          - if(!everyauth.loggedIn)
             li
               a.login-url(href='/login?redirect={url}') 登录
             li
               a.login-url(href='/register?redirect={url}') 注册
-        - else
-          ul.nav.secondary-nav
+          - else
             li.dropdown
               a.dropdown-toggle(href='#')= user.email
               ul.dropdown-menu

@@ -79,8 +79,15 @@ app.get('/', function(req, res){
     return;
   }
   res.render('index', {
-    title: '首页'
+    title: '分享平台'
    ,navtab : 'home'
+  });
+});
+
+app.get('/feedback', function(req, res){
+  res.render('feedback', {
+    title: '反馈与讨论 分享平台'
+   ,navtab : 'feedback'
   });
 });
 
