@@ -15,7 +15,6 @@ everyauth.password
     .postLoginPath('/login')
     .loginView('auth/login')
     .loginLocals({
-        layout : 'auth/layout',
         title : ' 登录'
     })
     .authenticate(function(login, password){
@@ -40,7 +39,6 @@ everyauth.password
     .postRegisterPath('/register')
     .registerView('auth/register')
     .registerLocals({
-        layout : 'auth/layout',
         title : '注册'
     })
     .validateRegistration(function(user, errors){

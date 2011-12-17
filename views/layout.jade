@@ -1,3 +1,4 @@
+- var tab = (typeof navtab === 'undefined') ? "" : navtab;
 !!! 5
 html
   head
@@ -12,7 +13,6 @@ html
     -if(css=="rate")
       link(rel='stylesheet', href='/stylesheets/rate2.css')
   script(src='http://a.tbcdn.cn/s/kissy/1.2.0/kissy.js')
-  //script(src='/js/kissy.js')
   script
     KISSY.config({
       packages : [{
@@ -28,16 +28,16 @@ html
         h3
           a.brand(href='/')  分享平台
         ul.nav
-          li(class=(navtab==='home')?'active':'')
+          li(class=(tab ==='home')?'active':'')
             a(href="/") 首页
-          li(class=(navtab==='shareset')?'active':'')
+          li(class=(tab ==='shareset')?'active':'')
             a(href="/shareset/") 分享会
-          li(class=(navtab==='share')?'active':'')
+          li(class=(tab ==='share')?'active':'')
             a(href="/share") 分享
-          li(class=(navtab==='create')?'active':'')
+          li(class=(tab ==='create')?'active':'')
             a(href='/shareset/new') 组织分享会
         ul.nav.secondary-nav
-          li(class=(navtab==='feedback')?'active':'')
+          li(class=(tab ==='feedback')?'active':'')
             a(href='/feedback') 反馈
           - if(!everyauth.loggedIn)
             li
@@ -56,3 +56,4 @@ html
   script(src="/lib/jquery/1.6.4/jquery.min.js")
   script(src="/bootstrap/js/bootstrap-dropdown.js")
   script(src="/bootstrap/js/bootstrap-modal.js")
+  script(src="/bootstrap/js/bootstrap-alerts.js")
