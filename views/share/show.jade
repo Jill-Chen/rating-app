@@ -21,9 +21,9 @@
   - else
     a(href='/list/') 所有分享
 h1 #{share.authors.join(',')}: #{share.title}
-div.row
+.row
   .span12
-    div.share-content.content-editor
+    .share-content.content-editor
       .hd 分享详情
       .bd!= share.contentHTML
       .editor(style='display:none;')
@@ -52,14 +52,14 @@ div.row
           a.edit(href='#') 取消
       .ft
         a.edit(href='edit') 编辑
-    div.slideshare
+    .slideshare
       .hd
       .bd
         - if(share.slider.slideshare)
-          div.slideshare(id="__ss_#{share.slider.slideshare}")
+          .slideshare(id="__ss_#{share.slider.slideshare}")
             iframe(src="http://www.slideshare.net/slideshow/embed_code/#{share.slider.slideshare}",width="700",height="584",frameborder="0",marginwidth="0",marginheight="0",scrolling="no")
-    div.disqus-box.mt20
-      div#disqus_thread
+    .disqus-box.mt20
+      #disqus_thread
       script
         var disqus_shortname="firebird";
         var disqus_identifier = "rate_#{share._id}";

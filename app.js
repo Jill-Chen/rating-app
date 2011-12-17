@@ -11,7 +11,7 @@ var everyauth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var form = require('connect-form');
 var moment = require('moment');
-var markdown = require('markdown').markdown;
+var md = require('node-markdown').Markdown;
 var ejs = require('ejs');
 var jade = require('jade');
 var debug = false;
@@ -250,7 +250,7 @@ app.post('/share/:share/upload-cover', function(req, res){
 
 app.post('/share/:share/content',function(req,res){
     var so = req.param('content')
-       ,so_cache = markdown.toHTML(so)
+       ,so_cache = md(so, false,'iframe|embed')
        ,post;
 
     req.share.content = so;
@@ -352,7 +352,6 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
  */
 app.helpers({
     moment : moment,
-    markdown : markdown,
     debug : debug
 });
 
