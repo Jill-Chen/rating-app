@@ -1,12 +1,4 @@
 // 分享会列表
-script
-script#temp-tags(type='kissy/template')
-  |<ul class='tags'>
-  |  {{#each tags as tag}}
-  |    <li><a title='标签为 {{tag}} 的分享' href='/share/?tags={{tag}}'>{{tag}}</a></li>
-  |  {{/each}}
-  |</ul>
-
 #page
   .row
     .span11
@@ -51,5 +43,3 @@ script#temp-tags(type='kissy/template')
         .hd
            h3 分享会
         .bd!= partial('partial/links')
-script
-  KISSY.use('rate/tags');
