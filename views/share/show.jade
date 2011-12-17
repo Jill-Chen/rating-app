@@ -72,19 +72,22 @@ div.row
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
   .span4
-    dl.author
-      dt 分享者
-      dd= share.authors.join(",")
     .cover-box
       img(width='195',height='195',src=share.cover)
       .action
         a(href='/share/#{share._id}/upload-cover') 更改封面
+
+    dl.author
+      dt 分享者
+      dd= share.authors.join(",")
+
     .meta
       - if(share.shareset)
         dl
           dt 分享会
           dd
             a(href='/shareset/#{shareset.postname}')= shareset.subject
+            span ( #{moment(shareset.date).format('MM-DD')} )
 
     .action
       p
