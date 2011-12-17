@@ -1,10 +1,9 @@
 li.shareitem
-  .cover(style='background-image:url(#{shares[indexInCollection].cover})')
-  .cnt
+  a(href='/share/#{shares[indexInCollection]._id}',style='background-image:url(#{shares[indexInCollection].cover})')
     .wrap
       h3.title
-        a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].title}
-      div.desc=shares[indexInCollection].desc.substr(0, 40);
+        #{shares[indexInCollection].title}
+      .desc=shares[indexInCollection].desc.substr(0, 40);
       .act
         span.author
           #{shares[indexInCollection].authors.join(', ')}

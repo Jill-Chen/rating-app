@@ -32,51 +32,48 @@ html,body {
     color:#666;
     float:left;
     position:relative;
-    .cover {
-        .transition(all .2s ease-in);
+    a {
+        text-decoration:none;
         width:@shareWidth;
         height:@shareWidth;
         position:absolute;
         z-index:1;
         .border-radius(@shareBorderRadius);
+        &:hover {
+            .wrap {
+                background:rgba(0,0,0,.9);
+            }
+        }
+    }
+    .desc {
+        display:none;
     }
     .wrap {
-        border:@shareBorder solid #fff;
-        height:@shareWidth - @shareBorder*2;
-        .border-radius(@shareBorderRadius);
-    }
-    .cnt {
-        .transition(all .2s ease-in);
+        .transition(all .2s ease);
+        background:rgba(0,0,0,0);
         width:@shareWidth;
         height:@shareWidth;
-        position:absolute;
-        z-index:0;
-        .border-radius(@shareBorderRadius);
-        background-color:rgba(255,255,255,0);
     }
-    &:hover {
-        .cnt {
-            z-index:2;
-            background-color:rgba(255,255,255,0.5);
+    a:hover {
+        .desc{
+            display:block;
         }
-        .cover {
-            opacity:.3;
-        }
-
     }
     h3 {
+        background:rgba(30,30,30,.8);
+        color:#fff;
         font-size:14px;
         line-height:1.5;
         padding:5px;
     }
-    .score {
-        display:none;
-    }
     .desc {
+        color:lighten(@linkColor,20%);
         padding:5px;
     }
     .author {
         font-weight:bold;
+        color:#fff;
+        text-shadow:0px 0px 2px #333;
     }
     .act {
         padding:5px;
