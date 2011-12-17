@@ -78,7 +78,6 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-    console.log('development');
     debug = true;
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
