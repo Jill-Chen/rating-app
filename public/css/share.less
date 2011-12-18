@@ -252,36 +252,64 @@ form.login, form.upload-form {
     .box-shadow(inset 1px 1px 3px #333);
 }
 
+@daywidth : 130px;
 .calendar {
-    .box();
-    padding:4px;
-    position:relative;
-    width:100px;
-    background:#fff;
-    border-top:3px solid #dd3333;
-    .box-shadow();
-    .time {
-        text-align:center;
+    .clearfix();
+    width:@daywidth*7+8;
+    .weekday {
+        .clearfix();
+        border-top:3px solid #dd3333;
+        span {
+            background:#fdd;
+            float:left;
+            width:@daywidth;
+            border-bottom:1px solid #333;
+            border-right:1px solid #333;
+        }
     }
-    .year {
-        position:absolute;
-        top:5px;
-        left:10px;
+    .day {
+        background:#fff;
+        color:#bbb;
+        float:left;
+        width:@daywidth;
+        height:@daywidth*.75;
+        border-bottom:1px solid #333;
+        border-right:1px solid #333;
     }
-    .month {
-        position:absolute;
-        top:5px;
-        right:10px;
+    .current {
+        color:#333;
+        background:#fff;
+        &:hover {
+            background:lighten(@yellow, 30%);
+        }
+    }
+    .hd {
+        .clearfix();
+        position:relative;
+        .act {
+            position:absolute;
+            right:0px;
+            top:0px;
+        }
+    }
+    .Sun {
+        background:#f5f5f5;
+        border-left:1px solid #333;
+    }
+    .currenttoday {
+        background:#fdd;
+        color:#533;
     }
     .date {
-        /*font-family:Arial cursive;*/
-        font-weight:bold;
-        text-shadow:1px 1px 3px #999;
-        color:#666;
-        margin:30px 0 15px;
-        font-size:50px;
-        line-height:50px;
-        text-align:center;
+        padding:0 5px;
+    }
+    .sharesets {
+        margin:0;
+        list-style:none;
+        li {
+            width : @daywidth;
+            overflow:hidden;
+        }
     }
 }
 
