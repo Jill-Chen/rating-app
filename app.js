@@ -14,7 +14,7 @@ var moment = require('moment');
 var md = require('node-markdown').Markdown;
 var ejs = require('ejs');
 var jade = require('jade');
-var debug = false;
+var developmod = false;
 
 var app = module.exports = express.createServer();
 
@@ -78,7 +78,7 @@ app.configure(function(){
 });
 
 app.configure('development', function(){
-    debug = true;
+    developmod  = true;
     app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
 });
 
@@ -352,7 +352,7 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
  */
 app.helpers({
     moment : moment,
-    debug : debug
+    developmod  : developmod 
 });
 
 everyauth.helpExpress(app);
