@@ -378,10 +378,20 @@ form.login,form.upload-form{background:#fff;padding-top:20px;}
 .box{margin-bottom:10px;}
 .box-meta{padding:10px;margin-bottom:1px;}.box-meta dd{font-size:20px;}
 .box-desc{background:#888;color:#fff;padding:10px;-webkit-box-shadow:inset 1px 1px 3px #333333;-moz-box-shadow:inset 1px 1px 3px #333333;box-shadow:inset 1px 1px 3px #333333;}
-.calendar{margin-bottom:10px;padding:4px;position:relative;width:100px;background:#fff;border-top:3px solid #dd3333;-webkit-box-shadow:0 1px 3px rgba(0, 0, 0, 0.25);-moz-box-shadow:0 1px 3px rgba(0, 0, 0, 0.25);box-shadow:0 1px 3px rgba(0, 0, 0, 0.25);}.calendar .time{text-align:center;}
-.calendar .year{position:absolute;top:5px;left:10px;}
-.calendar .month{position:absolute;top:5px;right:10px;}
-.calendar .date{font-weight:bold;text-shadow:1px 1px 3px #999;color:#666;margin:30px 0 15px;font-size:50px;line-height:50px;text-align:center;}
+.calendar{zoom:1;width:918px;}.calendar:before,.calendar:after{display:table;content:"";zoom:1;*display:inline;}
+.calendar:after{clear:both;}
+.calendar .weekday{zoom:1;border-top:3px solid #dd3333;}.calendar .weekday:before,.calendar .weekday:after{display:table;content:"";zoom:1;*display:inline;}
+.calendar .weekday:after{clear:both;}
+.calendar .weekday span{background:#fdd;float:left;width:130px;border-bottom:1px solid #333;border-right:1px solid #333;}
+.calendar .day{background:#fff;color:#bbb;float:left;width:130px;height:97.5px;border-bottom:1px solid #333;border-right:1px solid #333;}
+.calendar .current{color:#333;background:#fff;}.calendar .current:hover{background:#ffe9a6;}
+.calendar .hd{zoom:1;position:relative;}.calendar .hd:before,.calendar .hd:after{display:table;content:"";zoom:1;*display:inline;}
+.calendar .hd:after{clear:both;}
+.calendar .hd .act{position:absolute;right:0px;top:0px;}
+.calendar .Sun{background:#f5f5f5;border-left:1px solid #333;}
+.calendar .currenttoday{background:#fdd;color:#533;}
+.calendar .date{padding:0 5px;}
+.calendar .sharesets{margin:0;list-style:none;}.calendar .sharesets li{width:130px;overflow:hidden;}
 .share-content .ft{text-align:right;border-top:1px solid #808080;padding:10px;}
 .share-content textarea{font-family:monospace;background:#000;color:#46a546;}
 .disqus-box{margin-top:50px;}.disqus-box #dsq-subscribe{display:none;}
