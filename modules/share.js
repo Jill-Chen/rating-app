@@ -51,18 +51,6 @@ var ShareSchema = new Schema({
  ,shareset : {
     type : Schema.Types.ObjectId
  }
-  /**
-   * {
-   *    slideshare : '9999999',
-   *    file : 'xxx',
-   *    url : 'xxx'
-   * }
-   */
- ,slider : {
-     slideshare : String
-    ,file : String
-    ,url : String
-  }
  ,owner : {
      'type' : Schema.Types.ObjectId
  }

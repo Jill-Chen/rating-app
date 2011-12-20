@@ -172,36 +172,6 @@ app.get('/share/:share/like', function(req,res){
     });
 });
 
-
-// 编辑幻灯片
-app.post('/share/:share/editslider',function(req, res){
-    var share = req.share,
-        slideshare = req.param('slideshare');
-    //get the id out of the slideshare embed Code
-    var match = slideshare.match(/\d{6,}/);
-    if(match){
-        share.slider.slideshare = match[0];
-    }else{
-        res.send({
-            errors : ['错误的embed Code']
-        });
-        return;
-    }
-
-    share.save(function(err){
-        if(err) {
-            res.send({
-                errors : ['保存出错']
-            });
-        }
-        res.send({
-            errors : null,
-            action : 'redirect',
-            redirect : ''
-        });
-    });
-});
-
 // 封面上传
 app.get('/share/:share/upload-cover', function(req, res){
     res.render('shareset/share-cover-upload', {

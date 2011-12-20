@@ -1,20 +1,3 @@
-.hidemodal#edit-slider(style='display:none;')
-  .modal-header
-    a.close(href='#') &times;
-    h3 幻灯片
-  form.ajax-form.sliderform(method='post',action='/share/#{share._id}/editslider')
-    .modal-body
-      fieldset
-        legend  添加幻灯片
-        .clearfix#type-slidershare
-          label(for='d-slidershare') SlideShare Code
-          .input
-            textarea#d-slidershare.span5(name='slideshare')
-            span.help-block
-               去 <a href="http://www.slideshare.net/">slidershare</a>上传并获取embed code
-    .modal-footer
-      button.btn.primary(type='submit') 确定
-
 .navback
   - if(share.shareset)
     a(href='/shareset/#{shareset.postname}') 返回到分享会
@@ -52,12 +35,6 @@ h1 #{share.authors.join(',')}: #{share.title}
           a.edit(href='#') 取消
       .ft
         a.edit(href='edit') 编辑
-    .slideshare
-      .hd
-      .bd
-        - if(share.slider.slideshare)
-          .slideshare(id="__ss_#{share.slider.slideshare}")
-            iframe(src="http://www.slideshare.net/slideshow/embed_code/#{share.slider.slideshare}",width="700",height="584",frameborder="0",marginwidth="0",marginheight="0",scrolling="no")
     .disqus-box.mt20
       #disqus_thread
       script
