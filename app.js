@@ -9,7 +9,6 @@ var modules = require('./modules/');
 var resource = require('express-resource');
 var everyauth = require('./modules/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
-var form = require('connect-form');
 var moment = require('moment');
 var md = require('node-markdown').Markdown;
 var ejs = require('ejs');
@@ -36,45 +35,36 @@ app.configure(function(){
     app.use(express.static(__dirname + '/public'));
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
-    app.use(form({
-      keepExtensions : true,
-      uploadDir : './public/upload'
+    app.use(express.bodyParser({
+        uploadDir: './public/upload'
+       ,keepExtensions : true
     }));
-    app.use(express.bodyParser());
     app.use(express.cookieParser());
     app.use(express.session({ secret: "supershare!", store: new RedisStore }));
-
     app.use(redirect);
     app.use(everyauth.middleware());
-
-    app.use(function(req,res,next){
-        if(req.form && req.is('multipart/form-data')){
-            req.form.complete(function(err, fields, files){
-                if(err) {
-                    return next(err);
-                }
-                req.fields = fields;
-                req.files = files;
-
-                _(files).each(function(oFile){
-                    var file = new File({
-                        name : oFile.name
-                       ,size : oFile.size
-                       ,path : oFile.path
-                       ,type : oFile.type
-                       ,uploader : req.loggedIn?req.user._id : null
-                    });
-                    file.save();
-                });
-
-                next();
-            });
-            return;
-        }
-        next();
-    });
     app.use(express.methodOverride());
     app.use(app.router);
+    app.use(function(req,res,next){
+        //上传列表
+
+        if(!req.files || req.files.length === 0){
+            next();
+            return;
+        }
+
+        next();
+        _(req.files).each(function(oFile){
+            var file = new File({
+                name : oFile.name
+               ,size : oFile.size
+               ,path : oFile.path
+               ,type : oFile.type
+               ,uploader : req.loggedIn?req.user._id : null
+            });
+            file.save();
+        });
+    });
 });
 
 app.configure('development', function(){
@@ -225,12 +215,14 @@ app.get('/share/:share/upload-cover', function(req, res){
 // 封面上传
 app.post('/share/:share/upload-cover', function(req, res){
     var share = req.share,
-        form = req.form,
         files;
-    if(!form || !req.files){
+
+    if(!req.files){
         return res.redirect('back');
     }
+
     files = req.files;
+
     if(!files.cover){
         res.redirect('back');
         return;
@@ -243,7 +235,7 @@ app.post('/share/:share/upload-cover', function(req, res){
             title : '上传'
            ,share : saved
            ,navtab : 'share'
-           ,backurl : req.fields.backurl
+           ,backurl : req.param('backurl')
         });
     });
 });

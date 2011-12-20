@@ -37,11 +37,7 @@ exports.index = function(req,res){
 
     var d = firstMonday;
 
-    console.log(start, start.month(), start.format('YYYY-MM-DD HH-mm-ss'));
-    console.log('today',today, today.date(), today.hours());
-
     _(lastSunday.diff(firstMonday,'days')).times(function(){
-        console.log(d,d.month(), d.format('YYYY-MM-DD HH-mm-ss'), today.diff(d, 'days'));
         days.push({
             moment : d
            ,sharesets : []
