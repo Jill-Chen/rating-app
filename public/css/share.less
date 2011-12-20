@@ -253,18 +253,20 @@ form.login, form.upload-form {
 }
 
 @daywidth : 130px;
+@gridBorder : #EEE;
 .calendar {
     .clearfix();
     width:@daywidth*7+8;
     .weekday {
         .clearfix();
-        border-top:3px solid #dd3333;
         span {
-            background:#fdd;
+            text-align:center;
+            color:#fff;
+            background:#dd3333;
             float:left;
             width:@daywidth;
-            border-bottom:1px solid #333;
-            border-right:1px solid #333;
+            border-bottom:1px solid @gridBorder;
+            border-right:1px solid @gridBorder;
         }
     }
     .day {
@@ -273,8 +275,8 @@ form.login, form.upload-form {
         float:left;
         width:@daywidth;
         height:@daywidth*.75;
-        border-bottom:1px solid #333;
-        border-right:1px solid #333;
+        border-bottom:1px solid @gridBorder;
+        border-right:1px solid @gridBorder;
     }
     .current {
         color:#333;
@@ -294,10 +296,10 @@ form.login, form.upload-form {
     }
     .Sun {
         background:#f5f5f5;
-        border-left:1px solid #333;
+        border-left:1px solid @gridBorder;
     }
     .currenttoday {
-        background:#fdd;
+            background:lighten(@yellow, 40%);
         color:#533;
     }
     .date {
