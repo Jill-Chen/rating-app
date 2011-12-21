@@ -11,12 +11,6 @@ li.share-list-item
       span.like
         i ♥
         span #{shares[indexInCollection].like}
-      - if(shares[indexInCollection].slider.slideshare)
-        i.icon-slider
-          span 有幻灯片
-      - if(shares[indexInCollection].slider.video )
-        i.icon-video
-          span 有视频
     div.desc= shares[indexInCollection].desc
     .act
       span.author
