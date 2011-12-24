@@ -1,3 +1,7 @@
+/**
+ * @author qipbbn@gmail.com
+ * @function User Auth
+ */
 var everyauth = require('everyauth');
 var hashlib = require('hashlib');
 var User = require('./index').User;
@@ -19,7 +23,6 @@ everyauth.password
     })
     .authenticate(function(login, password){
         var promise = this.Promise();
-        console.log(login, password);
         User.findOne({email:login}, function(err, user){
             if(err){
                 return promise.fulfill([err])
@@ -60,7 +63,6 @@ everyauth.password
         return promise;
     })
     .registerUser(function(newUser, errors){
-        console.log(newUser);
         var promise = this.Promise();
         newUser.password = hashlib.md5(newUser.password);
         var user = new User(newUser);

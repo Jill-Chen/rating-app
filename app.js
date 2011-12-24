@@ -90,6 +90,13 @@ app.get('/', function(req, res){
   });
 });
 
+app.get('/calendar', function(req,res){
+  res.render('calendar', {
+    title: '日历'
+   ,navtab : 'home'
+  });
+});
+
 app.get('/feedback', function(req, res){
   res.render('feedback', {
     title: '反馈与讨论 分享平台'

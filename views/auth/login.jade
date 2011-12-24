@@ -4,13 +4,15 @@
       h3 登录
       fieldset
         .clearfix
-          label(for=everyauth.password.loginFormFieldName) 用户名：
+          label(for=everyauth.password.loginFormFieldName) 邮箱：
           .input
             input.text#input_login(type='text',name=everyauth.password.loginFormFieldName)
+
+      fieldset
         .clearfix
-          label(for=everyauth.password.passwordFormFieldName) 密码：
+          label(for=everyauth.password.passwordFormFieldName) 密码 (如果你有密码的话)：
           .input
-            input.text#input_password(type='password', name=everyauth.password.passwordFormFieldName)
+            input.text(type='password', name=everyauth.password.passwordFormFieldName,id=everyauth.password.passwordFormFieldName)
         - if('undefined' !== typeof errors && errors.length)
           .alert-message.warning(data-alert)
             a.close(href='#') ×

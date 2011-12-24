@@ -14,59 +14,86 @@ exports.load = function(id,next){
     });
 };
 
-exports.index = function(req,res){
-    var q= req.query,
-        queryobj = {};
-    queryobj.deleted = { "$ne" : true };
-    var month = req.param('month');//YYYY-MM
+exports.index = {
+    'default' : function(req,res){
+        var queryObj = {
+                deleted : {"$ne" : true}
+            }
+           ,month = req.param('month')//YYYY-MM
+           ,start
+           ,end;
 
-    var start = !month ? moment(moment().format('YYYY-MM')): moment(month, 'YYYY-MM');
+        //日期限定
+        if(month){
+            start = !month ? moment(moment().format('YYYY-MM')): moment(month, 'YYYY-MM')
+            end = moment(start.valueOf()).add('M',1)
+            queryObj.date = {
+                $gte : start.native()
+               ,$lte : end.native()
+            }
 
-    var end = moment(start.valueOf()).add('M',1);
+        }
 
-    queryobj.date = {
-        $gte : start.native()
-       ,$lte : end.native()
-    }
+        var find = ShareSet.find(queryObj)
+            .sort('_id',-1)
+            .limit(20);
 
-    var today = moment();
-    var firstMonday = moment(start.valueOf()).add('days', - start.day());
-    var lastSunday = moment(end.valueOf()).add('days', 6 - end.add('days', -1).day());
-
-    var days = [];
-
-    var d = firstMonday;
-
-    _(lastSunday.diff(firstMonday,'days')).times(function(){
-        days.push({
-            moment : d
-           ,sharesets : []
-           ,current : d.diff(start,'months') === 0
-           ,today : today.format('YYYYMMDD') == d.format('YYYYMMDD')
+        find.exec(function(err,sharesets){
+            if(err) return next(err);
+            res.send( sharesets );
         });
-        d = moment(d.valueOf()).add('days',1);
-    });
 
-
-    var query = ShareSet.find(queryobj);
-    query.sort('_id',-1);
-    query.limit(20);
-
-    query.exec(function(err,sharesets){
-        if(err) return next(err);
-        _(sharesets).each(function(shareset){
-            var diffd = moment(shareset.date).diff(firstMonday,'days');
-            days[diffd].sharesets.push(shareset);
-        });
+    },
+    'html' : function(req,res){
         res.render('shareset/index', {
             navtab : 'shareset'
-           ,query : req.query
-           ,type : req.params.listtype
-           ,days : days
-           ,current : start
            ,title : '分享会'
         });
-    });
+        return;
+        var start = !month ? moment(moment().format('YYYY-MM')): moment(month, 'YYYY-MM');
+
+        var end = moment(start.valueOf()).add('M',1);
+
+
+        var today = moment();
+        var firstMonday = moment(start.valueOf()).add('days', - start.day());
+        var lastSunday = moment(end.valueOf()).add('days', 6 - end.add('days', -1).day());
+
+        var days = [];
+
+        var d = firstMonday;
+
+        _(lastSunday.diff(firstMonday,'days')).times(function(){
+            days.push({
+                moment : d
+               ,sharesets : []
+               ,current : d.diff(start,'months') === 0
+               ,today : today.format('YYYYMMDD') == d.format('YYYYMMDD')
+            });
+            d = moment(d.valueOf()).add('days',1);
+        });
+
+
+        var query = ShareSet.find(queryobj);
+        query.sort('_id',-1);
+        query.limit(20);
+
+        query.exec(function(err,sharesets){
+            if(err) return next(err);
+            _(sharesets).each(function(shareset){
+                var diffd = moment(shareset.date).diff(firstMonday,'days');
+                days[diffd].sharesets.push(shareset);
+            });
+            res.render('shareset/index', {
+                navtab : 'shareset'
+               ,query : req.query
+               ,type : req.params.listtype
+               ,days : days
+               ,current : start
+               ,title : '分享会'
+            });
+        });
+    }
 };
 
 exports.new = function(req,res){
