@@ -3,29 +3,34 @@
   .row
     ul.pills
   script#template-calendar(type='text/template').
-    <div class="calendar">
-      <div class="hd">
-        <h3>yyyymmmm</h3>
-        <div class="act">
-          <a href="/shareset" class="btn">当月</a>
-        </div>
+    <div class="hd">
+      <h3>{{month}}</h3>
+      <div class="act">
+        <a href="#m/{{prevMonth}}" class="btn"> &lt; -</a>
+        <a href="#" class="btn">当月</a>
+        <a href="#m/{{nextMonth}}" class="btn">- &gt; </a>
       </div>
+    </div>
+    <div class="calendar">
       <div class="weekday">
-        <span class="Sun">周日</span>
-        <span>周一</span>
-        <span>周二</span>
-        <span>周三</span>
-        <span>周四</span>
-        <span>周五</span>
-        <span>周六</span>
+        <span class="Sun">日</span>
+        <span>一</span>
+        <span>二</span>
+        <span>三</span>
+        <span>四</span>
+        <span>五</span>
+        <span>六</span>
       </div>
       {{#days}}
-      <div class="day dt-{{fullDate}}">
+      <div class="day {{cls}} dt-{{fullDate}}">
         <div class="date">{{date}}</div>
-        <ul class="sharesets"><li><a href="/shareset/">xxxxx</a></li></ul>
+        <ul class="sharesets"></ul>
       </div>
       {{/days}}
     </div>
+
+  script#template-shareset(type='text/template').
+    <li><a href="/shareset/{{postname}}" title='{{subject}}'>{{subject}}</a></li>
 
   #cal-container
 script

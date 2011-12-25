@@ -93,7 +93,7 @@ app.get('/', function(req, res){
 app.get('/calendar', function(req,res){
   res.render('calendar', {
     title: '日历'
-   ,navtab : 'home'
+   ,navtab : 'shareset'
   });
 });
 
