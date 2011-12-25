@@ -2,35 +2,31 @@
 #page
   .row
     ul.pills
-  script(type='text/template').
-    <div class='calendar'>
-      <div class='hd'>
-        <h3>{{title}}</h3>
-        <div class='act'> </div>
+  script#template-calendar(type='text/template').
+    <div class="calendar">
+      <div class="hd">
+        <h3>yyyymmmm</h3>
+        <div class="act">
+          <a href="/shareset" class="btn">当月</a>
+        </div>
       </div>
+      <div class="weekday">
+        <span class="Sun">周日</span>
+        <span>周一</span>
+        <span>周二</span>
+        <span>周三</span>
+        <span>周四</span>
+        <span>周五</span>
+        <span>周六</span>
+      </div>
+      {{#days}}
+      <div class="day dt-{{fullDate}}">
+        <div class="date">{{date}}</div>
+        <ul class="sharesets"><li><a href="/shareset/">xxxxx</a></li></ul>
+      </div>
+      {{/days}}
     </div>
-    .calendar
-      .hd
-        h3 {{current.format("YYYY 年 M 月")}}
-        .act
-          a.btn(href='/shareset') 当月
-          a.btn(href='/shareset/?month={{current.add('months',-1).format('YYYY-MM'}}') 上月
-          a.btn(href='/shareset?month={{current.add('months',2).format('YYYY-MM'}}') 下月
-      .weekday
-        span.Sun 周日
-        span 周一
-        span 周二
-        span 周三
-        span 周四
-        span 周五
-        span 周六
-      - each day in days
-        .day(class="{{day.moment.format('ddd')}} {{day.current?'current':''}}{{day.today?'today':''}} ")
-          .date={{day.moment.format('D')}}
-          ul.sharesets
-            - each shareset in day.sharesets
-              li
-                a(href='/shareset/{{shareset.postname}}') {{shareset.subject}}
 
+  #cal-container
 script
   seajs.use('/js/shareset/calendar')

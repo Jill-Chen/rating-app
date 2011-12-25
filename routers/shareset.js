@@ -51,10 +51,7 @@ exports.index = {
         });
         return;
         var start = !month ? moment(moment().format('YYYY-MM')): moment(month, 'YYYY-MM');
-
         var end = moment(start.valueOf()).add('M',1);
-
-
         var today = moment();
         var firstMonday = moment(start.valueOf()).add('days', - start.day());
         var lastSunday = moment(end.valueOf()).add('days', 6 - end.add('days', -1).day());
