@@ -4,7 +4,7 @@
  */
 var everyauth = require('everyauth');
 var hashlib = require('hashlib');
-var User = require('./index').User;
+var User = require('../modules/index').User;
 
 
 exports.everyauth = everyauth;
@@ -27,14 +27,20 @@ everyauth.password
             if(err){
                 return promise.fulfill([err])
             }
+
             if(!user){
-                return promise.fulfill(['用户名和密码错误'])
+                return promise.fulfill(['没有找到邮箱，请先注册'])
             }
-            if(hashlib.md5(password) === user.password){
-                return promise.fulfill(user);
-            }else{
-                return promise.fulfill(['password not match']);
-            }
+
+            return promise.fulfill(user);
+
+            //remove password check
+            //if(hashlib.md5(password) === user.password){
+                //return promise.fulfill(user);
+            //}else{
+                //return promise.fulfill(['password not match']);
+            //}
+
         });
         return promise;
     })
@@ -62,6 +68,11 @@ everyauth.password
         });
         return promise;
     })
+    .extractExtraRegistrationParams(function(req){
+        return {
+            name : req.body.name
+        }
+    })
     .registerUser(function(newUser, errors){
         var promise = this.Promise();
         newUser.password = hashlib.md5(newUser.password);
@@ -69,7 +80,7 @@ everyauth.password
         user.save(function(err,doc){
             if(err){
                 errors.push(err);
-                promise.fulfill([errors]);
+                promise.fulfill(errors);
             }
             promise.fulfill(user);
         });

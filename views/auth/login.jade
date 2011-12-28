@@ -8,17 +8,17 @@
           .input
             input.text#input_login(type='text',name=everyauth.password.loginFormFieldName)
 
-      fieldset
+      fieldset(style='display:none')
         .clearfix
           label(for=everyauth.password.passwordFormFieldName) 密码 (如果你有密码的话)：
           .input
-            input.text(type='password', name=everyauth.password.passwordFormFieldName,id=everyauth.password.passwordFormFieldName)
+            input.text(type='password',value='hello1234',name=everyauth.password.passwordFormFieldName,id=everyauth.password.passwordFormFieldName)
+      .actions
         - if('undefined' !== typeof errors && errors.length)
           .alert-message.warning(data-alert)
             a.close(href='#') ×
             - each error in errors
               p.error= error
-        .actions
-          button(type="submit", class='btn primary') 提交
-          &nbsp; 没有帐号？
-          a(href='/register') 注册一个
+        button(type="submit", class='btn primary') 提交
+        &nbsp; 没有帐号？
+        a(href='/register') 注册一个
