@@ -7,10 +7,10 @@ h1 #{share.authors.join(',')}: #{share.title}
 .row
   .span12
     .share-content.content-editor
-      .hd 分享详情
-      .bd!= share.contentHTML
+      .bd.content-bd!= share.contentHTML
       .editor(style='display:none;')
-        form(method='post',action='/share/' + share._id + '/content')
+
+        form.editor-form(method='post',data-url='/share/' + share._id + '/content',action=)
           h3  编辑
           p 支持 markdown 语法编辑
             a.toggle-tips(href='#') 显示语法提示
@@ -19,14 +19,19 @@ h1 #{share.authors.join(',')}: #{share.title}
             |   #Text
             |   ##Text
             |   ...
+
             | 链接:
             |   [text](/path/to/link) 链接
+
             | 图片:
             |   ![alt text](/path/to/image.jpg "Optional title")  图片
+
             | 行内代码:
             |   ``var I = me``
+
             | 代码块:
             |   行前有四个缩进
+
           textarea.span12(name='content',style='height:300px')= share.content
           br
           br
@@ -34,7 +39,7 @@ h1 #{share.authors.join(',')}: #{share.title}
           | &nbsp;
           a.edit(href='#') 取消
       .ft
-        a.icon-edit.edit(href='edit') 编辑
+        a.icon.icon-edit.edit(href='edit') 编辑
     .disqus-box.mt20
       #disqus_thread
       script
