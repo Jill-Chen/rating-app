@@ -2,8 +2,9 @@ var ShareSet = require('../modules/').ShareSet;
 var Share = require('../modules/').Share;
 var moment = require('moment');
 var _ = require('underscore');
+var Errors = require('../mods/errors');
 
-exports.load = function(id,next){
+exports.load = function(id, next){
     ShareSet
     .findOne({
         postname : id
