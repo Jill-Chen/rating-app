@@ -7,7 +7,7 @@ var express = require('express');
 var _ = require("underscore");
 var modules = require('./modules/');
 var resource = require('express-resource');
-var everyauth = require('./modules/auth').everyauth;
+var everyauth = require('./mods/auth').everyauth;
 var RedisStore = require('connect-redis')(express);
 var moment = require('moment');
 var md = require('node-markdown').Markdown;
@@ -22,6 +22,7 @@ var File = modules.File;
 var Share = modules.Share;
 var ShareSet = modules.ShareSet;
 var Post = modules.Post;
+var Errors = require('./mods/errors');
 
 function redirect(req, res, next){
     if(req.param('redirect')){
@@ -116,30 +117,22 @@ app.get('/json/tags', function(req, res){
 app.resource('shareset', require('./routers/shareset'));
 app.resource('share', require('./routers/share'));
 
-/**
- *  错误处理
- */
-function NotFound(msg){
-    this.name = 'NotFound';
-    Error.call(this,msg);
-    Error.captureStackTrace(this, arguments.callee);
-}
-
-NotFound.prototype.__proto__ = Error.prototype;
 
 app.error(function(err, req, res, next){
-    if(err instanceof NotFound){
+    if(err instanceof Errors.NotFound){
+
         res.render('404',{
             title : 404
            ,navtab : ''
         });
+
     }else{
         next(err);
     }
 });
 
 app.get('/404', function(req,res){
-    throw new NotFound;
+    throw new Errors.NotFound;
 });
 
 app.get('/500', function(req,res){
@@ -217,6 +210,7 @@ app.post('/share/:share/upload-cover', function(req, res){
     });
 });
 
+// 分享内容编辑
 app.post('/share/:share/content',function(req,res){
     var so = req.param('content')
        ,so_cache = md(so, false,'iframe|embed')
@@ -237,13 +231,17 @@ app.post('/share/:share/content',function(req,res){
 
         post.save(function(err, p){
             if(err) return req.next(err);
-            res.redirect('back');
+            res.send({
+                html : so_cache
+            });
         });
 
     });
 
 });
 
+
+//生成日历文件
 app.get('/shareset/:shareset/ics',function(req,res, next){
     /**
      * format date as UTC format as  '20000101T133000Z'
@@ -321,8 +319,9 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
  */
 app.helpers({
     moment : moment,
-    developmod  : developmod 
+    developmod  : developmod
 });
 
 everyauth.helpExpress(app);
+
 exports.app = app;

@@ -58,18 +58,31 @@ define(function(require, exports, module){
                 d = moment(d.valueOf()).add('days',1);
             });
 
-            $(self.el).html(mustache.to_html(self.template, {
-                days : days
-               ,month : start.format('YYYY 年 MM 月')
-               ,prevMonth : start.add('M', -1).format('YYYY-MM')
-               ,nextMonth : start.add('M',2).format('YYYY-MM')
-            }));
+            //$(self.el).clone(true)
+                //.css('visibility', 'hidden')
+                //.appendTo(document.body)
+                //.offset($(self.el).offset())
+                //.css('visibility', 'visible')
+                //.fadeOut(function(){
+                    //$(self.el).show();
+                    ////$(this).remove();
+                //});
 
-            _(data).each(function(d){
-                var clsDate = moment(d.date).format('YYYY-MM-DD');
-                clsDate = '.dt-'+clsDate+' ul'
-                $(self.el).find(clsDate).append($(mustache.to_html(self.template_shareset, d)))
-            });
+            $(self.el).slideUp(function(){
+                $(self.el).html(mustache.to_html(self.template, {
+                    days : days
+                   ,month : start.format('YYYY 年 MM 月')
+                   ,prevMonth : start.add('M', -1).format('YYYY-MM')
+                   ,nextMonth : start.add('M',2).format('YYYY-MM')
+                }));
+                _(data).each(function(d){
+                    var clsDate = moment(d.date).format('YYYY-MM-DD');
+                    clsDate = '.dt-'+clsDate+' ul'
+                    $(self.el).find(clsDate).append($(mustache.to_html(self.template_shareset, d)))
+                });
+            }).slideDown();
+
+
 
             return self;
         }

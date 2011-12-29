@@ -12,21 +12,21 @@
           label(for=everyauth.password.loginFormFieldName) 邮箱：
           .input
             input.text#input_login(type='text',name=everyauth.password.loginFormFieldName,value=userParams[everyauth.password.loginFormFieldName])
-            span.help-block  请使用工作的邮箱
+            span.help-block 您的工作的邮箱
 
         .clearfix
           label(for="name") 花名：
           .input
             input.text#name(type='text', name="name")
 
-      fieldset
+      fieldset(style='display:none;')
         .clearfix
           label(for=everyauth.password.passwordFormFieldName) 密码 (可选)：
           .input
-            input.text#input_password(type='password', name=everyauth.password.passwordFormFieldName)
+            input.text#input_password(type='password', value='hello1234', name=everyauth.password.passwordFormFieldName)
 
 
-        .actions
-          button(type="submit", class='btn primary') 提交
-          &nbsp;
-          a(href='/') 返回分享平台
+      .actions
+        button(type="submit", class='btn primary') 提交
+        &nbsp;
+        a(href='/') 返回分享平台

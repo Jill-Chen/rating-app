@@ -1,6 +1,7 @@
 var ShareSet = require('../modules/').ShareSet;
 var _ = require('underscore');
 var Share = require('../modules/').Share;
+var Errors = require('../mods/errors');
 
 //auto load
 exports.load = function(id,next){
