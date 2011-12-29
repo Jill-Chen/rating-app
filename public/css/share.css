@@ -399,7 +399,7 @@ form.login,form.upload-form{background:#fff;padding-top:20px;}
 .calendar-tbl .hd .act{position:absolute;right:0px;top:0px;}
 .calendar-tbl .Sun{background:#f5f5f5;border-left:1px solid #eeeeee;}
 .calendar-tbl .date{padding:0 5px;}
-.calendar-tbl .sharesets{margin:0;list-style:none;}.calendar-tbl .sharesets li{width:130px;overflow:hidden;}.calendar-tbl .sharesets li a{padding:2px 4px;display:block;height:1.5em;overflow:hidden;}.calendar-tbl .sharesets li a:hover{background-color:#999999;background-repeat:repeat-x;background-image:-khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#999999));background-image:-moz-linear-gradient(top, #ffffff, #999999);background-image:-ms-linear-gradient(top, #ffffff, #999999);background-image:-webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #999999));background-image:-webkit-linear-gradient(top, #ffffff, #999999);background-image:-o-linear-gradient(top, #ffffff, #999999);background-image:linear-gradient(top, #ffffff, #999999);filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#999999', GradientType=0);text-decoration:none;}
+.calendar-tbl .sharesets{margin:0;list-style:none;}.calendar-tbl .sharesets li{width:130px;overflow:hidden;}.calendar-tbl .sharesets li a{padding:2px 4px;display:block;height:1.5em;}.calendar-tbl .sharesets li a:hover{background:#FFF;text-decoration:none;}
 .share-content .ft{text-align:right;border-top:1px solid #808080;padding:10px;}
 .share-content .bd{padding-bottom:30px;font-size:14px;}.share-content .bd h1{font-size:25px;}
 .share-content textarea{font-family:monospace;background:#000;color:#46a546;}
