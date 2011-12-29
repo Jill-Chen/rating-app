@@ -79,6 +79,9 @@ app.configure('production', function(){
 });
 
 // Routes
+/**
+ * 首页
+ */
 app.get('/', function(req, res){
   if(req.session.goto){
     res.redirect(req.session.goto)
@@ -91,6 +94,9 @@ app.get('/', function(req, res){
   });
 });
 
+/**
+ * 日历页面
+ */
 app.get('/calendar', function(req,res){
   res.render('calendar', {
     title: '日历'
@@ -98,6 +104,9 @@ app.get('/calendar', function(req,res){
   });
 });
 
+/**
+ * 平台反馈页面
+ */
 app.get('/feedback', function(req, res){
   res.render('feedback', {
     title: '反馈与讨论 分享平台'
@@ -105,6 +114,9 @@ app.get('/feedback', function(req, res){
   });
 });
 
+/**
+ * 异步获取全部标签
+ */
 app.get('/json/tags', function(req, res){
     Share.distinct('tags',{}, function(err, docs){
         res.send({
@@ -129,6 +141,9 @@ app.error(function(err, req, res, next){
     }else{
         next(err);
     }
+});
+app.get('*',function(req,res){
+    throw new NotFound;
 });
 
 app.get('/404', function(req,res){
