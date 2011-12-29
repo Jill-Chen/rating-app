@@ -20,7 +20,6 @@
     padding-top:50px;
 }
 html,body {
-    font-family:"Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体";
     font-size:12px;
     background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;
 }
@@ -277,13 +276,14 @@ form.login, form.upload-form {
         .clearfix();
         span {
             text-align:center;
-            color:#fff;
-            background:#d33;
+            color:#DDD;
+            background:#B33;
             float:left;
             width:@daywidth;
             margin-left:1px;
             boder:0;
             .border-radius(8px 8px 0 0);
+            .box-shadow(inset 0 -5px 6px rgba(90,90,90,0.6));
         }
         .Sun {
             margin-left:0;
@@ -337,11 +337,13 @@ form.login, form.upload-form {
         li {
             a {
                 padding:2px 4px;
+                color:#FFF;
+                background:#d00;
                 display:block;
                 height:1.5em;
                 &:hover {
-                    background:#FFF;
-                    /*#gradient.vertical(#fff, #999);*/
+                    color:#FFF;
+                    background:#a00;
                     text-decoration:none;
                 }
             }
