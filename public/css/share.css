@@ -341,7 +341,7 @@ pre code{background:none;color:auto;padding:0;}
 .content-bd li{color:#333;margin:0 0 5px;}
 .content-bd ul,.content-bd ol{padding:10px 0 0 30px;}
 #main{padding-top:50px;}
-html,body{font-family:"Microsoft YaHei","微软雅黑",tahoma,arial,simsun,"宋体";font-size:12px;background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;}
+html,body{font-size:12px;background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;}
 .navback{padding:10px;}
 .ratelist{zoom:1;margin:0;list-style:none;}.ratelist:before,.ratelist:after{display:table;content:"";zoom:1;*display:inline;}
 .ratelist:after{clear:both;}
