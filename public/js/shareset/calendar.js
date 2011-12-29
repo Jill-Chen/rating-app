@@ -3,7 +3,7 @@ define(function(require, exports, module){
         moment = require('moment'),
         _ = require('underscore'),
         mustache = require('mustache'),
-        jquery = require('jquery');
+        $ = require('jquery');
 
     var Shareset = Backbone.Model.extend({
         urlRoot : '/shareset'
@@ -25,7 +25,6 @@ define(function(require, exports, module){
         initialize : function(option){
             this.template = $('#template-calendar').html();
             this.template_shareset = $('#template-shareset').html();
-            console.log(this.template_shareset);
         },
         className : 'calendar-tbl',
         render : function(sharesets){

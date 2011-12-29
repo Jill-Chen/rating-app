@@ -2,6 +2,7 @@
   .span6.offset5
     form.form-stacked.login(action='/login', method="post")
       h3 登录
+      p 登录，无须密码
       fieldset
         .clearfix
           label(for=everyauth.password.loginFormFieldName) 邮箱：
@@ -22,3 +23,5 @@
         button(type="submit", class='btn primary') 提交
         &nbsp; 没有帐号？
         a(href='/register') 注册一个
+script
+  seajs.use('/js/base/alert.js');

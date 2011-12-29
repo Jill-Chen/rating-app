@@ -8,9 +8,11 @@ seajs.config({
         'backbone' : 'backbone/0.5.3/backbone',
         'moment' : 'moment/1.2.0/moment'
     },
+
     preload : [
         Function.prototype.bind?'':'es5-safe',
         this.JSON?'':'json'
     ],
-    debug : 'true'
+
+    debug : 'false'
 });
