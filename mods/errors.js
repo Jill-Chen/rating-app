@@ -1,13 +1,21 @@
 /**
- *  错误处理
+ *  错误
  */
-function NotFound(msg){
+var NotFound = exports.NotFound = function(msg){
     this.name = 'NotFound';
     Error.call(this,msg);
     Error.captureStackTrace(this, arguments.callee);
 }
-
 NotFound.prototype.__proto__ = Error.prototype;
 NotFound.prototype.statusCode = 400;
 
-exports.NotFound = NotFound;
+/*
+ * 权限不足
+ */
+var NoPermission = exports.NoPermission =  function(msg){
+    this.name = 'NoPermission';
+    Error.call(this,msg);
+    Error.captureStackTrace(this, arguments.callee);
+}
+NoPermission.prototype.__proto__ = Error.prototype;
+NoPermission.prototype.status = 401;

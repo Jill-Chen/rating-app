@@ -43,7 +43,7 @@ html
             li
               a.login-url(href='/login?redirect={url}') 登录
             li
-              a.login-url(href='/register?redirect={url}') 注册
+              a.login-url(href='/register?redirect={url}',title='想要组织分享，先来注册一个吧') 注册
           - else
             li.dropdown
               a.dropdown-toggle(href='#')= user.email

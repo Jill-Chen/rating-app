@@ -1,4 +1,3 @@
-- var isOwner = everyauth.loggedIn && everyauth.user._id.toString() == shareset.owner._id.toString()
 li.share-list-item
   - if(shares[indexInCollection].cover)
     .cover
@@ -14,11 +13,10 @@ li.share-list-item
     div.desc= shares[indexInCollection].desc
     .act
       span.author
-      - if(isOwner)
-        .btns
-          a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
-          |  
-          a.ajax-btn(data-type='delete', data-url='/share/#{shares[indexInCollection]._id}', href='/share/#{shares[indexInCollection]._id}') 删除
-          |  
-          a(href='/share/#{shares[indexInCollection]._id}/upload-cover') 上传封面
+      .btns
+        a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
+        &nbsp;
+        a(href='/share/#{shares[indexInCollection]._id}/upload-cover') 上传封面
+        &nbsp;
+        a.ajax-btn(data-type='delete', data-url='/share/#{shares[indexInCollection]._id}', href='/share/#{shares[indexInCollection]._id}') 删除
 

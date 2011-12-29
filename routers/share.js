@@ -28,12 +28,16 @@ exports.index = function(req,res){
     });
 
 };
+
 exports.new = function(req,res){
+
     if(!req.user){
         res.redirect('/login?redirect=' + req.url);
         return;
     }
+
     var sharesetId = req.query.shareset;
+
     ShareSet.findOne({postname:sharesetId}, function(err,shareset){
         var share = new Share({
             shareset :shareset._id
@@ -46,6 +50,7 @@ exports.new = function(req,res){
         });
     })
 };
+
 exports.create = function(req,res,next){
 
     var body = req.body;
@@ -107,10 +112,6 @@ exports.show = function(req,res){
 };
 exports.edit = function(req,res){
     var share= req.share;
-    if(!req.user){
-        res.redirect('/login?redirect=' + req.url);
-        return;
-    }
     ShareSet.findById(share.shareset,function(err,doc){
         if(err) return next(err);
         res.render('share/edit',{
@@ -145,6 +146,10 @@ exports.update = function(req,res){
 };
 
 exports.destroy = function(req,res, next){
+    if(!req.user ||
+        req.user._id !== req.share.owner._id){
+        throw new Errors.NoPermission
+    }
     req.share.deleted = true;
     req.share.save(function(err, doc){
         if(err) {
@@ -156,7 +161,6 @@ exports.destroy = function(req,res, next){
         res.send({
             errors : null,
             action : 'redirect',
-            // 刷新本页面
             redirect : ''
         });
     });

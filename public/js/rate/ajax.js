@@ -63,10 +63,8 @@ KISSY.add('rate/ajax', function(S, FormError){
                     dataType : 'json',
                     cache : false,
                     success : function(res){
-                        if(res.errors){
-                            if(res.errors[0]){
-                                alert(res.errors[0]);
-                            };
+                        if(res.errors.length && res.errors[0]){
+                            alert(res.errors[0].type);
                             return;
                         }
                         if(actions[res.action]){
