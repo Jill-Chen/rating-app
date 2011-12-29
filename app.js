@@ -55,6 +55,7 @@ app.configure(function(){
         }
 
         next();
+
         _(req.files).each(function(oFile){
             var file = new File({
                 name : oFile.name
@@ -74,9 +75,26 @@ app.configure('development', function(){
 });
 
 app.configure('production', function(){
+
+    app.error(function(err, req, res, next){
+        if(err instanceof Errors.NotFound){
+            res.render('404',{
+                title : 404
+               ,navtab : ''
+            });
+
+        }else{
+            next(err);
+        }
+    });
+
     app.use(express.errorHandler());
+
     app.set("view cache", true);
 });
+
+
+
 
 // Routes
 /**
@@ -130,25 +148,7 @@ app.resource('shareset', require('./routers/shareset'));
 app.resource('share', require('./routers/share'));
 
 
-app.error(function(err, req, res, next){
-    if(err instanceof Errors.NotFound){
 
-        res.render('404',{
-            title : 404
-           ,navtab : ''
-        });
-
-    }else{
-        next(err);
-    }
-});
-app.get('*',function(req,res){
-    throw new NotFound;
-});
-
-app.get('/404', function(req,res){
-    throw new Errors.NotFound;
-});
 
 app.get('/500', function(req,res){
     throw new Error('just an small error;');
@@ -327,6 +327,16 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
                 });
         });
     });
+});
+
+
+
+app.get('/404', function(req,res,next){
+    throw new Errors.NotFound;
+});
+
+app.get('/500', function(req,res,next){
+    throw new Errors;
 });
 
 /**
