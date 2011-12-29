@@ -67,29 +67,32 @@ app.configure(function(){
             file.save();
         });
     });
-});
 
-app.configure('development', function(){
-    developmod  = true;
-    app.use(express.errorHandler({ dumpExceptions: true, showStack: true })); 
-});
-
-app.configure('production', function(){
-
+    //个性错误处理
     app.error(function(err, req, res, next){
         if(err instanceof Errors.NotFound){
             res.render('404',{
                 title : 404
                ,navtab : ''
             });
-
-        }else{
+        } else if(err instanceof Errors.NoPermission){
+            res.send({
+                errors : [{type:'没有权限!'}]
+            });
+        } else{
             next(err);
         }
     });
 
-    app.use(express.errorHandler());
+});
 
+app.configure('development', function(){
+    developmod  = true;
+    app.error(express.errorHandler({ dumpExceptions: true, showStack: true })); 
+});
+
+app.configure('production', function(){
+    app.error(express.errorHandler())
     app.set("view cache", true);
 });
 
@@ -157,7 +160,7 @@ app.get('/500', function(req,res){
 //喜欢按钮
 app.get('/share/:share/like', function(req,res){
     if(!req.session){
-        res.send({ errors : ["您已经投过票了"]});
+        res.send({ errors : [{type:"您已经投过票了"}]});
         return;
     }
     var liked = req.session.shareliked,
@@ -168,7 +171,7 @@ app.get('/share/:share/like', function(req,res){
         liked = [];
     }
     if(liked.indexOf(shareId) !== -1){
-        res.send({ errors : ["您已经投过票了"]});
+        res.send({ errors : [{type:"您已经投过票了"}]});
         return;
     }
 

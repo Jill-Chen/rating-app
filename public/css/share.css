@@ -390,7 +390,8 @@ form.login,form.upload-form{background:#fff;padding-top:20px;}
 .calendar-tbl:after{clear:both;}
 .calendar-tbl .weekday{zoom:1;}.calendar-tbl .weekday:before,.calendar-tbl .weekday:after{display:table;content:"";zoom:1;*display:inline;}
 .calendar-tbl .weekday:after{clear:both;}
-.calendar-tbl .weekday span{text-align:center;color:#fff;background:#dd3333;float:left;width:130px;border-bottom:1px solid #eeeeee;border-right:1px solid #eeeeee;}
+.calendar-tbl .weekday span{text-align:center;color:#fff;background:#d33;float:left;width:130px;margin-left:1px;boder:0;-webkit-border-radius:8px 8px 0 0;-moz-border-radius:8px 8px 0 0;border-radius:8px 8px 0 0;}
+.calendar-tbl .weekday .Sun{margin-left:0;border-left:0;}
 .calendar-tbl .day{background:#f6f6f6;color:#DDD;float:left;width:130px;height:97.5px;border-bottom:1px solid #eeeeee;border-right:1px solid #eeeeee;}
 .calendar-tbl .current{color:#333;background:#fff;}.calendar-tbl .current:hover{background:#f6f6f6;-webkit-box-shadow:inset 0 0 20px #cccccc;-moz-box-shadow:inset 0 0 20px #cccccc;box-shadow:inset 0 0 20px #cccccc;}
 .calendar-tbl .today{background:#fff6d9;color:#533;}.calendar-tbl .today:hover{background:#ffe9a6;-webkit-box-shadow:inset 0 0 20px #cccccc;-moz-box-shadow:inset 0 0 20px #cccccc;box-shadow:inset 0 0 20px #cccccc;}
