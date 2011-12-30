@@ -3,15 +3,24 @@
     a(href='/shareset/#{shareset.postname}') 返回到分享会
   - else
     a(href='/list/') 所有分享
-h1 #{share.authors.join(',')}: #{share.title}
 .row
   .span12
+    h1 #{share.title}
+    .meta
+      | by:
+      span= share.authors.join(',')
+      &nbsp;
+      span.date=moment(share.ts).format('MMM Do YYYY')
+      &nbsp;
+      a.like.ajax-btn(href='#',data-type='get',title='喜欢',data-url='/share/#{share._id}/like')
+        i ♥
+        span #{share.like}
     .share-content.content-editor
       .bd.content-bd!= share.contentHTML
       .editor(style='display:none;')
 
         form.editor-form(method='post',data-url='/share/' + share._id + '/content',action=)
-          h3  编辑
+          h3  编辑详情
           p 支持 markdown 语法编辑
             a.toggle-tips(href='#') 显示语法提示
           pre.tips-block(style='display:none;')
@@ -39,7 +48,7 @@ h1 #{share.authors.join(',')}: #{share.title}
           | &nbsp;
           a.edit(href='#') 取消
       .ft
-        a.icon.icon-edit.edit(href='edit') 编辑
+        a.icon.icon-edit.edit(href='edit') 编辑详情
     .disqus-box.mt20
       #disqus_thread
       script
@@ -58,24 +67,6 @@ h1 #{share.authors.join(',')}: #{share.title}
       img(width='195',height='195',src=share.cover)
       .action
         a(href='/share/#{share._id}/upload-cover') 更改封面
-
-    dl.author
-      dt 分享者
-      dd= share.authors.join(",")
-
-    .meta
-      - if(share.shareset)
-        dl
-          dt 分享会
-          dd
-            a(href='/shareset/#{shareset.postname}')= shareset.subject
-            span ( #{moment(shareset.date).format('MM-DD')} )
-
-    .action
-      p
-        a.like.ajax-btn(href='#',data-type='get',title='喜欢',data-url='/share/#{share._id}/like')
-          i ♥
-          span #{share.like}
     - if(share.tags && share.tags.length);
       .ftags
         h3 此分享的标签
