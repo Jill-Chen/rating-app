@@ -334,7 +334,7 @@ a:hover,a:active{outline:0;}
 pre code{background:none;color:auto;padding:0;}
 .icon{line-height:16px;display:inline-block;padding-left:20px;background:url('/img/icons.png') 0 0 no-repeat;}
 .icon-edit{background-position:0 0;color:#666;}
-.content-bd{font-size:14px;}
+.content-bd{min-height:300px;_height:300px;font-size:14px;}
 .content-bd h2{font-size:18px;margin:40px 0 20px 0;}
 .content-bd h3{font-size:14px;margin:30px 0 16px 0;}
 .content-bd p{margin:0 0 5px 0;line-height:1.5;}
@@ -342,7 +342,6 @@ pre code{background:none;color:auto;padding:0;}
 .content-bd ul,.content-bd ol{padding:10px 0 0 30px;}
 #main{padding-top:50px;}
 html,body{font-size:12px;background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;}
-.navback{padding:10px;}
 .ratelist{zoom:1;margin:0;list-style:none;}.ratelist:before,.ratelist:after{display:table;content:"";zoom:1;*display:inline;}
 .ratelist:after{clear:both;}
 .shareitem{width:195px;height:195px;margin:0 1px 1px 0;color:#666;float:left;position:relative;}.shareitem a{text-decoration:none;width:195px;height:195px;position:absolute;z-index:1;-webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;}.shareitem a:hover .wrap{background:rgba(0, 0, 0, 0.9);}
@@ -402,7 +401,7 @@ form.login,form.upload-form{background:#fff;padding-top:20px;}
 .calendar-tbl .date{padding:0 5px;}
 .calendar-tbl .sharesets{margin:0;list-style:none;}.calendar-tbl .sharesets li{width:130px;overflow:hidden;}.calendar-tbl .sharesets li a{padding:2px 4px;color:#FFF;background:#d00;display:block;height:1.5em;}.calendar-tbl .sharesets li a:hover{color:#FFF;background:#a00;text-decoration:none;}
 .share-content .ft{text-align:right;border-top:1px solid #808080;padding:10px;}
-.share-content .bd{padding-bottom:30px;font-size:14px;}.share-content .bd h1{font-size:25px;}
+.share-content .bd{padding-bottom:30px;}
 .share-content textarea{font-family:monospace;background:#000;color:#46a546;}
 .disqus-box{margin-top:50px;}.disqus-box #dsq-subscribe{display:none;}
 .like{background:#333;color:#fff;display:inline-block;padding:1px 2px 1px 5px ;-webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;}
