@@ -21,6 +21,7 @@ var ShareSetSchema = new Schema({
   // 分享主题
   subject : {
       'type'    : String
+     ,'required' : true
   }
   // 创建时间
  ,ts : {
@@ -29,18 +30,24 @@ var ShareSetSchema = new Schema({
  }
  ,date : {
     'type' : Date
+   ,'required' : true
  }
  ,startTime : {
     'type' : String
-   ,'default' : ' : '
+   ,'default' : ''
+   ,'validate' : /^\d{1,2}\:\d{1,2}$/
+   ,'required' : true
  }
  ,endTime : {
    'type' : String
-   ,'default' : ' : '
+   ,'default' : ''
+   ,'validate' : /^\d{1,2}\:\d{1,2}$/
+   ,'required' : true
  }
  ,position : {
-   'type' : String
-  ,'default' : ''
+    'type' : String
+   ,'default' : ''
+   ,'required' : true
  }
   //  简介
  ,desc : {
@@ -49,18 +56,20 @@ var ShareSetSchema = new Schema({
   }
   // 创建者
  ,owner : {
-   'type' : Schema.Types.ObjectId
-  ,'ref' : 'user'
+    'type' : Schema.Types.ObjectId
+   ,'ref' : 'user'
+   ,'required' : true
  }
+ //分享会url shortname
  ,postname : {
    'type' : String,
    'required' : true
  }
- //分享会面向受众
+ //分享会类别
  ,category : {
     'type' : String
  }
- //分享会
+ //标记
  ,deleted : {
     'type' : Boolean,
     'default' : false
@@ -70,11 +79,10 @@ var ShareSetSchema = new Schema({
 
 
 mongoose.model('shareset', ShareSetSchema);
-// 必须指定主题
-ShareSetSchema.path('subject').validate(helper.noempty, 'SUBJECT_MISSING');
 // 结束时间必须在开始时间之后
 //ShareSetSchema.path('endTime').validate(function(endTime, b, c){
     //return endTime > this.startTime;
 //}, 'TIME_ERROR_ENDTIME');
 // 必须先登录
+ShareSetSchema.path('postname').validate(/^[0-9a-zA-Z\_\-]+$/, '个性地址只能包含字母，数字，- 或"_');
 ShareSetSchema.path('owner').validate(helper.noempty, '请先登录');

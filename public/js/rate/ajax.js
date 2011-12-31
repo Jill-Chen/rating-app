@@ -11,11 +11,9 @@ KISSY.add('rate/ajax', function(S, FormError){
 
     $('form.ajax-form').each(function(et){
         $this = $(this);
-        var formerror = new FormError({
-            template : $('#temp-errors').html(),
-            container : $this.one('.error-holder')
-        });
+        var formerror = new FormError($this);
         $this.on('submit',function(ev){
+            formerror.removeAll();
             ev.preventDefault();
             S.ajax({
                 url : $this.attr('action'),
@@ -23,12 +21,11 @@ KISSY.add('rate/ajax', function(S, FormError){
                 data : S.io.serialize($this),
                 dataType: 'json',
                 success : function(res){
+
                     if(res.errors){
-                        formerror.render({
-                            errors : res.errors
-                        });
-                        return;
+                        formerror.render(res.errors);
                     }
+
                     if(actions[res.action]){
                         actions[res.action](res);
                     }

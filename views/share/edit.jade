@@ -33,6 +33,7 @@ form.ajax-form(action='/share/#{share._id}', method="put")
       label(for="tag", title='(逗号或空格分格)') 标签
       .input
         input.text#input_tags(name="tags",value=share.tags.join(' '))
+        span.help-inline 逗号分格
         .tags#tagfield
     //.clearfix
       label(for='cover') 封面

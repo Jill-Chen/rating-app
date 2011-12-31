@@ -12,6 +12,7 @@ var ShareSchema = new Schema({
   title : {
       'type' : String
      ,'set' : helper.trim
+     ,'required':true
   }
  ,like : {
     'type' : Number,
@@ -22,15 +23,17 @@ var ShareSchema = new Schema({
    ,'default' : '/img/default-cover.png'
   }
  ,ts_save : {
-    'type' : Date
-   ,'default' : Date.now
+      'type' : Date
+     ,'default' : Date.now
+     ,'required':true
  }
  ,deleted : {
-    'type' : Boolean,
-    'default' : false
+      'type' : Boolean
+     ,'default' : false
  }
  ,authors : {
      'type' : [String]
+     ,'required':true
  }
  ,tags : {
      'type' : [String]
@@ -40,24 +43,25 @@ var ShareSchema = new Schema({
       'type' : String
      ,'default' : ''
   }
+  //markdown
  ,content : {
       'type' : String
      ,'default' : ''
   }
+  //parsed markdown
  ,contentHTML : {
-    'type' : String
-   ,'default' : ''
+      'type' : String
+     ,'default' : ''
  }
  ,shareset : {
-    type : Schema.Types.ObjectId
+      type : Schema.Types.ObjectId
+     ,'required':true
  }
  ,owner : {
-     'type' : Schema.Types.ObjectId
+      'type' : Schema.Types.ObjectId
+     ,'required':true
  }
  ,rates : [helper.Rate]
 });
-
-ShareSchema.path('title').validate(helper.noempty,'TITLE_EMPLTY');
-ShareSchema.path('authors').validate(helper.noempty,'AUTHORS_EMPTY');
 
 mongoose.model('share', ShareSchema);

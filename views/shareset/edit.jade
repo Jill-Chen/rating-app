@@ -23,20 +23,22 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           input.text#postname(type='text',name='postname',value=shareset.postname)
         span.help-block http://<script>document.write(location.hostname)</script>/shareset/<strong>your-shareset-name</strong> 创建后不可更改
     .clearfix
-      label(for="position") 会议室
+      label(for="position") 分享地址 *
       .input
         input.text#position(name="position",value=shareset.position)
         span.help-block
-            a(href='https://is.taobao.org/meeting/')  会议室预定
+            a(href='https://is.taobao.org/meeting/',target='blank')  会议室预定
+        span.help-inline
     .clearfix
-      label(for="time")  分享日期
+      label(for="date")  分享日期 *
       .input
         input.text.ctl-date.span3#date(name="date",value=moment(shareset.date).format('YYYY-MM-DD'))
+        span.help-inline
 
     .clearfix
-      label  时间
+      label(for='time') 时间 *
       .input
-        select.text.date-time.span2(name="startTimeH")
+        select.text.date-time.span2#time(name="startTimeH")
           option(value=shareset.startTime.split(':')[0])= shareset.startTime.split(':')[0]
           option(value='08') 08
           option(value='09') 09
@@ -75,6 +77,7 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value=shareset.endTime.split(':')[1])= shareset.endTime.split(':')[1]
           option(value='00') 00
           option(value='30') 30
+        span.help-inline
     .clearfix
       label(for='category') 分类
       .input

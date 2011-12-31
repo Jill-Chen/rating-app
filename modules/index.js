@@ -16,7 +16,6 @@ exports.File = db.model('file');;
 exports.Post = db.model('post');;
 
 //ensure postname is uniq
-
 exports.ShareSet.schema.path('postname').validate(
     function(postname, fn){
     var t = this;
@@ -30,4 +29,4 @@ exports.ShareSet.schema.path('postname').validate(
         return fn(true);
     });
     return fn;
-}, 'POSTNAME_REPEAT');
+}, '这个名称已经被人用过了～');
