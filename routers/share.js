@@ -3,6 +3,21 @@ var _ = require('underscore');
 var Share = require('../modules/').Share;
 var Errors = require('../mods/errors');
 
+/**
+ * ['','abc', 'abc'] = > ['abc']
+ * '' = > null
+ * [] => null
+ * 'abc' => ['abc']
+ */
+var getList = function(source){
+    var aRet = _.isArray(source) ?
+        _(source).chain().uniq().compact().value() :
+            source.trim() === '' ? null : [source];
+
+    if(_.isArray(aRet) && aRet.length > 0 ) return aRet;
+    return null;
+}
+
 //auto load
 exports.load = function(id,next){
     Share.findById(id,function(err,doc){
@@ -38,14 +53,20 @@ exports.new = function(req,res){
 
     var sharesetId = req.query.shareset;
 
-    ShareSet.findOne({postname:sharesetId}, function(err,shareset){
+    ShareSet.findOne({
+        postname:sharesetId
+    }, function(err,shareset){
+
         var share = new Share({
             shareset :shareset._id
         });
-        res.render('share/new', {
-            title: '添加分享到分享会'
+        share.authors = [''];
+
+        res.render('share/edit', {
+            title: '添加到 '+ shareset.subject
            ,share : share
            ,navtab : 'share'
+           ,isNew : true
            ,shareset : shareset
         });
     })
@@ -54,14 +75,16 @@ exports.new = function(req,res){
 exports.create = function(req,res,next){
 
     var body = req.body;
+
     var share = new Share({
         title : body.title,
-        authors : body.authors,
+        authors : getList(body.authors),
         tags : body.tags,
         desc: body.desc,
         shareset : body.shareset,
         owner : req.user._id
     });
+    console.log(body.authors);
 
     share.save(function(error,saved){
         if(error){
@@ -118,17 +141,24 @@ exports.edit = function(req,res){
             title : '编辑 ' + share.title
            ,share : share
            ,navtab : 'share'
+           ,isNew : false
            ,shareset : doc
         });
     });
 
 }
 exports.update = function(req,res){
-    var share = req.share;
-    _(req.body).each(function(v,k){
-        share[k] = v;
+    var share = req.share,
+        body = req.body;
+
+    _.extend(share,{
+        title : body.title,
+        authors : getList(body.authors),
+        tags : body.tags,
+        desc: body.desc
     });
-    ShareSet.findById(share.shareset,function(err,ssdoc){
+
+    ShareSet.findById(share.shareset, function(err,ssdoc){
         share.save(function(err,saved){
             if(err){
                 res.send({

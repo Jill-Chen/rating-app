@@ -114,8 +114,8 @@ exports.create = function(req,res){
         reqbody = req.body;
     shareset.subject = reqbody.subject;
     shareset.date = reqbody.date;
-    shareset.startTime = (reqbody.startTimeH||'00')+":"+(reqbody.startTimeM||'00');
-    shareset.endTime  = (reqbody.endTimeH||'00')+":"+(reqbody.endTimeM||'00');
+    shareset.startTime = (reqbody.startTimeH)+":"+(reqbody.startTimeM);
+    shareset.endTime  = (reqbody.endTimeH)+":"+(reqbody.endTimeM);
     shareset.position = reqbody.position;
     shareset.desc = reqbody.desc;
     shareset.postname = reqbody.postname;
@@ -166,14 +166,20 @@ exports.edit = function(req,res){
 }
 
 exports.update = function(req,res){
+
     var shareset = req.shareset,
-        reqbody = req.body;
-    shareset.subject = reqbody.subject;
-    shareset.date = reqbody.date;
-    shareset.startTime = (reqbody.startTimeH||'00')+":"+(reqbody.startTimeM||'00');
-    shareset.endTime  = (reqbody.endTimeH||'00')+":"+(reqbody.endTimeM||'00');
-    shareset.position = reqbody.position;
-    shareset.desc = reqbody.desc;
+        body = req.body;
+
+
+    _.extend(shareset, {
+        subject : body.subject
+       ,date : body.date
+       ,position : body.position
+       ,startTime : (body.startTimeH)+":"+(body.startTimeM)
+       ,endTime  : (body.endTimeH)+":"+(body.endTimeM)
+       ,desc : body.desc
+       ,owner : req.user._id
+    });
 
     shareset.save(function(error,saved){
         if(error && error.errors){
@@ -192,19 +198,24 @@ exports.update = function(req,res){
 };
 
 exports.destroy = function(req,res, next){
-    req.shareset.deleted = true;
+
+    _.extend(req.shareset, {
+        deleted : true
+       ,owner : req.user._id
+    });
+
     req.shareset.save(function(err, doc){
         if(err) {
             res.send({
                 errors : [{error : err, type : '出错了'}]
             });
-            next(err)
             return;
         }
+
         res.send({
             errors : null,
             action : 'redirect',
-            redirect : '/shareset'
+            redirect : '/calendar'
         });
     });
 };
