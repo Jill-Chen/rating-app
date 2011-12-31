@@ -11,23 +11,46 @@
         <a href="#m/{{nextMonth}}" class="btn">- &gt; </a>
       </div>
     </div>
-    <div class="calendar">
-      <div class="weekday">
-        <span class="Sun">日</span>
-        <span>一</span>
-        <span>二</span>
-        <span>三</span>
-        <span>四</span>
-        <span>五</span>
-        <span>六</span>
-      </div>
-      {{#days}}
-      <div class="day {{cls}} dt-{{fullDate}}">
-        <div class="date">{{date}}</div>
-        <ul class="sharesets"></ul>
-      </div>
-      {{/days}}
-    </div>
+
+    <table class="calendar">
+      <thead>
+        <tr class="weekday">
+          <th>
+            <span>日</span>
+          </th>
+          <th>
+            <span>一</span>
+          </th>
+          <th>
+            <span>二</span>
+          </th>
+          <th>
+            <span>三</span>
+          </th>
+          <th>
+            <span>四</span>
+          </th>
+          <th>
+            <span>五</span>
+          </th>
+          <th>
+            <span>六</span>
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+      {{#weeks}}
+      <tr>
+        {{#days}}
+          <td class="day {{cls}} dt-{{fullDate}}" data-dt='{{fullDate}}'>
+            <div class="date">{{date}}</div>
+            <ul class="sharesets"></ul>
+          </td>
+        {{/days}}
+      </tr>
+      {{/weeks}}
+      </tbody>
+    </table>
 
   script#template-shareset(type='text/template').
     <li><a href="/shareset/{{postname}}" title='{{subject}}'>{{subject}}</a></li>

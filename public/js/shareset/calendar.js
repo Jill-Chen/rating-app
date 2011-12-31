@@ -25,7 +25,28 @@ define(function(require, exports, module){
         initialize : function(option){
             this.template = $('#template-calendar').html();
             this.template_shareset = $('#template-shareset').html();
+            this.app = option.app;
         },
+
+        events : {
+            'click .day' : 'dayclick'
+        },
+
+        dayclick : function(ev){
+            var et = $(ev.target),
+                fullDate;
+            if(!et.hasClass('day')){
+                return;
+            }
+            if(et.hasClass('current')){
+                fullDate = et.attr('data-dt')
+                location.href='/shareset/new?date='+fullDate
+            }
+            if(!et.hasClass('current')){
+                location.hash = 'm/'+et.attr('data-dt').substr(0,7);
+            }
+        },
+
         className : 'calendar-tbl',
         render : function(sharesets){
             var self = this
@@ -56,30 +77,30 @@ define(function(require, exports, module){
                 });
                 d = moment(d.valueOf()).add('days',1);
             });
+            var weeks = [];
+            _(days).each(function(d,idx){
+                var weekday = idx % 7,
+                    weekidx = Math.floor(idx/7);
+                if(weekday === 0){
+                    weeks.push({days:[]});
+                }
 
-            //$(self.el).clone(true)
-                //.css('visibility', 'hidden')
-                //.appendTo(document.body)
-                //.offset($(self.el).offset())
-                //.css('visibility', 'visible')
-                //.fadeOut(function(){
-                    //$(self.el).show();
-                    ////$(this).remove();
-                //});
+                weeks[weekidx].days.push(d);
+            });
+            $(self.el).html(mustache.to_html(self.template, {
+                weeks : weeks
+               ,month : start.format('YYYY 年 MM 月')
+               ,prevMonth : start.add('M', -1).format('YYYY-MM')
+               ,nextMonth : start.add('M',2).format('YYYY-MM')
+            }));
+            _(data).each(function(d){
+                var clsDate = moment(d.date).format('YYYY-MM-DD');
+                clsDate = '.dt-'+clsDate+' ul'
+                $(self.el).find(clsDate).append($(mustache.to_html(self.template_shareset, d)))
+            });
 
-            $(self.el).slideUp(function(){
-                $(self.el).html(mustache.to_html(self.template, {
-                    days : days
-                   ,month : start.format('YYYY 年 MM 月')
-                   ,prevMonth : start.add('M', -1).format('YYYY-MM')
-                   ,nextMonth : start.add('M',2).format('YYYY-MM')
-                }));
-                _(data).each(function(d){
-                    var clsDate = moment(d.date).format('YYYY-MM-DD');
-                    clsDate = '.dt-'+clsDate+' ul'
-                    $(self.el).find(clsDate).append($(mustache.to_html(self.template_shareset, d)))
-                });
-            }).slideDown();
+            //$(self.el).slideUp(function(){
+            //}).slideDown();
 
 
 
@@ -90,7 +111,9 @@ define(function(require, exports, module){
     var AppRouter = Backbone.Router.extend({
         initialize : function(){
             var sharesets = this.sharesets = new Sharesets();
-            var calendarView = this.calendarView = new CalendarView();
+            var calendarView = this.calendarView = new CalendarView({
+                app : this
+            });
 
             sharesets.bind('change',function(){
                 alert('change');

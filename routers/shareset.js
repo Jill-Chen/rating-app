@@ -101,6 +101,10 @@ exports.new = function(req,res){
     }
     var shareset = new ShareSet();
 
+    if(req.query.date){
+        shareset.date = req.query.date;
+    }
+
     res.render('shareset/edit', {
         title: '组织一次分享'
        ,isNew : true

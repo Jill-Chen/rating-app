@@ -1,6 +1,6 @@
 - var isOwner = everyauth.loggedIn && everyauth.user._id.toString() == shareset.owner._id.toString()
 .navback
-    a(href='/calendar/') 返回分享会日历
+  a(href='/calendar/#m/#{moment(shareset.date).format('YYYY-MM')}') 返回分享会日历
 h1 #{shareset.subject}
 p.desc= shareset.desc
 .row
