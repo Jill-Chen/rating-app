@@ -21,5 +21,20 @@ p.desc= shareset.desc
   .span16
     - if (shares && shares.length)
       ul.ratelist!= partial('share-list', shares)
+.row
+  .span16
+    .disqus-box.mt20
+      #disqus_thread
+      script
+        var disqus_shortname="firebird";
+        var disqus_identifier = "shareset_#{developmod?'dev_':''}#{shareset.postname}";
+        var disqus_developer = 1;
+        (function(){
+          var dsq = document.createElement('script');
+          dsq.type="text/javascript";
+          dsq.async = true;
+          dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
+          document.getElementsByTagName("head")[0].appendChild(dsq);
+        })()
 script
   KISSY.use('rate/ajax');
