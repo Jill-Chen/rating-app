@@ -35,13 +35,13 @@ var ShareSetSchema = new Schema({
  ,startTime : {
     'type' : String
    ,'default' : ''
-   ,'validate' : /^\d{1,2}\:\d{1,2}$/
+   ,'validate' : [/^\d{1,2}\:\d{1,2}$/,'需要设置时间']
    ,'required' : true
  }
  ,endTime : {
    'type' : String
    ,'default' : ''
-   ,'validate' : /^\d{1,2}\:\d{1,2}$/
+   ,'validate' : [/^\d{1,2}\:\d{1,2}$/,'需要设置时间']
    ,'required' : true
  }
  ,position : {
@@ -85,4 +85,3 @@ mongoose.model('shareset', ShareSetSchema);
 //}, 'TIME_ERROR_ENDTIME');
 // 必须先登录
 ShareSetSchema.path('postname').validate(/^[0-9a-zA-Z\_\-]+$/, '个性地址只能包含字母，数字，- 或"_');
-ShareSetSchema.path('owner').validate(helper.noempty, '请先登录');

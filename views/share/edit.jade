@@ -11,32 +11,30 @@ script#temp-errors(type='text/template')
   |</div>
   |{{/each}}
 
-form.ajax-form(action='/share/#{share._id}', method="put")
+form.ajax-form(action=isNew?'/share/':'/share/#{share._id}', method=isNew?"post":"put")
   .error-holder
+  input(type='hidden',name='shareset', value=share.shareset)
   fieldset
-    legend 编辑分享
+    legend= title
     .clearfix
       label(for="title") 分享标题
       .input
         input.text#input_title(name="title",value=share.title)
+        span.help-inline
 
     .clearfix
       label(for="authers") 分享者
-      - if(share.authors.length)
-        - each author in share.authors
-          .input
-            input.text#input_user(name="authors",value=author)
-      - else
+      - each author in share.authors
         .input
-          input.text#input_user(name="authors",value=author)
+          input.span2(name="authors",value=author)
+          span.help-inline
     .clearfix
       label(for="tag", title='(逗号或空格分格)') 标签
       .input
-        input.text#input_tags(name="tags",value=share.tags.join(' '))
-        span.help-inline 逗号分格
+        input.xlarge(name="tags",value=share.tags.join(', '))
+        span.help-inline 可以用逗号, 或空格分格
         .tags#tagfield
     //.clearfix
-      label(for='cover') 封面
       .input
         input#cover(name='cover',type='file')
         span.help-block= share.cover
@@ -44,6 +42,7 @@ form.ajax-form(action='/share/#{share._id}', method="put")
       label(for='desc') 介绍
       .input
         textarea.xxlarge(name='desc',row='3')= share.desc
+        span.help-inline
     .actions
       button.btn.primary(type="submit")  修改
       |  

@@ -14,21 +14,24 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
       label(for="subject") 分享会主题 *
       .input
         input.text#subject(name="subject",value=shareset.subject)
+        span.help-inline
     .clearfix
       label(for='postname') 个性地址 *
       .input
         - if(!isNew)
           input.text#postname(type='text',disabled='disabled',value=shareset.postname)
+          span.help-inline
         - else
           input.text#postname(type='text',name='postname',value=shareset.postname)
+          span.help-inline
         span.help-block http://<script>document.write(location.hostname)</script>/shareset/<strong>your-shareset-name</strong> 创建后不可更改
     .clearfix
       label(for="position") 分享地址 *
       .input
         input.text#position(name="position",value=shareset.position)
+        span.help-inline
         span.help-block
             a(href='https://is.taobao.org/meeting/',target='blank')  会议室预定
-        span.help-inline
     .clearfix
       label(for="date")  分享日期 *
       .input
@@ -94,6 +97,7 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
       label(for='desc') 简介
       .input
         textarea.xxlarge(name='desc')= shareset.desc
+        span.help-inline
 
     .actions
       button.btn.primary(type="submit")= !isNew?"确认修改":"创建分享会";

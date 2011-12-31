@@ -21,7 +21,7 @@ KISSY.add('rate/create',function(S){
             elinput = S.one('#input_tags'),
             eltext = elinput.val().replace(/ ?$/,'');
         if(eltext.length > 0){
-            eltext += ' ';
+            eltext += ', ';
         }
         elinput.val(eltext + et.text());
         elinput[0].focus();

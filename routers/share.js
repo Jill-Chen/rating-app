@@ -53,14 +53,20 @@ exports.new = function(req,res){
 
     var sharesetId = req.query.shareset;
 
-    ShareSet.findOne({postname:sharesetId}, function(err,shareset){
+    ShareSet.findOne({
+        postname:sharesetId
+    }, function(err,shareset){
+
         var share = new Share({
             shareset :shareset._id
         });
-        res.render('share/new', {
-            title: '添加分享到分享会'
+        share.authors = [''];
+
+        res.render('share/edit', {
+            title: '添加到 '+ shareset.subject
            ,share : share
            ,navtab : 'share'
+           ,isNew : true
            ,shareset : shareset
         });
     })
@@ -135,6 +141,7 @@ exports.edit = function(req,res){
             title : '编辑 ' + share.title
            ,share : share
            ,navtab : 'share'
+           ,isNew : false
            ,shareset : doc
         });
     });

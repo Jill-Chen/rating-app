@@ -18,7 +18,7 @@ KISSY.add('rate/form-error', function(S){
          */
         showError : function(field, oError){
             var self = this,
-                input = self.form.all('input[name='+field+']'),
+                input = self.form.all('[name='+field+']'),
                 formitem = input?input.parent('.clearfix'):null,
                 elMsg;
 
@@ -30,35 +30,34 @@ KISSY.add('rate/form-error', function(S){
 
             elMsg = formitem.one('.help-inline');
 
-            elMsg = S.one(S.DOM.create('<span class="help-inline help-inline-error" />'));
-            elMsg.insertAfter(input);
             elMsg.html(oError.type);
         },
 
         hide : function(field){
             var self = this,
-                input = self.form.all('input[name='+field+']');
+                input = self.form.all('[name='+field+']');
 
             if(!formitem ){
                 return;
             }
 
-            elMsg = input.siblings('span.help-inline-error');
+            elMsg = input.siblings('span.help-inline');
 
             if(!elMsg){
                 return;
             }
-            elMsg.remove();
+            elMsg.html('');
         },
 
         removeAll : function(form){
-            this.form.all('span.help-inline-error').remove();
+            this.form.all('.error span.help-inline').html('');
         },
 
         render : function(errors){
             var self = this;
             if(!errors) return;
             S.each(errors, function(error, field){
+                if(!error) return;
                 self.showError(field, error);
             });
 
