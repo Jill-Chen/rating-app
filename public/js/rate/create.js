@@ -18,7 +18,7 @@ KISSY.add('rate/create',function(S){
     tagsel.delegate('click', '.tag', function(ev){
         ev.halt();
         var et = S.one(ev.target),
-            elinput = S.one('#input_tags'),
+            elinput = S.one('#tags'),
             eltext = elinput.val().replace(/ ?$/,'');
         if(eltext.length > 0){
             eltext += ', ';

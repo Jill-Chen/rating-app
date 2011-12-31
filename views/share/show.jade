@@ -67,8 +67,10 @@
       img(width='195',height='195',src=share.cover)
       .action
         a(href='/share/#{share._id}/upload-cover') 更改封面
+    .action
+      a(href='/share/#{share._id}/edit') 编辑分享信息
     - if(share.tags && share.tags.length);
-      .ftags
+      .tags
         h3 此分享的标签
         ul.tags
           -share.tags.forEach(function(tag){
