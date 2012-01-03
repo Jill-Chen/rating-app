@@ -1,0 +1,8 @@
+!!!5
+html
+  head
+  body
+    script.
+      if(parent&&parent.uploadCallback){
+        parent.uploadCallback(!{JSON.stringify(files)});
+      }

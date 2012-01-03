@@ -48,14 +48,11 @@ app.configure(function(){
     app.use(app.router);
     app.use(function(req,res,next){
         //上传列表
-
         if(!req.files || req.files.length === 0){
             next();
             return;
         }
-
         next();
-
         _(req.files).each(function(oFile){
             var file = new File({
                 name : oFile.name
@@ -83,7 +80,6 @@ app.configure(function(){
             next(err);
         }
     });
-
 });
 
 app.configure('development', function(){
@@ -255,7 +251,12 @@ app.post('/share/:share/content',function(req,res){
         });
 
     });
+});
 
+app.post('/uploadmgr',function(req,res){
+    res.partial('uploaded', {
+        files : req.files
+    });
 });
 
 
