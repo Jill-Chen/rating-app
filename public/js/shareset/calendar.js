@@ -35,15 +35,20 @@ define(function(require, exports, module){
         dayclick : function(ev){
             var et = $(ev.target),
                 fullDate;
+
             if(!et.hasClass('day')){
                 return;
             }
-            if(et.hasClass('current')){
-                fullDate = et.attr('data-dt')
-                location.href='/shareset/new?date='+fullDate
-            }
+
+            fullDate = et.attr('data-dt');
+
             if(!et.hasClass('current')){
-                location.hash = 'm/'+et.attr('data-dt').substr(0,7);
+                location.hash = 'm/'+fullDate.substr(0,7);
+                return;
+            }
+            if(et.hasClass('day')){
+                location.href='/shareset/new?date='+fullDate
+                return;
             }
         },
 
@@ -89,15 +94,22 @@ define(function(require, exports, module){
             });
             $(self.el).html(mustache.to_html(self.template, {
                 weeks : weeks
-               ,month : start.format('YYYY 年 MM 月')
+               ,month : start.format('YYYY 年 M 月')
                ,prevMonth : start.add('M', -1).format('YYYY-MM')
                ,nextMonth : start.add('M',2).format('YYYY-MM')
             }));
-            _(data).each(function(d){
-                var clsDate = moment(d.date).format('YYYY-MM-DD');
-                clsDate = '.dt-'+clsDate+' ul'
-                $(self.el).find(clsDate).append($(mustache.to_html(self.template_shareset, d)))
-            });
+            setTimeout(function(){
+                _(data).each(function(d){
+
+                    var clsDate = moment(d.date).format('YYYY-MM-DD');
+                    clsDate = '.dt-'+clsDate+' ul';
+                    console.log(clsDate);
+
+                    var elLI = $(mustache.to_html(self.template_shareset, d));
+                    var elUL = $(self.el).find(clsDate);
+                    elUL.append(elLI);
+                });
+            },0)
 
             //$(self.el).slideUp(function(){
             //}).slideDown();

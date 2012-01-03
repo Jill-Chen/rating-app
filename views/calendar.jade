@@ -1,15 +1,10 @@
 // 分享会列表
 #page
-  .row
-    ul.pills
   script#template-calendar(type='text/template').
     <div class="hd">
-      <h3>{{month}}</h3>
-      <div class="act">
-        <a href="#m/{{prevMonth}}" class="btn"> &lt; -</a>
-        <a href="#" class="btn">当月</a>
-        <a href="#m/{{nextMonth}}" class="btn">- &gt; </a>
-      </div>
+      <a href="#m/{{prevMonth}}" class="btn"> &lt; -</a>
+      <span>{{month}}</span>
+      <a href="#m/{{nextMonth}}" class="btn">- &gt; </a>
     </div>
 
     <table class="calendar">
@@ -53,7 +48,7 @@
     </table>
 
   script#template-shareset(type='text/template').
-    <li><a href="/shareset/{{postname}}" title='{{subject}}'>{{subject}}</a></li>
+    <li><a href="/shareset/{{postname}}" title='{{position}} {{startTime}} - {{endTime}}'>{{subject}}</a></li>
 
   #cal-container
 script

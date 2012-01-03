@@ -29,9 +29,9 @@ form.ajax-form(action=isNew?'/share/':'/share/#{share._id}', method=isNew?"post"
           input.span2(name="authors",value=author)
           span.help-inline
     .clearfix
-      label(for="tags", title='(逗号或空格分格)') 标签
+      label(for="tags", title='(逗号或空格分开)') 标签
       .input
-        input.xlarge#tags(name="tags",value=share.tags.join(', '))
+        input.xxlarge#tags(name="tags",value=share.tags.join(', '))
         span.help-inline 可以用逗号, 或空格分格
         .tags#tagfield
     //.clearfix

@@ -32,7 +32,6 @@ exports.index = {
                 $gte : start.native()
                ,$lte : end.native()
             }
-
         }
 
         var find = ShareSet.find(queryObj)
@@ -41,7 +40,19 @@ exports.index = {
 
         find.exec(function(err,sharesets){
             if(err) return next(err);
-            res.send( sharesets );
+            res.send( _(sharesets).map(function(ss){
+                return {
+                    _id : ss._id,
+                    subject : ss.subject,
+                    owner : ss.owner,
+                    date : ss.date.getTime(),
+                    startTime : ss.startTime,
+                    endTime : ss.endTime,
+                    postname : ss.postname,
+                    position: ss.position
+
+                }
+            }));
         });
 
     },
