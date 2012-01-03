@@ -56,8 +56,12 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='18') 18
           option(value='19') 19
         select.text.date-time.span2(name="startTimeM")
-          option(value=shareset.startTime.split(':')[1])= shareset.startTime.split(':')[1]
-          option(value='00') 00
+          - if(shareset.startTime)
+            - var starttime = shareset.startTime.split(':')
+            option(value=starttime[1])= startTime[1]
+            option(value='00') 00
+          - else
+            option(value='00') 00
           option(value='30') 30
 
         |  到 
@@ -77,8 +81,12 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='19') 19
 
         select.text.date-time.span2(name="endTimeM")
-          option(value=shareset.endTime.split(':')[1])= shareset.endTime.split(':')[1]
-          option(value='00') 00
+          - if(shareset.endTime)
+            - var endtime = shareset.endTime.split(':')
+            option(value=endtime[1])= endTime[1]
+            option(value='00') 00
+          - else
+            option(value='00') 00
           option(value='30') 30
         span.help-inline
     .clearfix

@@ -54,6 +54,9 @@ app.configure(function(){
         }
         next();
         _(req.files).each(function(oFile){
+            if(oFile.size === 0){
+                return;
+            }
             var file = new File({
                 name : oFile.name
                ,size : oFile.size

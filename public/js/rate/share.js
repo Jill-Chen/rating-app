@@ -5,6 +5,10 @@ KISSY.add('rate/share',function(S,O){
         var old = text.val();
         var file = files.uploader;
         var markdown = '';
+        if(!file || file.size === 0 ){
+            alert('请选择文件');
+            return;
+        }
         file.path = file.path.replace(/^public/,'');
         file.nameEscaped = file.name.replace(/([\.\-\+\#\`\_\*\\\{\}\(\)\[\]])/g,'\\$1');
 
@@ -22,8 +26,14 @@ KISSY.add('rate/share',function(S,O){
         uploader = new O({
             content : S.one('#template-uploader').html(),
             elCls : 'uploader',
+            visible : false,
             align : {points:['cc','cc']}
         });
+        uploader.render()
+        uploader.get('contentEl').delegate('click','.close-ov',function(ev){
+                uploader.hide();
+                ev.halt();
+            });
 
         function toggleEditor(elcnt){
             elcnt.one('.editor').slideToggle(.2);
