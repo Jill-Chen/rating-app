@@ -61,6 +61,10 @@ var ShareSchema = new Schema({
       'type' : Schema.Types.ObjectId
      ,'required':true
  }
+ ,viewCount : {
+    'type' : Number
+   ,'default' : 0
+ }
  ,rates : [helper.Rate]
 });
 

@@ -1,22 +1,27 @@
 li.share-list-item
-  - if(shares[indexInCollection].cover)
+  - var share = shares[indexInCollection];
+  - if(share.cover)
     .cover
-      a(href='/share/#{shares[indexInCollection]._id}')
-        img(src=shares[indexInCollection].cover)
+      a(href='/share/#{share._id}')
+        img(src=share.cover)
   .cnt
     h3.title
-      a(href='/share/#{shares[indexInCollection]._id}') #{shares[indexInCollection].authors.join(', ')} : #{shares[indexInCollection].title}
+      a(href='/share/#{share._id}') #{share.authors.join(', ')} : #{share.title}
     .meta
-      span.like
-        i ♥
-        span #{shares[indexInCollection].like}
-    div.desc= shares[indexInCollection].desc
+      span #{share.like}
+      &nbsp;
+      span likes
+      &nbsp; and &nbsp;
+      span= share.viewCount
+      &nbsp;
+      span views
+    div.desc= share.desc
     .act
       span.author
       .btns
-        a(href='/share/#{shares[indexInCollection]._id}/edit') 编辑
+        a(href='/share/#{share._id}/edit') 编辑
         &nbsp;
-        a(href='/share/#{shares[indexInCollection]._id}/upload-cover') 上传封面
+        a(href='/share/#{share._id}/upload-cover') 上传封面
         &nbsp;
-        a.ajax-btn(data-type='delete', data-url='/share/#{shares[indexInCollection]._id}', href='/share/#{shares[indexInCollection]._id}') 删除
+        a.ajax-btn(data-type='delete', data-url='/share/#{share._id}', href='/share/#{share._id}') 删除
 

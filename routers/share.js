@@ -121,6 +121,9 @@ exports.show = function(req,res){
         });
         return;
     }
+
+    share.viewCount += 1;
+
     ShareSet.findById(share.shareset, function(err, doc){
         if(err) return next(err);
         res.render('share/show', {
@@ -129,7 +132,7 @@ exports.show = function(req,res){
            ,navtab : 'share'
            ,shareset : doc
         });
-
+        share.save();
     });
 
 };
