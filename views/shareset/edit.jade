@@ -41,8 +41,12 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
     .clearfix
       label(for='time') 时间 *
       .input
+        - var startTime = ('startTime' in shareset)?shareset.startTime.split(':'):[]
         select.text.date-time.span2#time(name="startTimeH")
-          option(value=shareset.startTime.split(':')[0])= shareset.startTime.split(':')[0]
+          - if(startTime.length > 1)
+            option(value=startTime[0])= startTime[0]
+          - else
+            option(value='')
           option(value='08') 08
           option(value='09') 09
           option(value='10') 10
@@ -56,17 +60,20 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='18') 18
           option(value='19') 19
         select.text.date-time.span2(name="startTimeM")
-          - if(shareset.startTime)
-            - var starttime = shareset.startTime.split(':')
-            option(value=starttime[1])= startTime[1]
+          - if(startTime.length > 1)
+            option(value=startTime[1])= startTime[1]
             option(value='00') 00
           - else
             option(value='00') 00
           option(value='30') 30
 
         |  到 
+        - var endTime = shareset.endTime?shareset.endTime.split(':'):[]
         select.text.date-time.span2(name="endTimeH")
-          option(value=shareset.endTime.split(':')[0])= shareset.endTime.split(':')[0]
+          - if(endTime.length > 1)
+            option(value=endTime[0])= endTime[0]
+          - else
+            option(value='')
           option(value='08') 08
           option(value='09') 09
           option(value='10') 10
@@ -81,9 +88,8 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='19') 19
 
         select.text.date-time.span2(name="endTimeM")
-          - if(shareset.endTime)
-            - var endtime = shareset.endTime.split(':')
-            option(value=endtime[1])= endTime[1]
+          - if(endTime.length > 1)
+            option(value=endTime[1])= endTime[1]
             option(value='00') 00
           - else
             option(value='00') 00
