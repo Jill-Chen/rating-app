@@ -108,19 +108,31 @@ app.get('/', function(req, res){
     delete req.session.goto;
     return;
   }
-  res.render('index', {
+  res.render('index/index', {
     title: '分享平台'
    ,navtab : 'home'
   });
 });
 
 /**
- * 日历页面
+ * 日历
  */
 app.get('/calendar', function(req,res){
   res.render('calendar', {
-    title: '日历'
+    layout : 'layout-calendar'
+   ,title: '分享会日历'
    ,navtab : 'shareset'
+  });
+});
+
+/**
+ * 发现分享
+ */
+app.get('/explore', function(req,res){
+  res.render('explore', {
+    layout : 'layout-explore'
+   ,title: '发现分享'
+   ,navtab : 'explore'
   });
 });
 
@@ -128,7 +140,7 @@ app.get('/calendar', function(req,res){
  * 平台反馈页面
  */
 app.get('/feedback', function(req, res){
-  res.render('feedback', {
+  res.render('index/feedback', {
     title: '反馈与讨论 分享平台'
    ,navtab : 'feedback'
   });
@@ -137,10 +149,22 @@ app.get('/feedback', function(req, res){
 /**
  * 异步获取全部标签
  */
-app.get('/json/tags', function(req, res){
+app.get('/json/tags', function(req, res,next){
     Share.distinct('tags',{}, function(err, docs){
+
+        if(err) return next(err);
+
         res.send({
             isSuccess : true,
+            tags : docs
+        });
+    });
+});
+
+app.get('/api/summary',function(req,res,next){
+    Share.distinct('tags',{}, function(err, docs){
+        if(err) return next(err);
+        res.send({
             tags : docs
         });
     });

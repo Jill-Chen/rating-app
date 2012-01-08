@@ -312,6 +312,7 @@ pre code{background:none;color:auto;padding:0;}
 .content-bd p{margin:0 0 5px 0;line-height:1.5;}
 .content-bd li{color:#333;margin:0 0 5px;}
 .content-bd ul,.content-bd ol{padding:10px 0 0 30px;}
+.dsq-comment-text{color:#333;}
 #main{padding-top:50px;}
 html,body{font-size:12px;background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;}
 .calendar-tbl{zoom:1;width:940px;}.calendar-tbl:before,.calendar-tbl:after{display:table;content:"";zoom:1;*display:inline;}

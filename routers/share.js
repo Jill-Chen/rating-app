@@ -29,17 +29,18 @@ exports.index = function(req,res){
     var query = req.query;
     query.deleted = {"$ne":true};
     var sharequery = Share.find(query);
-    sharequery.sort('_id',-1);
+    sharequery.sort('_id', -1);
 
     sharequery.exec(function(err,shares){
         if(err) return next(err);
-        res.render('share/index', {
-            shares : shares
-           ,query  : query
-           ,navtab : 'share'
-           ,type   : req.params.listtype
-           ,title  : '所有分享'
-        });
+        res.send(shares);
+        //res.render('share/index', {
+            //shares : shares
+           //,query  : query
+           //,navtab : 'share'
+           //,type   : req.params.listtype
+           //,title  : '所有分享'
+        //});
     });
 
 };

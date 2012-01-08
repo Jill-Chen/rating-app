@@ -101,12 +101,10 @@ define(function(require, exports, module){
             setTimeout(function(){
                 _(data).each(function(d){
 
-                    var clsDate = moment(d.date).format('YYYY-MM-DD');
-                    clsDate = '.dt-'+clsDate+' ul';
-                    console.log(clsDate);
+                    var clsDate = moment(d.date).format('YYYY-MM-DD'),
+                        elLI = $(mustache.to_html(self.template_shareset, d)),
+                        elUL = $(self.el).find('.dt-'+clsDate+' ul');
 
-                    var elLI = $(mustache.to_html(self.template_shareset, d));
-                    var elUL = $(self.el).find(clsDate);
                     elUL.append(elLI);
                 });
             },0)

@@ -1,10 +1,12 @@
-script#temp-tags(type='kissy/template')
+script#tmpl-tags(type='kissy/template')
   |<ul class='tags'>
-  |  {{#each tags as tag}}
-  |    <li><a href='/share?tags={{tag}}'>{{tag}}</a></li>
-  |  {{/each}}
+  |  {{#tags}}
+  |    <li><a href='/explore#tags/{{.}}'>{{.}}</a></li>
+  |  {{/tags}}
   |</ul>
 div#tags.box
   .hd
     h3 标签
   .bd
+script
+  seajs.use('/js/tags');

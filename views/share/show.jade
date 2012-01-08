@@ -93,7 +93,7 @@ script#template-uploader(type='text/template').
         ul.tags
           -share.tags.forEach(function(tag){
             li
-              a(href="/share/?tags=#{tag}")=tag
+              a(href="/explore#tags/#{tag}")= tag
           -})
 
 script

@@ -1,9 +1,8 @@
-li.share-list-item
-  - var share = shares[indexInCollection];
-  - if(share.cover)
-    .cover
-      a(href='/share/#{share._id}')
-        img(src=share.cover)
+- var share = shares[indexInCollection];
+.share-list-item
+  .cover
+    a(href='/share/#{share._id}')
+      img(src=share.cover)
   .cnt
     h3.title
       a(href='/share/#{share._id}') #{share.authors.join(', ')} : #{share.title}

@@ -20,7 +20,7 @@ p.desc= shareset.desc
 .row
   .span16
     - if (shares && shares.length)
-      ul.ratelist!= partial('share-list', shares)
+      div!= partial('share-list', shares)
 .row
   .span16
     .disqus-box.mt20
