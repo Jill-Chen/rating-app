@@ -1,0 +1,28 @@
+div.topbar(data-dropdown='dropdown')
+  div.topbar-inner
+    .container
+      h3
+        a.brand(href='/')  分享平台
+      ul.nav
+        li(class=(tab ==='home')?'active':'')
+          a(href="/") 首页
+        li(class=(tab ==='shareset')?'active':'')
+          a(href="/calendar") 分享会日历
+        li(class=(tab ==='explore')?'active':'')
+          a(href="/explore") 发现分享
+        li(class=(tab ==='create')?'active':'')
+          a(href='/shareset/new') 组织分享会
+      ul.nav.secondary-nav
+        li(class=(tab ==='feedback')?'active':'')
+          a(href='/feedback') 反馈
+        - if(!everyauth.loggedIn)
+          li
+            a.login-url(href='/login?redirect={url}') 登录
+          li
+            a.login-url(href='/register?redirect={url}',title='想要组织分享，先来注册一个吧') 注册
+        - else
+          li.dropdown
+            a.dropdown-toggle(href='#')= user.email
+            ul.dropdown-menu
+              li
+                a(href='/logout') 退出

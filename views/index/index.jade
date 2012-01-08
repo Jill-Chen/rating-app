@@ -21,15 +21,8 @@
         .hd
           h3
             登录
-        form.bd(action="/login",method='post')
-          input#current_url(type='hidden',value='',name='redirect')
-          script
-            KISSY.one('#current_url').val(location.href)
+        form.bd(action="/login?redirect=/",method='post')
           input.span3(type='text',name='email',placeholder='email')
-          br
-          br
-          input.span2(type='password',name='password',placeholder='password')
-          br
           br
           button.btn.small(type='submit',style='padding:4px 9px;') 登录
     .box
@@ -39,5 +32,3 @@
         ul.links
           li
             a(href='https://is.taobao.org/meeting/')  会议室预定
-script
-  KISSY.use('rate/tags');

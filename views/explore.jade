@@ -1,0 +1,51 @@
+//- if (query.author)
+  //h1
+    //#{query.author} 的分享
+  //p
+    //a(href="/list") 所有分享
+//- else if(query.tags)
+  //.navback
+    //a(href='/share') 所有分享
+  //h1
+    //标签为 #{query.tags} 的分享
+
+script#template-list(type='text/template').
+  <div class='ratelist'>
+    {{#list}}
+    <div class='shareitem'>
+      <a href='/share/{{_id}}' style='background-image:url({{cover}})'>
+        <div class="wrap">
+          <h3 class="title"> {{title}} </h3>
+          <div class="desc">{{desc}}</div>
+          <div class="act">
+            <span class="author">{{authors}}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {{/list}}
+  </div>
+script#template-tags(type='text/template').
+  <ul class='tags'>
+    {{#tags}}
+      <li><a href='#tags/{{.}}'>{{.}}</a></li>
+    {{/tags}}
+  </ul>
+
+script#template-tagquery(type='text/template').
+  <div class="navback">
+    <a href="#">所有分享</a>
+  </div>
+  <h1>标签为 {{tag}} 的分享</h1>
+
+
+#page
+  .row
+    .span11
+      #Query
+      #Explore
+    .span5
+      #Tags
+
+script
+  seajs.use('/js/explore.js?t=20120104')

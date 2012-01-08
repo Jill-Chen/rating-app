@@ -1,9 +1,0 @@
-li.shareitem
-  a(href='/share/#{shares[indexInCollection]._id}',style='background-image:url(#{shares[indexInCollection].cover})')
-    .wrap
-      h3.title
-        #{shares[indexInCollection].title}
-      .desc=shares[indexInCollection].desc.substr(0, 40);
-      .act
-        span.author
-          #{shares[indexInCollection].authors.join(', ')}
