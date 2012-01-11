@@ -3,7 +3,7 @@
  * @function User Auth
  */
 var everyauth = require('everyauth');
-var hashlib = require('hashlib');
+//var hashlib = require('hashlib');
 var User = require('../modules/index').User;
 
 
@@ -75,7 +75,7 @@ everyauth.password
     })
     .registerUser(function(newUser, errors){
         var promise = this.Promise();
-        newUser.password = hashlib.md5(newUser.password);
+        //newUser.password = hashlib.md5(newUser.password);
         var user = new User(newUser);
         user.save(function(err,doc){
             if(err){
