@@ -23,8 +23,8 @@ html
         KISSY.use('rate/app');
 
   body
-    include ../topbar
+    include topbar
     div#main.container!= body
-    include ../footer
+    include footer
     - if(tab === 'user')
       script(src="/bootstrap/js/bootstrap-alerts.js")
