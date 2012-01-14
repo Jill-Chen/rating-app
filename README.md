@@ -1,7 +1,7 @@
-An express app for share manage
+An express app for shareing
 
 #Requirs:
- * node 0.4.x
+ * node
  * mongodb
  * redis
  * git
@@ -13,4 +13,4 @@ An express app for share manage
 
 
 #Start the server:
-  cd node server.js
+  node server.js
