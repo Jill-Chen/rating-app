@@ -12,12 +12,30 @@ define(function(require, exports, module){
     var Sharesets = Backbone.Collection.extend({
         model : Shareset,
         url : '/shareset',
-        month : moment().format('YYYY-MM'),
+        month : null,
         parse : function(res){
-            //_(res).each(function(d){
-                //d.id = d._id
-            //});
             return res;
+        }
+    });
+
+    var ListView = Backbone.View.extend({
+        initialize : function(){
+            this.template_list = $('#template-list').html();
+            this.template_shareset = $('#template-list-shareset').html();
+        },
+        events : { },
+        className : function(){},
+        render : function(sharesets){
+            var list = sharesets.toJSON();
+            _(list).each(function(d){
+                d.date = moment(d.date).format('YYYY-MM-DD');
+            });
+            $(this.el).html(mustache.to_html(this.template_list, {
+                list : list
+            },
+            {
+               sharesets : this.template_shareset
+            }))
         }
     });
 
@@ -25,7 +43,6 @@ define(function(require, exports, module){
         initialize : function(option){
             this.template = $('#template-calendar').html();
             this.template_shareset = $('#template-shareset').html();
-            this.app = option.app;
         },
 
         events : {
@@ -68,7 +85,7 @@ define(function(require, exports, module){
 
             _(lastSunday.diff(firstMonday,'days')).times(function(){
                 var cls = ''
-                if(today.month() === d.month() && today.date() === d.date()){
+                if(today.year() === d.year() && today.month() === d.month() && today.date() === d.date()){
                     cls += ' today'
                 }
                 if(d.month() === start.month()){
@@ -109,11 +126,6 @@ define(function(require, exports, module){
                 });
             },0)
 
-            //$(self.el).slideUp(function(){
-            //}).slideDown();
-
-
-
             return self;
         }
     });
@@ -121,25 +133,35 @@ define(function(require, exports, module){
     var AppRouter = Backbone.Router.extend({
         initialize : function(){
             var sharesets = this.sharesets = new Sharesets();
-            var calendarView = this.calendarView = new CalendarView({
-                app : this
-            });
+            var calendarView = this.calendarView = new CalendarView();
+            var listView = this.listView = new ListView();
 
             sharesets.bind('change',function(){
                 alert('change');
             });
+
             sharesets.bind('reset',function(x,y){
-                calendarView.render(this);
+                if(this.month){
+                    calendarView.render(this);
+                }else{
+                    listView.render(this);
+                }
             });
 
             $('#cal-container').append(this.calendarView.el);
+            $('#list-container').append(this.listView.el);
         },
         routes : {
             'm/:month' : "month",
-            '' : 'month'
+            '' : 'month',
+            'list' : 'list'
         },
         url : '/shareset',
         month : function(month){
+            $('#cal-container').show();
+            $('#list-container').hide();
+            $('#viewswitch .v-c').addClass('active');
+            $('#viewswitch .v-l').removeClass('active');
             if(!month){
                 month = moment().format('YYYY-MM');
             }
@@ -149,6 +171,14 @@ define(function(require, exports, module){
                     month : month
                 }
             });
+        },
+        list : function(){
+            this.sharesets.month = null;
+            this.sharesets.fetch({});
+            $('#cal-container').hide();
+            $('#list-container').show();
+            $('#viewswitch .v-l').addClass('active');
+            $('#viewswitch .v-c').removeClass('active');
         }
     });
 
