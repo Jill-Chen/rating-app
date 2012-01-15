@@ -161,7 +161,7 @@ exports.update = function(req,res,next){
         res.send({
             errors : null,
             action : 'redirect',
-            redirect : '/shareset/' + ssdoc.postname
+            redirect : body.shareset?'/shareset/' + body.shareset: '/share/'+share._id
         });
     });
 };
