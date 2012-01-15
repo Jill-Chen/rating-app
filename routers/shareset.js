@@ -17,10 +17,11 @@ exports.load = function(id, next){
 };
 
 exports.index = function(req,res,next){
-    var queryObj = {
+    var query = req.query
+       ,queryObj = {
             deleted : {"$ne" : true}
         }
-       ,month = req.param('month')//YYYY-MM
+       ,month = query.month //YYYY-MM
        ,start
        ,end;
 
@@ -34,6 +35,10 @@ exports.index = function(req,res,next){
         }
     }
 
+    if(query.name){
+        queryObj.name = query.name;
+    }
+
     var find = ShareSet.find(queryObj)
         .sort('_id',-1)
         .limit(20);
@@ -45,6 +50,7 @@ exports.index = function(req,res,next){
                 _id : ss._id,
                 subject : ss.subject,
                 owner : ss.owner,
+                name : ss.name,
                 date : ss.date.getTime(),
                 startTime : ss.startTime,
                 endTime : ss.endTime,
@@ -62,8 +68,11 @@ exports.new = function(req,res){
         res.redirect('/login?redirect=' + req.url);
         return;
     }
+    var user = req.user;
+
     var defaultName = user.setting && user.setting.defaultSharesetName?
         user.setting.defaultSharesetName : '';
+
     var shareset = new ShareSet({
         name : defaultName
     });
@@ -82,7 +91,10 @@ exports.new = function(req,res){
 
 exports.create = function(req,res){
     var shareset = new ShareSet(),
-        reqbody = req.body;
+        reqbody = req.body,
+        error = {},
+        user = req.user;
+    //检查URL是否已被使用
     shareset.subject = reqbody.subject;
     shareset.name = reqbody.name;
     shareset.date = reqbody.date;
@@ -92,27 +104,53 @@ exports.create = function(req,res){
     shareset.desc = reqbody.desc;
     shareset.postname = reqbody.postname;
     shareset.category = reqbody.category;
-
     shareset.owner = req.user._id;
 
-    shareset.save(function(error,saved){
-        if(error){
-            res.send({
-                errors : error.errors || error.message
-            });
-            return;
-        };
-        res.send({
-            errors : null,
-            action : 'redirect',
-            redirect : '/shareset/' + saved.postname
+    if(shareset.postname){
+        checkPostname(save)
+    }else{
+        save();
+    }
+
+    function checkPostname(fn){
+        ShareSet.findOne({
+            postname : shareset.postname
+        }, function(err,doc){
+            if(err) return next(err);
+            if(doc){
+                error.postname = {
+                    type : '这个名称已经被人用过了'
+                }
+            }
+            fn();
         });
+    }
 
-        //保存默认分享会名称
-        user.setting.defaultShareset = shareset.name;
-        user.save();
-    });
 
+    function save(){
+        shareset.save(function(err,saved){
+            if(_(error).keys() > 0){
+                err = err || {};
+                err.errors = err.errors || {};
+                _.extend(err.errors, errors);
+            }
+            if(err){
+                res.send({
+                    errors : err.errors || err.message
+                });
+                return;
+            };
+            res.send({
+                errors : null,
+                action : 'redirect',
+                redirect : '/shareset/' + saved.postname
+            });
+
+            //保存默认分享会名称
+            user.setting.defaultSharesetName = shareset.name;
+            user.save();
+        });
+    }
 };
 
 exports.show = function(req,res, next){
