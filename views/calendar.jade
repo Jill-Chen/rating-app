@@ -47,9 +47,30 @@
       </tbody>
     </table>
 
+  script#template-list(type='text/template').
+    <div class='ss-list'>
+    {{#list}}
+      {{> sharesets}}
+    {{/list}}
+    </div>
+
   script#template-shareset(type='text/template').
     <li><a href="/shareset/{{postname}}" title='{{position}} {{startTime}} - {{endTime}}'>{{subject}}</a></li>
 
+  script#template-list-shareset(type='text/template').
+    <div class='ss'>
+      <div class="ss-dt">{{date}} {{startTime}} - {{endTime}}</div>
+      <div class="ss-bd">
+        <a title='{{desc}}' href="/shareset/{{postname}}" >{{subject}}</a>
+        <span class='subtext'>{{position}}</span>
+      </div>
+    </div>
+
+
+  div#viewswitch.viewswitch
+    a.v-c(href='#') 日历视图
+    a.v-l(href='#list') 列表视图
   #cal-container
+  #list-container
 script
   seajs.use('/js/shareset/calendar.js?t=20120104')
