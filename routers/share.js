@@ -34,13 +34,6 @@ exports.index = function(req,res){
     sharequery.exec(function(err,shares){
         if(err) return next(err);
         res.send(shares);
-        //res.render('share/index', {
-            //shares : shares
-           //,query  : query
-           //,navtab : 'share'
-           //,type   : req.params.listtype
-           //,title  : '所有分享'
-        //});
     });
 
 };
@@ -52,23 +45,19 @@ exports.new = function(req,res){
         return;
     }
 
-    var sharesetId = req.query.shareset;
+    var postname = req.query.shareset;
 
     ShareSet.findOne({
-        postname:sharesetId
+        postname:postname
     }, function(err,shareset){
-
-        var share = new Share({
-            shareset :shareset._id
-        });
+        var share = new Share();
         share.authors = [''];
-
         res.render('share/edit', {
             title: '添加到 '+ shareset.subject
            ,share : share
            ,navtab : 'share'
            ,isNew : true
-           ,shareset : shareset
+           ,shareset : postname
         });
     })
 };
@@ -82,10 +71,8 @@ exports.create = function(req,res,next){
         authors : getList(body.authors),
         tags : body.tags,
         desc: body.desc,
-        shareset : body.shareset,
         owner : req.user._id
     });
-    console.log(body.authors);
 
     share.save(function(error,saved){
         if(error){
@@ -93,24 +80,32 @@ exports.create = function(req,res,next){
                 errors : error.errors || error.message,
             });
             return;
-            //return next(error);
         }
-        ShareSet.findById(body.shareset, function(err, docs){
+
+        ShareSet.findById(body.shareset, function(err, doc){
             if(err) return next(err);
-            if(!docs)
+
+            if(!doc)
                 return res.send({
-                    errors : [{type:"分享会不存在"}]
+                    errors : null,
+                    action : 'redirect',
+                    redirect : '/share/'+ saved._id
                 });
 
+            doc.shares.push(saved._id)
+            doc.save(function(error, saved){
             res.send({
                 errors : null,
                 action : 'redirect',
                 redirect : '/shareset/'+ docs.postname
             });
+            });
+
         });
     });
 
 };
+
 exports.show = function(req,res){
     var share = req.share;
     if(!share.shareset){
@@ -137,21 +132,20 @@ exports.show = function(req,res){
     });
 
 };
+
 exports.edit = function(req,res){
     var share= req.share;
-    ShareSet.findById(share.shareset,function(err,doc){
-        if(err) return next(err);
-        res.render('share/edit',{
-            title : '编辑 ' + share.title
-           ,share : share
-           ,navtab : 'share'
-           ,isNew : false
-           ,shareset : doc
-        });
+    res.render('share/edit',{
+        title : '编辑 ' + share.title
+       ,share : share
+       ,navtab : 'share'
+       ,isNew : false
+       ,shareset : req.query.shareset
     });
 
-}
-exports.update = function(req,res){
+};
+
+exports.update = function(req,res,next){
     var share = req.share,
         body = req.body;
 
@@ -162,19 +156,12 @@ exports.update = function(req,res){
         desc: body.desc
     });
 
-    ShareSet.findById(share.shareset, function(err,ssdoc){
-        share.save(function(err,saved){
-            if(err){
-                res.send({
-                    errors : err.errors || err.message,
-                });
-                return;
-            }
-            res.send({
-                errors : null,
-                action : 'redirect',
-                redirect : '/shareset/' + ssdoc.postname
-            });
+    share.save(function(err,saved){
+        if(err) return next(err);
+        res.send({
+            errors : null,
+            action : 'redirect',
+            redirect : '/shareset/' + ssdoc.postname
         });
     });
 };

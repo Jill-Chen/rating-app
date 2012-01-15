@@ -13,17 +13,14 @@ script#template-uploader(type='text/template').
     </div>
   </form>
 .navback
-  - if(share.shareset)
-    a(href='/shareset/#{shareset.postname}') &#171; 分享会
-  - else
-    a(href='/list/') 所有分享
+  a(href='/explore/') &#171;所有分享
 .row
   .span12
     h1 #{share.title}
     .meta-box
-      | by:
+      | 由&nbsp;
       span= share.authors.join(',')
-      &nbsp;
+      &nbsp;分享&nbsp;
       span.date=moment(share.ts).format('MMM Do YYYY')
       &nbsp;
       &nbsp;

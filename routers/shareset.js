@@ -10,6 +10,7 @@ exports.load = function(id, next){
         postname : id
     })
     .populate('owner')
+    .populate('shares')
     .run(function(err,doc){
         next(err,doc)
     });
@@ -61,7 +62,11 @@ exports.new = function(req,res){
         res.redirect('/login?redirect=' + req.url);
         return;
     }
-    var shareset = new ShareSet();
+    var defaultName = user.setting && user.setting.defaultSharesetName?
+        user.setting.defaultSharesetName : '';
+    var shareset = new ShareSet({
+        name : defaultName
+    });
 
     if(req.query.date){
         shareset.date = req.query.date;
@@ -79,6 +84,7 @@ exports.create = function(req,res){
     var shareset = new ShareSet(),
         reqbody = req.body;
     shareset.subject = reqbody.subject;
+    shareset.name = reqbody.name;
     shareset.date = reqbody.date;
     shareset.startTime = (reqbody.startTimeH)+":"+(reqbody.startTimeM);
     shareset.endTime  = (reqbody.endTimeH)+":"+(reqbody.endTimeM);
@@ -101,6 +107,10 @@ exports.create = function(req,res){
             action : 'redirect',
             redirect : '/shareset/' + saved.postname
         });
+
+        //保存默认分享会名称
+        user.setting.defaultShareset = shareset.name;
+        user.save();
     });
 
 };
@@ -115,7 +125,7 @@ exports.show = function(req,res, next){
            ,shareset : ss
            ,navtab : 'shareset'
            //,isOwner : isOwner
-           ,shares : docs
+           ,shares : ss.shares
         });
     });
 };

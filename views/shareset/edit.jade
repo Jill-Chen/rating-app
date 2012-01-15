@@ -11,9 +11,14 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
   fieldset
     legend= !isNew? "编辑" : "组织一次分享会"
     .clearfix
-      label(for="subject") 分享会主题 *
+      label(for="subject") 主题 *
       .input
         input.text#subject(name="subject",value=shareset.subject)
+        span.help-inline
+    .clearfix
+      label(for="subject") 分享会名称 *
+      .input
+        input.text#subject(name="name",value=shareset.name)
         span.help-inline
     .clearfix
       label(for='postname') 个性url *

@@ -12,18 +12,18 @@ script#temp-errors(type='text/template')
   |{{/each}}
 
 form.ajax-form(action=isNew?'/share/':'/share/#{share._id}', method=isNew?"post":"put")
+  input(name='shareset',value=shareset, type='hidden')
   .error-holder
-  input(type='hidden',name='shareset', value=share.shareset)
   fieldset
     legend= title
     .clearfix
-      label(for="title") 分享标题
+      label(for="title") 分享标题*
       .input
         input.text#input_title(name="title",value=share.title)
         span.help-inline
 
     .clearfix
-      label(for="authers") 分享者
+      label(for="authers") 分享者*
       - each author in share.authors
         .input
           input.span2(name="authors",value=author)
@@ -34,19 +34,15 @@ form.ajax-form(action=isNew?'/share/':'/share/#{share._id}', method=isNew?"post"
         input.xxlarge#tags(name="tags",value=share.tags.join(', '))
         span.help-inline 可以用逗号, 或空格分格
         .tags#tagfield
-    //.clearfix
-      .input
-        input#cover(name='cover',type='file')
-        span.help-block= share.cover
     .clearfix
       label(for='desc') 介绍
       .input
         textarea.xxlarge(name='desc',row='3')= share.desc
         span.help-inline
     .actions
-      button.btn.primary(type="submit")  修改
-      |  
-      a.btn(href='/shareset/#{shareset.postname}') 返回
+      button.btn.primary(type="submit")= isNew?"添加分享":"修改"
+      &nbsp;
+      a.btn(href=shareset?'/shareset/#{shareset}':'/share/#{share._id}') 返回
 
 script
   KISSY.use('rate/create,rate/ajax')
