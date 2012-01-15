@@ -72,6 +72,8 @@ var ShareSetSchema = new Schema({
   //分享会名称
   name : {
     'type' : String
+   ,'required' : true
+   ,'default' : ''
   }
   // 创建时间
  ,ts : {
@@ -140,19 +142,3 @@ exports.Share = db.model('share');;
 exports.ShareSet= db.model('shareset');;
 exports.File = db.model('file');;
 exports.Post = db.model('post');;
-
-//ensure postname is uniq
-exports.ShareSet.schema.path('postname').validate(
-    function(postname, fn){
-    var t = this;
-    exports.ShareSet.findOne({
-        postname : postname
-    }, function(err,doc){
-        if(err) return fn(false);
-        if(doc && t._id.toString() !== doc._id.toString()){
-            return fn(false);
-        }
-        return fn(true);
-    });
-    return fn;
-}, '这个名称已经被人用过了');

@@ -1,12 +1,15 @@
 - var isOwner = everyauth.loggedIn && everyauth.user._id.toString() == shareset.owner._id.toString()
 .navback
-  a(href='/calendar/#m/#{moment(shareset.date).format('YYYY-MM')}')  &#171; 分享会日历
-h1 #{shareset.subject}
+  a(href='/calendar/#m/#{moment(shareset.date).format('YYYY-MM')}')  &#171; 日历
+h1
+  #{shareset.subject}
 p.desc= shareset.desc
 .row
   .shareset-detail
     .action
       a.btn.big(href='/shareset/#{shareset.postname}/ics') 日历
+    if(shareset.name)
+      p: a(href='/calendar/#list/#{shareset.name}')  #{shareset.name}
     p.datetime #{moment(shareset.date).format('YYYY 年 MM 月 DD 日')} #{shareset.startTime} - #{shareset.endTime}
     p.location  位于 <strong>#{shareset.position}<strong>
     p.owner 由 #{shareset.owner.name}  &lt;<a href='mailto:#{shareset.owner.email}'>#{shareset.owner.email}</a>&gt; 组织

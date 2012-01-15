@@ -28,7 +28,7 @@ define(function(require, exports, module){
         render : function(sharesets){
             var list = sharesets.toJSON();
             _(list).each(function(d){
-                d.date = moment(d.date).format('YYYY-MM-DD');
+                d.date = moment(d.date).format('YYYY年MM月DD日');
             });
             $(this.el).html(mustache.to_html(this.template_list, {
                 list : list
@@ -154,7 +154,8 @@ define(function(require, exports, module){
         routes : {
             'm/:month' : "month",
             '' : 'month',
-            'list' : 'list'
+            'list' : 'list',
+            'list/:name' : 'listByName'
         },
         url : '/shareset',
         month : function(month){
@@ -179,6 +180,18 @@ define(function(require, exports, module){
             $('#list-container').show();
             $('#viewswitch .v-l').addClass('active');
             $('#viewswitch .v-c').removeClass('active');
+        },
+        listByName : function(name){
+            $('#cal-container').hide();
+            $('#list-container').show();
+            $('#viewswitch .v-l').addClass('active');
+            $('#viewswitch .v-c').removeClass('active');
+            this.sharesets.month = null;
+            this.sharesets.fetch({
+                data : {
+                    name : name
+                }
+            });
         }
     });
 
