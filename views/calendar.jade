@@ -59,12 +59,16 @@
 
   script#template-list-shareset(type='text/template').
     <div class='ss'>
-      <div class="ss-bd">
-        <a class='ss-name' href='#list/{{name}}'>{{name}}/</a>
-        <a title='{{desc}}' href="/shareset/{{postname}}" >{{subject}}</a>
-      </div>
       <div class="ss-dt">
-        <span class='subtext'>{{date}} {{startTime}}-{{endTime}} {{position}}</span>
+        <span class='ss-dt-m'>{{date}}</span>
+        <span class='ss-dt-m'>{{startTime}}-{{endTime}} </span>
+        <span class='ss-dt-m'>{{position}}</span>
+      </div>
+      <div class="ss-name">
+        <a href='#list/{{name}}'>{{name}}</a>
+      </div>
+      <div class="ss-bd">
+        <a title='{{desc}}' href="/shareset/{{postname}}" >{{subject}}</a>
       </div>
     </div>
 

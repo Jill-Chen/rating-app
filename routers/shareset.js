@@ -188,6 +188,7 @@ exports.update = function(req,res){
     _.extend(shareset, {
         subject : body.subject
        ,date : body.date
+       ,name : body.name
        ,position : body.position
        ,startTime : (body.startTimeH)+":"+(body.startTimeM)
        ,endTime  : (body.endTimeH)+":"+(body.endTimeM)

@@ -122,19 +122,40 @@
 .ss {
     margin-bottom:10px;
     border-bottom:1px solid #ddd;
+    .clearfix();
+}
+
+.ss-bd,
+.ss-dt,
+.ss-name {
 }
 
 .ss-bd {
+    padding:15px 5px;
     font-size:16px;
+    float:left;
 }
 .ss-dt{
+    padding:5px 10px;
     font-family:mono;
+    float:right;
+    line-height:1.2;
+    text-align:right;
     .subtext();
 }
+.ss-dt-m {
+    display:block;
+}
+
 .ss-name{
-    color:#999;
-    font-size:12px;
-    vertical-align:text-top;
+    width:220px;
+    padding:15px 5px;
+    float:left;
+    text-align:right;
+    font-size:16px;
+    a {
+        color:#999;
+    }
 }
 .viewswitch {
     margin-bottom:5px;
