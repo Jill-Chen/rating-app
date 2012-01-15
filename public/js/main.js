@@ -6,7 +6,7 @@ seajs.config({
         'underscore' : 'underscore/1.2.3/underscore',
         'mustache' : 'mustache/0.4.0/mustache',
         'backbone' : 'backbone/0.5.3/backbone',
-        'moment' : 'moment/1.2.0/moment'
+        'moment' : 'moment/1.3.0/moment'
     },
 
     preload : [
