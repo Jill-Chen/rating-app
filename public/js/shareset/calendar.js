@@ -23,6 +23,12 @@ define(function(require, exports, module){
             this.template_list = $('#template-list').html();
             this.template_shareset = $('#template-list-shareset').html();
         },
+        show : function(){
+            $(this.el).show();
+        },
+        hide : function(){
+            $(this.el).hide();
+        },
         events : { },
         className : function(){},
         render : function(sharesets){
@@ -43,11 +49,21 @@ define(function(require, exports, module){
         initialize : function(option){
             this.template = $('#template-calendar').html();
             this.template_shareset = $('#template-shareset').html();
+            this.calendarHd = new CalendarHdView();
+        },
+        show : function(){
+            $(this.el).show();
+            this.calendarHd.show();
+        },
+        hide : function(){
+            $(this.el).hide();
+            this.calendarHd.hide();
         },
 
         events : {
             'click .day' : 'dayclick'
         },
+
 
         dayclick : function(ev){
             var et = $(ev.target),
@@ -99,7 +115,9 @@ define(function(require, exports, module){
                 });
                 d = moment(d.valueOf()).add('days',1);
             });
+
             var weeks = [];
+
             _(days).each(function(d,idx){
                 var weekday = idx % 7,
                     weekidx = Math.floor(idx/7);
@@ -109,12 +127,19 @@ define(function(require, exports, module){
 
                 weeks[weekidx].days.push(d);
             });
-            $(self.el).html(mustache.to_html(self.template, {
+
+            var viewData = {
                 weeks : weeks
                ,month : start.format('YYYY 年 M 月')
                ,prevMonth : start.add('M', -1).format('YYYY-MM')
                ,nextMonth : start.add('M',2).format('YYYY-MM')
-            }));
+            };
+
+            $(self.el).html(mustache.to_html(self.template, viewData));
+
+            this.calendarHd.render(viewData);
+
+
             setTimeout(function(){
                 _(data).each(function(d){
 
@@ -127,6 +152,21 @@ define(function(require, exports, module){
             },0)
 
             return self;
+        }
+    });
+
+    var CalendarHdView = Backbone.View.extend({
+        el : '#calendar-hd',
+        show : function(){
+            $(this.el).show();
+        },
+        hide : function(){
+            $(this.el).hide();
+        },
+        render : function(data){
+            $(this.el).find('span.title').html(data.month);
+            $(this.el).find('.prevMonth').attr('href', "#m/"+data.prevMonth);
+            $(this.el).find('.nextMonth').attr('href', "#m/"+data.nextMonth );
         }
     });
 
@@ -159,8 +199,8 @@ define(function(require, exports, module){
         },
         url : '/shareset',
         month : function(month){
-            $('#cal-container').show();
-            $('#list-container').hide();
+            this.calendarView.show()
+            this.listView.hide();
             $('#viewswitch .v-c').addClass('active');
             $('#viewswitch .v-l').removeClass('active');
             if(!month){
@@ -176,14 +216,14 @@ define(function(require, exports, module){
         list : function(){
             this.sharesets.month = null;
             this.sharesets.fetch({});
-            $('#cal-container').hide();
-            $('#list-container').show();
+            this.calendarView.hide()
+            this.listView.show();
             $('#viewswitch .v-l').addClass('active');
             $('#viewswitch .v-c').removeClass('active');
         },
         listByName : function(name){
-            $('#cal-container').hide();
-            $('#list-container').show();
+            this.calendarView.hide()
+            this.listView.show();
             $('#viewswitch .v-l').addClass('active');
             $('#viewswitch .v-c').removeClass('active');
             this.sharesets.month = null;
