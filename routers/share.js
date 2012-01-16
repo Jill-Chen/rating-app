@@ -82,7 +82,9 @@ exports.create = function(req,res,next){
             return;
         }
 
-        ShareSet.findById(body.shareset, function(err, doc){
+        ShareSet.findOne({
+            postname : body.shareset
+        }, function(err, doc){
             if(err) return next(err);
 
             if(!doc)
@@ -97,7 +99,7 @@ exports.create = function(req,res,next){
             res.send({
                 errors : null,
                 action : 'redirect',
-                redirect : '/shareset/'+ docs.postname
+                redirect : '/shareset/'+ body.shareset
             });
             });
 
