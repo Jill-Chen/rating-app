@@ -1,0 +1,68 @@
+// CSS Reset
+@import "boot/reset.less";
+// Core variables and mixins
+@import "boot/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "boot/mixins.less";
+@import "boot/type.less";
+html,body {
+    font-size:14px;
+    background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;
+}
+#page {
+    width:940px;
+    margin:0 auto;
+}
+h2 {
+    color:#f30;
+}
+form.feedback {
+    background:#fff;
+    padding:20px;
+    .border-radius(10px);
+}
+.ctl-score {
+    td {
+        display:inline-block;
+        padding:10px 5px;
+    }
+    border-top:1px solid #999;
+    border-bottom:1px solid #999;
+    color:#999;
+}
+label {
+    font-size:14px;
+    display:block;
+    font-weight:bold;
+
+}
+fieldset {
+    padding:20px;
+}
+form .clearfix {
+    margin-bottom:25px;
+}
+form .input {
+    margin-top:10px;
+}
+textarea {
+    width:580px;
+    height:100px;
+    padding:20px;
+}
+.low {
+    color:@red;
+}
+.high {
+    color:@green;
+}
+.actions {
+    .clearfix();
+    padding:10px;
+    button {
+        float:right;
+        margin-left:10px;
+    }
+}
+button {
+    padding:10px 20px;
+}

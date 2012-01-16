@@ -4,6 +4,7 @@ var helper = require('./helper')
 require('./user.js');
 require('./file.js');
 require('./post.js');
+require('./feedback.js')
 
 var Schema   = mongoose.Schema;
 

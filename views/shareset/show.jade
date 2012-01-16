@@ -20,6 +20,8 @@ p.desc= shareset.desc
       a.btn.small.ajax-btn(data-type='delete',data-confirm='你确定要删除吗',href='/shareset/#{shareset.postname}')  删除
       &nbsp;
       a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
+      &nbsp;
+      a(href='/fb/#{shareset._id}') 反馈表地址
 .row
   .span16
     - if (shares && shares.length)

@@ -360,6 +360,23 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
     });
 });
 
+app.get('/fb/:ss',function(req,res){
+    ShareSet.findById(req.params.ss)
+        .populate('shares', ['title','authors'])
+        .run(function(err,shareset){
+            if(err) throw err;
+            res.render('feedback/feedback', {
+                layout : 'layout-feedback',
+                shareset : shareset,
+                title : '谢谢您的反馈'
+            });
+        });
+});
+app.post('/fb/:ss',function(req,res){
+    console.log(req.body);
+    res.send(req.body);
+    //var fb =ew Feedback({});
+});
 
 
 app.get('/404', function(req,res,next){

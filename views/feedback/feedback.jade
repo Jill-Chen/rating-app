@@ -1,0 +1,49 @@
+#page
+  - var scores = [1,2,3,4,5,6,7,8,9, 10]
+  h1 十分感谢您参加本期分享会的反馈
+  ul#indicator
+  form.feedback(method='post')
+    h2 懒懒之道 S01E01 V
+    fieldset
+      .clearfix
+        label 您对本期分享会的话题如何？
+        .input
+          table.ctl-score
+            tr
+              td.label.low 很不满意
+              - each score in scores
+                td: input(type='radio',name='toShareset[rateSubject]',value=score)
+              td.label.high 非常满意
+      .clearfix
+        label 您对本期分享会满意吗？
+        .input
+          table.ctl-score
+            tr
+              td.label.low 很不满意
+              - each score in scores
+                td: input(type='radio',name='toShareset[rateScore]',value=score)
+              td.label.high 非常满意
+      .clearfix
+        label 您对 #{shareset.name} 有什么建议？告诉我们这次分享会好的地方，和不好的地方
+        .input
+          textarea(name='toShareset[review]')
+    - each share in shareset.shares
+      fieldset
+        legend #{share.authors.join(',')} #{share.title}
+        .clearfix
+          label 您对#{share.authors.join(',')} 分享的 #{share.title} 满意度？
+          .input
+            table.ctl-score
+              tr
+                td.label.low 很不满意
+                - each score in scores
+                  td: input(type='radio',name='toShare[#{share._id}][rateScore]',value=score)
+                td.label.high 非常满意
+
+        .clearfix
+          label 您对 #{share.authors.join(',')} 有什么建议？
+          .input
+            textarea(name='toShare[#{share._id}][review]')
+    .actions
+      button(type='submit') 下一页
+      button(type='submit') 返回
