@@ -17,11 +17,14 @@ var developmod = false;
 
 var app = module.exports = express.createServer();
 
+//Modules
 var User = modules.User;
 var File = modules.File;
 var Share = modules.Share;
 var ShareSet = modules.ShareSet;
 var Post = modules.Post;
+var Feedback = modules.Feedback;
+
 var Errors = require('./mods/errors');
 
 function redirect(req, res, next){
@@ -372,10 +375,70 @@ app.get('/fb/:ss',function(req,res){
             });
         });
 });
+
 app.post('/fb/:ss',function(req,res){
     console.log(req.body);
-    res.send(req.body);
-    //var fb =ew Feedback({});
+    //模拟数据
+    //
+    ShareSet.findById(req.params.ss, function(err, doc){
+        var fb = new Feedback({
+            shareset : doc.id,
+            toShareset : {
+                rateOrgnization : Math.ceil(Math.random() * 9),
+                rateGeneral :  Math.ceil(Math.random() * 9),
+                review : '好好好'
+            },
+            toShares :[
+                {
+                    title : '２０１２逃生技巧！',
+                    author : '文龙',
+                    shareId : 'xxx',
+                    rateSubject : Math.ceil(Math.random() * 9),
+                    rateSkill : Math.ceil(Math.random() * 9),
+                    rateGeneral : Math.ceil(Math.random() * 9),
+                    review : '还好的'
+
+                },
+                {
+                    title : '船票！',
+                    author : '遇春',
+                    shareId : 'xxx',
+                    rateSubject : Math.ceil(Math.random() * 9),
+                    rateSkill : Math.ceil(Math.random() * 9),
+                    rateGeneral : Math.ceil(Math.random() * 9),
+                    review : '还好的'
+
+                },
+                {
+                    title : '下一个文明！',
+                    author : '圆心',
+                    shareId : 'xxx',
+                    rateSubject : Math.ceil(Math.random() * 9),
+                    rateSkill : Math.ceil(Math.random() * 9),
+                    rateGeneral : Math.ceil(Math.random() * 9),
+                    review : '还好的'
+
+                }
+            ]
+        });
+
+        fb.save(function(err, saved){
+            res.redirect('/shareset/'+doc.postname);
+        });
+    });
+    //res.send(req.body);
+});
+
+app.get('/fb/:shareset/show',function(req,res){
+    var shareset = req.shareset;
+
+    Feedback.find({
+        shareset : req.shareset
+    }, function(err,docs){
+        res.send({
+            feedbacks : docs,
+        });
+    });
 });
 
 
