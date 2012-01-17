@@ -67,7 +67,7 @@
         Event.on('#scroller-prev','click',function(e){
             e.preventDefault();
             if(current>=0){
-                DOM.show(papers[current]);
+                DOM.show(papers[current-1]);
                 current--;
             }
             if(current = end-1){
