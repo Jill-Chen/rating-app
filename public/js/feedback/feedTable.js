@@ -3,7 +3,7 @@ KISSY.ready(function(S) {
         var papers = DOM.query('fieldset');
         var current = 0,end = papers.length;
         DOM.hide('#submit-form');
-        DOM.hide('#submit-back');
+        DOM.hide('#scroller-prev');
         Event.on('#scroller-next','click',function(e){
             if(current < end){
                 DOM.hide(papers[current]);
