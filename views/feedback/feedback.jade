@@ -14,7 +14,7 @@
 				tr
 				  td.label.low 很不满意
 				  - each score in scores
-					td: input(type='radio',name='toShareset[rateSubject]',value=score)
+				  td: input(type='radio',name='toShareset[rateSubject]',value=score)
 				  td.label.high 非常满意
 		  .clearfix
 			label 您对本期分享会满意吗？
@@ -23,7 +23,7 @@
 				tr
 				  td.label.low 很不满意
 				  - each score in scores
-					td: input(type='radio',name='toShareset[rateScore]',value=score)
+				  td: input(type='radio',name='toShareset[rateScore]',value=score)
 				  td.label.high 非常满意
 		  .clearfix
 			label 您对 #{shareset.name} 有什么建议？告诉我们这次分享会好的地方，和不好的地方
@@ -39,7 +39,7 @@
 				  tr
 					td.label.low 很不满意
 					- each score in scores
-					  td: input(type='radio',name='toShare[#{share._id}][rateScore]',value=score)
+				    td: input(type='radio',name='toShare[#{share._id}][rateScore]',value=score)
 					td.label.high 非常满意
 
 			.clearfix
