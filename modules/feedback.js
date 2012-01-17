@@ -17,8 +17,8 @@ var FeedbackSchema = new Schema({
         default : Date.now
     },
     toShareset : {
-        //组织工作
-        rateOrgnization: {
+        //话题编排和栏目设置
+        rateSubject: {
             type : Number
         },
         //整体满意度
@@ -31,18 +31,27 @@ var FeedbackSchema = new Schema({
         }
     },
     shares : [{
+
         title : String,
+
         authors : String,
+
         //分享内容满意度
-        rateSubject : {
+        rateTopic: {
             type : Number
         },
-        //分享技术满意度
-        rateSkill : {
+
+        //演讲满意度
+        rateTalk: {
+            type : Number
+        },
+
+        //分享整体满意度
+        rateTimeControl : {
             type : Number
         },
         //分享整体满意度
-        rateGeneral : {
+        rateSlider : {
             type : Number
         },
         //意见与建议
