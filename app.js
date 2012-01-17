@@ -380,7 +380,10 @@ app.post('/fb/:ss',function(req,res){
     console.log(req.body);
     //模拟数据
     //
-    ShareSet.findById(req.params.ss, function(err, doc){
+    ShareSet.findById(req.params.ss)
+    .populate('shares')
+    .exec(function(err, doc){
+
         var fb = new Feedback({
             shareset : doc.id,
             toShareset : {
