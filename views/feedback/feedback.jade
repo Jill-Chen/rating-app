@@ -82,7 +82,7 @@
         var papers = DOM.query('fieldset');
         var current = 0,end = papers.length;
         DOM.hide('#submit-form');
-        DOM.hide('#submit-prev');
+        DOM.hide('#submit-back');
         Event.on('#scroller-next','click',function(e){
             if(current < end){
                 DOM.hide(papers[current]);
