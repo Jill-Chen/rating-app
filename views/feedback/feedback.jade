@@ -58,19 +58,19 @@
                 DOM.hide(papers[current]);
                 current++;
             }
-			if(current = end){
-				DOM.show('#submit-form');
-				DOM.hide(e.currentTarget);
-			}
+            if(current = end){
+                DOM.show('#submit-form');
+                DOM.hide(e.currentTarget);
+            }
         });
         Event.on('#scroller-prev','click',function(e){
             if(current>=0){
                 DOM.show(papers[current]);
                 current--;
             }
-			if(current = end-1){
-				DOM.hide('#submit-form');
-				DOM.show('#scroller-next');
-			}
+            if(current = end-1){
+                DOM.hide('#submit-form');
+                DOM.show('#scroller-next');
+            }
         });
     });
