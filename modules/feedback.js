@@ -17,36 +17,35 @@ var FeedbackSchema = new Schema({
         default : Date.now
     },
     toShareset : {
-        //时间控制
-        rateTimeControl : {
+        //组织工作
+        rateOrgnization: {
             type : Number
         },
-        // 主持人
-        rateHost : {
-
-        },
-        //话题满意度
-        rateSubject : {
+        //整体满意度
+        rateGeneral : {
             type : Number
         },
-        //Review 建议
+        //Review 建议与意见
         review : {
             type : String
         }
     },
-    toShares : [{
-        title : {
-            type : String
-        },
-        share : {
-            type : Schema.Types.ObjectId
-        },
-        speaker : {
-            type : String
-        },
-        rateScore : {
+    shares : [{
+        title : String,
+        authors : String,
+        //分享内容满意度
+        rateSubject : {
             type : Number
         },
+        //分享技术满意度
+        rateSkill : {
+            type : Number
+        },
+        //分享整体满意度
+        rateGeneral : {
+            type : Number
+        },
+        //意见与建议
         review : {
             type : String
         }

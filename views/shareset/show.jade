@@ -22,6 +22,8 @@ p.desc= shareset.desc
       a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
       &nbsp;
       a(href='/fb/#{shareset._id}') 反馈表地址
+      &nbsp;
+      a(href='/fb/#{shareset.postname}/show') 反馈表数据
 .row
   .span16
     - if (shares && shares.length)
