@@ -377,7 +377,6 @@ app.get('/fb/:ss',function(req,res){
 });
 
 app.post('/fb/:ss',function(req,res){
-    console.log(req.body);
     //模拟数据
     //
     ShareSet.findById(req.params.ss)
@@ -426,7 +425,7 @@ app.post('/fb/:ss',function(req,res){
         });
 
         fb.save(function(err, saved){
-            res.redirect('/shareset/'+doc.postname);
+            res.redirect('/fb/'+doc._id + '/success');
         });
     });
     //res.send(req.body);
@@ -443,6 +442,18 @@ app.get('/fb/:shareset/show',function(req,res){
         });
     });
 });
+
+app.get('/fb/:ss/success',function(req,res){
+    ShareSet.findById(req.params.ss)
+        .run(function(err,shareset){
+            if(err) throw err;
+            res.render('feedback/feedback-success', {
+                layout : 'layout-feedback',
+                shareset : shareset,
+                title : '谢谢您的反馈'
+            });
+        });
+})
 
 
 app.get('/404', function(req,res,next){

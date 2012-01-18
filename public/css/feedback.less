@@ -12,13 +12,35 @@ html,body {
     width:940px;
     margin:0 auto;
 }
+h1 {
+    font-size:22px;
+    line-height:24px;
+    margin:10px 0;
+}
 h2 {
     color:#f30;
+    font-size:20px;
 }
-form.feedback {
+legend {
+    color:#f30;
+    font-size:20px;
+}
+.feedback {
     background:#fff;
     padding:20px;
+    min-height:200px;
     .border-radius(10px);
+}
+.center {
+    position:absolute;
+    background:#fff;
+    padding:20px;
+    width:800px;
+    .border-radius(10px);
+    padding:30px 0;
+    text-align:center;
+    top:50%;
+    margin-top:-130px;
 }
 .ctl-score {
     td {
@@ -37,7 +59,7 @@ label {
 }
 fieldset {
     padding:20px;
-	height:590px;
+    height:590px;
 }
 form .clearfix {
     margin-bottom:25px;
@@ -51,10 +73,10 @@ textarea {
     padding:20px;
 }
 .low {
-    color:@red;
+    /*color:@red;*/
 }
 .high {
-    color:@green;
+    /*color:@green;*/
 }
 .actions {
     .clearfix();
@@ -71,4 +93,7 @@ button {
 	width:665px;
 	height:590px;
 	overflow:hidden;
+}
+#indicator {
+    display:none;
 }
