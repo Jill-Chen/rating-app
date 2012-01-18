@@ -1,12 +1,6 @@
 // 分享会列表
 #page
   script#template-calendar(type='text/template').
-    <div class="hd">
-      <a href="#m/{{prevMonth}}" class="btn"> &lt; -</a>
-      <span>{{month}}</span>
-      <a href="#m/{{nextMonth}}" class="btn">- &gt; </a>
-    </div>
-
     <table class="calendar">
       <thead>
         <tr class="weekday">
@@ -72,10 +66,24 @@
       </div>
     </div>
 
+  script#template-list-hd(type='text/template').
+    <span class="title">
+      <a href='#list'>&#171;</a>
+      {{title}}
+    </span>
 
-  div#viewswitch.viewswitch
-    a.v-c(href='#') 日历视图
-    a.v-l(href='#list') 列表视图
+
+  div.v-hd
+    div.view-sw#viewswitch.viewswitch
+      a.v-c(href='#') 日历视图
+      a.v-l(href='#list') 列表视图
+    div.calendar-view-hd#calendar-hd
+      span.title
+      .calendar-hd-handle
+        a.btn.prevMonth(href="#"): span.h-lt
+        a.btn(href='#') 本月
+        a.btn.nextMonth(href="#"): span.h-rt
+    div.calendar-view-hd#list-hd
   #cal-container
   #list-container
 script

@@ -306,6 +306,7 @@ a:hover,a:active{outline:0;}
 pre code{background:none;color:auto;padding:0;}
 .icon{line-height:16px;display:inline-block;padding-left:20px;background:url('/img/icons.png') 0 0 no-repeat;}
 .icon-edit{background-position:0 0;color:#666;}
+.subtext{color:#999;}
 .content-bd{min-height:300px;_height:300px;font-size:14px;}
 .content-bd h2{font-size:18px;margin:40px 0 20px 0;}
 .content-bd h3{font-size:14px;margin:30px 0 16px 0;}
@@ -333,3 +334,24 @@ html,body{font-size:12px;background:#cdcdcd url(http://img04.taobaocdn.com/tps/i
 .calendar .Sun{background:#f5f5f5;}
 .calendar .plus{float:right;background:url(/img/plus.png) 0 0 no-repeat;width:30px;height:30px;position:absolute;right:0;top:0;font-size:16px;cursor:pointer;display:none;opacity:.4;}.calendar .plus:hover{opacity:1;}
 .calendar .day:hover .plus{display:block;}
+.ss-list{background:#fff;padding:20px;}
+.ss{margin-bottom:10px;border-bottom:1px solid #ddd;zoom:1;}.ss:before,.ss:after{display:table;content:"";zoom:1;*display:inline;}
+.ss:after{clear:both;}
+.ss-bd{padding:15px 5px;font-size:16px;float:left;}
+.ss-dt{padding:5px 10px;font-family:mono;float:right;line-height:1.2;text-align:right;color:#999;}
+.ss-dt-m{display:block;}
+.ss-name{width:220px;padding:15px 5px;float:left;text-align:right;font-size:16px;}.ss-name a{color:#999;}
+.viewswitch a{display:inline-block;padding:5px;border:1px solid #888;background:#DDD;color:#333;}
+.viewswitch a:hover{text-decoration:none;}
+.viewswitch a.active{background:#555;color:#fff;-webkit-box-shadow:inset 1px 1px 1px #333333;-moz-box-shadow:inset 1px 1px 1px #333333;box-shadow:inset 1px 1px 1px #333333;}
+.viewswitch .v-l{-webkit-border-radius:0 5px 5px 0;-moz-border-radius:0 5px 5px 0;border-radius:0 5px 5px 0;border-left:0;}
+.viewswitch .v-c{-webkit-border-radius:5px 0 0 5px;-moz-border-radius:5px 0 0 5px;border-radius:5px 0 0 5px;}
+.h-lt{border:6px solid transparent;border-right-color:#333;display:inline-block;margin-right:10px;font-size:0;line-height:0;}
+.h-rt{border:6px solid transparent;border-left-color:#333;display:inline-block;margin-left:10px;font-size:0;line-height:0;}
+.v-hd{zoom:1;position:relative;padding:10px 0;margin-bottom:20px;}.v-hd:before,.v-hd:after{display:table;content:"";zoom:1;*display:inline;}
+.v-hd:after{clear:both;}
+.v-hd .title{font-size:18px;padding:5px 0;display:inline-block;font-weight:bold;}
+.view-sw{float:left;}
+.calendar-view-hd{margin-left:140px;}
+.calendar-hd-handle{position:absolute;right:0;bottom:10px;}
+.list-view-hd{float:right;}

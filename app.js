@@ -176,6 +176,16 @@ app.get('/api/summary',function(req,res,next){
 app.resource('shareset', require('./routers/shareset'));
 app.resource('share', require('./routers/share'));
 
+app.param('sharesetId', function(req,res,next,id){
+    ShareSet.findById(id)
+        .populate('shares')
+        .exec(function(err,doc){
+            if(err) throw new Error(500);
+            if(!doc) throw new Error.NotFound();
+            req.shareset = doc;
+            next();
+        });
+})
 
 
 
@@ -363,77 +373,44 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
     });
 });
 
-app.get('/fb/:ss',function(req,res){
-    ShareSet.findById(req.params.ss)
-        .populate('shares', ['title','authors'])
-        .run(function(err,shareset){
-            if(err) throw err;
-            res.render('feedback/feedback', {
-                layout : 'layout-feedback',
-                shareset : shareset,
-                title : '谢谢您的反馈'
-            });
-        });
+app.get('/fb/:sharesetId',function(req,res){
+    res.render('feedback/feedback', {
+        layout : 'layout-feedback',
+        shareset : req.shareset,
+        title : '谢谢您的反馈'
+    });
 });
 
-app.post('/fb/:ss',function(req,res){
-    //模拟数据
-    //
-    ShareSet.findById(req.params.ss)
-    .populate('shares')
-    .exec(function(err, doc){
+app.post('/fb/:sharesetId',function(req,res){
+    var body = req.body,
+        shares = {},
+        toshare = [];
 
-        var fb = new Feedback({
-            shareset : doc.id,
-            toShareset : {
-                rateOrgnization : Math.ceil(Math.random() * 9),
-                rateGeneral :  Math.ceil(Math.random() * 9),
-                review : '好好好'
-            },
-            toShares :[
-                {
-                    title : '２０１２逃生技巧！',
-                    author : '文龙',
-                    shareId : 'xxx',
-                    rateSubject : Math.ceil(Math.random() * 9),
-                    rateSkill : Math.ceil(Math.random() * 9),
-                    rateGeneral : Math.ceil(Math.random() * 9),
-                    review : '还好的'
-
-                },
-                {
-                    title : '船票！',
-                    author : '遇春',
-                    shareId : 'xxx',
-                    rateSubject : Math.ceil(Math.random() * 9),
-                    rateSkill : Math.ceil(Math.random() * 9),
-                    rateGeneral : Math.ceil(Math.random() * 9),
-                    review : '还好的'
-
-                },
-                {
-                    title : '下一个文明！',
-                    author : '圆心',
-                    shareId : 'xxx',
-                    rateSubject : Math.ceil(Math.random() * 9),
-                    rateSkill : Math.ceil(Math.random() * 9),
-                    rateGeneral : Math.ceil(Math.random() * 9),
-                    review : '还好的'
-
-                }
-            ]
-        });
-
-        fb.save(function(err, saved){
-            res.redirect('/fb/'+doc._id + '/success');
-        });
+    _(req.shareset.shares).each(function(v){
+        shares[v._id] = v;
     });
-    //res.send(req.body);
+
+    _(body.toShare).each(function(v,k){
+        v.share = k;
+        v.title = shares[k].title;
+        v.authors = shares[k].authors.join(', ');
+        toshare.push(v);
+    });
+
+    var fb = new Feedback({
+        shareset : req.params.sharesetId,
+        toShareset : body.toShareset,
+        toShares : toshare
+    });
+
+    fb.save(function(err, saved){
+        res.redirect('/fb/'+req.params.sharesetId + '/success');
+    });
+
 });
 
 app.get('/fb/:shareset/show',function(req,res){
     var shareset = req.shareset;
-
     Feedback.find({
         shareset : req.shareset
     }, function(err,docs){
@@ -443,16 +420,12 @@ app.get('/fb/:shareset/show',function(req,res){
     });
 });
 
-app.get('/fb/:ss/success',function(req,res){
-    ShareSet.findById(req.params.ss)
-        .run(function(err,shareset){
-            if(err) throw err;
-            res.render('feedback/feedback-success', {
-                layout : 'layout-feedback',
-                shareset : shareset,
-                title : '谢谢您的反馈'
-            });
-        });
+app.get('/fb/:sharesetId/success',function(req,res){
+    res.render('feedback/feedback-success', {
+        layout : 'layout-feedback',
+        shareset : req.shareset,
+        title : '谢谢您的反馈'
+    });
 })
 
 
