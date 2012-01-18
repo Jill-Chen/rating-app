@@ -3,11 +3,11 @@
   h1 十分感谢您参加本期分享会的反馈
   ul#indicator
   form.feedback(method='post')
-    h2 懒懒之道 S01E01 V
     .ks-switchable-content
       fieldset
+        legend 对#{shareset.subject}的反馈
         .clearfix
-          label 您对本期分享会的话题如何？
+          label 本期分享会话题安排和栏目设置满意度
           .input
             table.ctl-score
               tr
@@ -16,7 +16,7 @@
                   td: input(type='radio',name='toShareset[rateSubject]',value=score)
                 td.label.high 非常满意
         .clearfix
-          label 您对本期分享会满意吗？
+          label 对本期分享会整体满意度
           .input
             table.ctl-score
               tr
@@ -30,9 +30,9 @@
             textarea(name='toShareset[review]')
       - each share in shareset.shares
         fieldset
-          legend #{share.authors.join(',')} #{share.title}
+          legend 对#{share.authors.join(',')}分享的《#{share.title}》的反馈
           .clearfix
-            label 您对#{share.authors.join(',')} 分享话题的 #{share.title} 满意度？
+            label 您对这个分享话题与内容的满意度？
             .input
               table.ctl-score
                 tr
@@ -41,7 +41,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateTopic]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 您对#{share.authors.join(',')} PPT制作的 #{share.title} 满意度？
+            label 对此分享幻灯片的满意度
             .input
               table.ctl-score
                 tr
@@ -50,7 +50,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateSlider]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 您对#{share.authors.join(',')} 时间控制的 #{share.title} 满意度？
+            label 对此分享时间控制的满意度
             .input
               table.ctl-score
                 tr
@@ -59,7 +59,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateTimeControl]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 您对#{share.authors.join(',')} 演讲技巧的 #{share.title} 满意度？
+            label 对#{share.authors.join(',')}演讲技巧的满意度
             .input
               table.ctl-score
                 tr
