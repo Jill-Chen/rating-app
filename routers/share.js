@@ -26,10 +26,16 @@ exports.load = function(id,next){
 };
 
 exports.index = function(req,res){
-    var query = req.query;
+    var query = req.query,
+        pageSize = req.size?parseInt(query.size,10) : 20,
+        page : req.page?parseInt(query.page,10) : 20;
+
     query.deleted = {"$ne":true};
     var sharequery = Share.find(query);
-    sharequery.sort('_id', -1);
+    sharequery
+        .sort('_id', -1)
+        .limit(pageSize)
+        .skip((page-1)*pageSize)
 
     sharequery.exec(function(err,shares){
         if(err) return next(err);
