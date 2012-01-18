@@ -32,13 +32,40 @@
         fieldset
           legend #{share.authors.join(',')} #{share.title}
           .clearfix
-            label 您对#{share.authors.join(',')} 分享的 #{share.title} 满意度？
+            label 您对#{share.authors.join(',')} 分享话题的 #{share.title} 满意度？
             .input
               table.ctl-score
                 tr
                   td.label.low 很不满意
                   - each score in scores
-                    td: input(type='radio',name='toShare[#{share._id}][rateScore]',value=score)
+                    td: input(type='radio',name='toShare[#{share._id}][rateTopic]',value=score)
+                  td.label.high 非常满意
+          .clearfix
+            label 您对#{share.authors.join(',')} PPT制作的 #{share.title} 满意度？
+            .input
+              table.ctl-score
+                tr
+                  td.label.low 很不满意
+                  - each score in scores
+                    td: input(type='radio',name='toShare[#{share._id}][rateSlider]',value=score)
+                  td.label.high 非常满意
+          .clearfix
+            label 您对#{share.authors.join(',')} 时间控制的 #{share.title} 满意度？
+            .input
+              table.ctl-score
+                tr
+                  td.label.low 很不满意
+                  - each score in scores
+                    td: input(type='radio',name='toShare[#{share._id}][rateTimeControl]',value=score)
+                  td.label.high 非常满意
+          .clearfix
+            label 您对#{share.authors.join(',')} 演讲技巧的 #{share.title} 满意度？
+            .input
+              table.ctl-score
+                tr
+                  td.label.low 很不满意
+                  - each score in scores
+                    td: input(type='radio',name='toShare[#{share._id}][rateSpeak]',value=score)
                   td.label.high 非常满意
           .clearfix
             label 您对 #{share.authors.join(',')} 有什么建议？
@@ -47,32 +74,5 @@
     .actions
       button#submit-form(type='submit') 提交
       button#scroller-next(type='button') 下一步
-      button#scroller-prev(type='submit') 返回
-  script
-    KISSY.ready(function(S) {
-        var DOM = S.DOM,Event = S.Event;
-        var papers = DOM.query('fieldset');
-        var current = 0,end = papers.length;
-        DOM.hide('#submit-form');
-        Event.on('#scroller-next','click',function(e){
-            if(current < end){
-                DOM.hide(papers[current]);
-                current++;
-            }
-            if(current = end-1){
-                DOM.show('#submit-form');
-                DOM.hide(e.currentTarget);
-            }
-        });
-        Event.on('#scroller-prev','click',function(e){
-            e.preventDefault();
-            if(current>=0){
-                DOM.show(papers[current-1]);
-                current--;
-            }
-            if(current = end-1){
-                DOM.hide('#submit-form');
-                DOM.show('#scroller-next');
-            }
-        });
-    });
+      button#scroller-prev(type='button') 返回
+      button#submit-back(type='submit') 返回
