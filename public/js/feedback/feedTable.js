@@ -5,7 +5,7 @@ KISSY.use('sizzle',function(S){
         var current = 0,end = papers.length;
 		var createNav = function(navNum){
 			for(var j=0;j<navNum;j++){
-				DOM.append('<li>'+j+'</li>','ul.switch-nav');
+				DOM.append('ul.switch-nav','<li>'+j+'</li>');
 			}
 			DOM.css(DOM.children('ul.switch-nav')[0],'background','red');
 		}
