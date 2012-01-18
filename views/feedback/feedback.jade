@@ -1,13 +1,13 @@
 #page
   - var scores = [1,2,3,4,5,6,7,8,9, 10]
-  h1 十分感谢您参加本期分享会的反馈
+  h1 十分感谢您参加 #{shareset.name} - #{shareset.subject} 的反馈
   ul#indicator
   form.feedback(method='post')
     .ks-switchable-content
       fieldset
-        legend 对#{shareset.subject}的反馈
+        legend 对分享会的反馈
         .clearfix
-          label 本期分享会话题安排和栏目设置满意度
+          label 话题安排和栏目设置的满意度
           .input
             table.ctl-score
               tr
@@ -16,23 +16,23 @@
                   td: input(type='radio',name='toShareset[rateSubject]',value=score)
                 td.label.high 非常满意
         .clearfix
-          label 对本期分享会整体满意度
+          label 整体满意度
           .input
             table.ctl-score
               tr
                 td.label.low 很不满意
                 - each score in scores
-                  td: input(type='radio',name='toShareset[rateScore]',value=score)
+                  td: input(type='radio',name='toShareset[rateGeneral]',value=score)
                 td.label.high 非常满意
         .clearfix
-          label 您对 #{shareset.name} 有什么建议？告诉我们这次分享会好的地方，和不好的地方
+          label 您对 #{shareset.name} 有什么其他建议？
           .input
             textarea(name='toShareset[review]')
       - each share in shareset.shares
         fieldset
-          legend 对#{share.authors.join(',')}分享的《#{share.title}》的反馈
+          legend 对 #{share.authors.join(',')} 分享的《#{share.title}》的反馈
           .clearfix
-            label 您对这个分享话题与内容的满意度？
+            label 话题与分享内容
             .input
               table.ctl-score
                 tr
@@ -41,7 +41,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateTopic]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 对此分享幻灯片的满意度
+            label 幻灯片及分享材料
             .input
               table.ctl-score
                 tr
@@ -50,7 +50,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateSlider]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 对此分享时间控制的满意度
+            label 时间控制
             .input
               table.ctl-score
                 tr
@@ -59,7 +59,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateTimeControl]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 对#{share.authors.join(',')}演讲技巧的满意度
+            label 演讲技巧
             .input
               table.ctl-score
                 tr
@@ -68,7 +68,7 @@
                     td: input(type='radio',name='toShare[#{share._id}][rateSpeak]',value=score)
                   td.label.high 非常满意
           .clearfix
-            label 您对 #{share.authors.join(',')} 有什么建议？
+            label 您对 #{share.authors.join(',')} 有什么其他建议？
             .input
               textarea(name='toShare[#{share._id}][review]')
     .actions
