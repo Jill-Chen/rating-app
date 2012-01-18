@@ -20,27 +20,33 @@ var getList = function(source){
 
 //auto load
 exports.load = function(id,next){
-    Share.findById(id,function(err,doc){
+    Share.findById(id, function(err,doc){
         next(err,doc)
     });
 };
 
 exports.index = function(req,res){
-    var query = req.query,
-        pageSize = req.size?parseInt(query.size,10) : 20,
-        page : req.page?parseInt(query.page,10) : 20;
+    var q= req.query,
+        sharequery = {},
+        pageSize = q.size? parseInt(q.size,10) : 20,
+        page = q.page? parseInt(q.page,10) : 1;
 
-    query.deleted = {"$ne":true};
-    var sharequery = Share.find(query);
-    sharequery
+
+    console.log(pageSize);
+
+    if(q.tags){
+        sharequery.tags = q.tags;
+    }
+
+    Share.find(sharequery)
         .sort('_id', -1)
+        .ne('deleted', true)
         .limit(pageSize)
         .skip((page-1)*pageSize)
-
-    sharequery.exec(function(err,shares){
-        if(err) return next(err);
-        res.send(shares);
-    });
+        .exec(function(err,shares){
+            if(err) return next(err);
+            res.send(shares);
+        });
 
 };
 
