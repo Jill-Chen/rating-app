@@ -13,11 +13,11 @@ KISSY.use('sizzle',function(S){
 			DOM.css(DOM.children('ul.switch-nav'),'background','#000');
 			DOM.css(DOM.children('ul.switch-nav')[current],'background','red');
 		}
-		var initPage = function(){
+		var initPage = function(listNum){
 			DOM.hide('#submit-form');
 			DOM.hide('#scroller-prev');
 			DOM.css('.ks-switchable-content','height','400px');
-			createNav(papers.length);
+			createNav(listNum);
 			Event.on('#scroller-next','click',function(e){
 				for(var i=0;i<options.length;i++){
 					if(DOM.query('.ctl-score:eq('+i+')>:checkd') == 0){
@@ -39,6 +39,6 @@ KISSY.use('sizzle',function(S){
 				changeNav(current);
 			});
 		}
-		initPage();
+		initPage(end);
     });
 });
