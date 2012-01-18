@@ -95,8 +95,8 @@ exports.create = function(req,res,next){
         }
 
         ShareSet.findOne({
-            postname : body.shareset
-        }, function(err, doc){
+                postname : body.shareset
+            }, function(err, doc){
             if(err) return next(err);
 
             if(!doc)

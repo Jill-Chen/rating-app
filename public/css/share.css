@@ -306,6 +306,7 @@ a:hover,a:active{outline:0;}
 pre code{background:none;color:auto;padding:0;}
 .icon{line-height:16px;display:inline-block;padding-left:20px;background:url('/img/icons.png') 0 0 no-repeat;}
 .icon-edit{background-position:0 0;color:#666;}
+.subtext{color:#999;}
 .content-bd{min-height:300px;_height:300px;font-size:14px;}
 .content-bd h2{font-size:18px;margin:40px 0 20px 0;}
 .content-bd h3{font-size:14px;margin:30px 0 16px 0;}
@@ -358,7 +359,7 @@ form.login,form.upload-form{background:#fff;padding-top:20px;}
 .box{margin-bottom:10px;}
 .box-meta{padding:10px;margin-bottom:1px;}.box-meta dd{font-size:20px;}
 .box-desc{background:#888;color:#fff;padding:10px;-webkit-box-shadow:inset 1px 1px 3px #333333;-moz-box-shadow:inset 1px 1px 3px #333333;box-shadow:inset 1px 1px 3px #333333;}
-.share-content{margin-top:20px;}.share-content .ft{text-align:right;border-top:1px solid #808080;padding:10px;}
+.share-content{margin-top:20px;}.share-content .ft{text-align:right;padding:10px;}
 .share-content .bd{padding-bottom:30px;}
 .share-content textarea{font-family:monospace;background:#000;color:#46a546;}
 .disqus-box{margin-top:50px;}.disqus-box #dsq-subscribe{display:none;}
