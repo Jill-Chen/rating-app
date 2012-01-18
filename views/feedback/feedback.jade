@@ -71,6 +71,7 @@
             label 您对 #{share.authors.join(',')} 有什么其他建议？
             .input
               textarea(name='toShare[#{share._id}][review]')
+    ul.switchable-nav
     .actions
       button#submit-form(type='submit') 提交
       button#scroller-next(type='button') 下一步
