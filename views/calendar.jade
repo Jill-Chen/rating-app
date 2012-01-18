@@ -66,6 +66,12 @@
       </div>
     </div>
 
+  script#template-list-hd(type='text/template').
+    <span class="title">
+      <a href='#list'>&#171;</a>
+      {{title}}
+    </span>
+
 
   div.v-hd
     div.view-sw#viewswitch.viewswitch
@@ -77,7 +83,7 @@
         a.btn.prevMonth(href="#"): span.h-lt
         a.btn(href='#') 本月
         a.btn.nextMonth(href="#"): span.h-rt
-    div.list-view-hd
+    div.calendar-view-hd#list-hd
   #cal-container
   #list-container
 script

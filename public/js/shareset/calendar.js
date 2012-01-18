@@ -18,10 +18,38 @@ define(function(require, exports, module){
         }
     });
 
+    var ListHdView = Backbone.View.extend({
+        initialize : function(){
+            this.template_list_title = $('#template-list-hd').html();
+        },
+
+        el : '#list-hd',
+
+        render : function(title){
+
+            var html = title? mustache.to_html(this.template_list_title, {
+                title : title
+            }) : '';
+
+            $(this.el).html(html);
+        },
+
+        show : function(){
+            $(this.el).show();
+            this.listHd.show();
+        },
+
+        hide : function(){
+            $(this.el).hide();
+            this.listHd.hide();
+        }
+
+    });
     var ListView = Backbone.View.extend({
         initialize : function(){
             this.template_list = $('#template-list').html();
             this.template_shareset = $('#template-list-shareset').html();
+            this.listHd = new ListHdView();
         },
         show : function(){
             $(this.el).show();
@@ -33,15 +61,14 @@ define(function(require, exports, module){
         className : function(){},
         render : function(sharesets){
             var list = sharesets.toJSON();
+
             _(list).each(function(d){
                 d.date = moment(d.date).format('YYYY年MM月DD日');
             });
-            $(this.el).html(mustache.to_html(this.template_list, {
-                list : list
-            },
-            {
-               sharesets : this.template_shareset
-            }))
+
+            html = mustache.to_html(this.template_list, { list : list }, { sharesets : this.template_shareset });
+            $(this.el).html(html)
+            this.listHd.render(sharesets.name);
         }
     });
 
@@ -215,6 +242,7 @@ define(function(require, exports, module){
         },
         list : function(){
             this.sharesets.month = null;
+            this.sharesets.name = null;
             this.sharesets.fetch({});
             this.calendarView.hide()
             this.listView.show();
@@ -227,6 +255,7 @@ define(function(require, exports, module){
             $('#viewswitch .v-l').addClass('active');
             $('#viewswitch .v-c').removeClass('active');
             this.sharesets.month = null;
+            this.sharesets.name = name;
             this.sharesets.fetch({
                 data : {
                     name : name
