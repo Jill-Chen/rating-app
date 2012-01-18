@@ -4,6 +4,7 @@ KISSY.ready(function(S) {
         var current = 0,end = papers.length;
         DOM.hide('#submit-form');
         DOM.hide('#scroller-prev');
+        DOM.css('.ks-switchable-content','height','400px');
         Event.on('#scroller-next','click',function(e){
             if(current < end){
                 DOM.hide(papers[current]);
@@ -15,6 +16,7 @@ KISSY.ready(function(S) {
                 DOM.show('#submit-form');
                 DOM.hide(e.currentTarget);
             }
+            DOM.css('.ks-switchable-content','height','590px');
         });
         Event.on('#scroller-prev','click',function(e){
             if(current>=0){
@@ -28,6 +30,7 @@ KISSY.ready(function(S) {
             if(current == 0){
                 DOM.hide('#scroller-prev');
                 DOM.show('#submit-back');	
+                DOM.css('.ks-switchable-content','height','400px');
             }
         });
     });
