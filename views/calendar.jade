@@ -40,6 +40,8 @@
       {{/weeks}}
       </tbody>
     </table>
+  script#template-shareset(type='text/template').
+    <li><a href="/shareset/{{postname}}" title='{{position}} {{startTime}} - {{endTime}}'>{{name}} / {{subject}}</a></li>
 
   script#template-list(type='text/template').
     <div class='ss-list'>
@@ -48,8 +50,6 @@
     {{/list}}
     </div>
 
-  script#template-shareset(type='text/template').
-    <li><a href="/shareset/{{postname}}" title='{{position}} {{startTime}} - {{endTime}}'>{{subject}}</a></li>
 
   script#template-list-shareset(type='text/template').
     <div class='ss'>

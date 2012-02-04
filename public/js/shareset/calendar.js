@@ -18,6 +18,9 @@ define(function(require, exports, module){
         }
     });
 
+    /**
+     * 列表视图顶栏
+     */
     var ListHdView = Backbone.View.extend({
         initialize : function(){
             this.template_list_title = $('#template-list-hd').html();
@@ -36,15 +39,14 @@ define(function(require, exports, module){
 
         show : function(){
             $(this.el).show();
-            this.listHd.show();
         },
 
         hide : function(){
             $(this.el).hide();
-            this.listHd.hide();
         }
 
     });
+
     var ListView = Backbone.View.extend({
         initialize : function(){
             this.template_list = $('#template-list').html();
@@ -53,9 +55,11 @@ define(function(require, exports, module){
         },
         show : function(){
             $(this.el).show();
+            this.listHd.show();
         },
         hide : function(){
             $(this.el).hide();
+            this.listHd.hide();
         },
         events : { },
         className : function(){},
