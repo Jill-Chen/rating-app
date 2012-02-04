@@ -7,9 +7,9 @@ define(function(require, exports){
     $.ajax({
         url : '/json/tags',
         dataType : 'json'
-    }).success(function(data){
+    }).success(function(tags){
         $('#tags .bd').html(mustache.to_html(tmpl, {
-            tags : data.tags
+            tags : tags
         }));
     })
 });

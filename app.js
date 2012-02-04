@@ -14,6 +14,7 @@ var md = require('node-markdown').Markdown;
 var ejs = require('ejs');
 var jade = require('jade');
 var developmod = false;
+var init = require('./mods/init');
 
 var app = module.exports = express.createServer();
 
@@ -153,14 +154,13 @@ app.get('/feedback', function(req, res){
  * 异步获取全部标签
  */
 app.get('/json/tags', function(req, res,next){
-    Share.distinct('tags',{}, function(err, docs){
-
-        if(err) return next(err);
-
-        res.send({
-            isSuccess : true,
-            tags : docs
+    init.getTags(function(err,docs){
+        if(err) throw new Error(err);
+        var tags = [];
+        _(docs).each(function(v,k){
+            tags.push({tag:k, count :v});
         });
+        res.send(tags);
     });
 });
 

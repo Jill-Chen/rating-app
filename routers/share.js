@@ -31,9 +31,6 @@ exports.index = function(req,res){
         pageSize = q.size? parseInt(q.size,10) : 20,
         page = q.page? parseInt(q.page,10) : 1;
 
-
-    console.log(pageSize);
-
     if(q.tags){
         sharequery.tags = q.tags;
     }

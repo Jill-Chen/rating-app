@@ -28,7 +28,7 @@ script#template-list(type='text/template').
 script#template-tags(type='text/template').
   <ul class='tags'>
     {{#tags}}
-      <li><a href='#tags/{{.}}'>{{.}}</a></li>
+      <li><a href='#tags/{{tag}}'>{{tag}} {{count}}</a></li>
     {{/tags}}
   </ul>
 
