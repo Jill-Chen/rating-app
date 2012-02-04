@@ -94,10 +94,10 @@ define(function(require, exports, module){
             });
 
             $.ajax({
-                url : '/api/summary',
+                url : '/json/tags',
                 dataType : 'json'
-            }).success(function(data){
-                tagsView.render(data.tags)
+            }).success(function(tags){
+                tagsView.render(tags)
             });
 
 
