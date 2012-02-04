@@ -1,8 +1,7 @@
-div.topbar(data-dropdown='dropdown')
-  div.topbar-inner
+div.navbar
+  div.navbar-inner
     .container
-      h3
-        a.brand(href='/')  分享平台
+      a.brand(href='/')  分享平台
       ul.nav
         li(class=(tab ==='home')?'active':'')
           a(href="/") 首页
@@ -12,7 +11,7 @@ div.topbar(data-dropdown='dropdown')
           a(href="/explore") 发现分享
         li(class=(tab ==='create')?'active':'')
           a(href='/shareset/new') 组织分享会
-      ul.nav.secondary-nav
+      ul.nav.pull-right
         li(class=(tab ==='feedback')?'active':'')
           a(href='/feedback') 反馈
         - if(!everyauth.loggedIn)
