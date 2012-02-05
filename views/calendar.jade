@@ -74,9 +74,13 @@
 
 
   div.v-hd
-    div.view-sw#viewswitch.viewswitch
-      a.v-c(href='#') 日历视图
-      a.v-l(href='#list') 列表视图
+    div.btn-group#viewSwitch.viewswitch
+      a.btn.v-calendar(href='#')
+        i.icon-calendar
+        |日历视图
+      a.btn.v-list(href='#list')
+        i.icon-list
+        |列表视图
     div.calendar-view-hd#calendar-hd
       span.title
       .calendar-hd-handle

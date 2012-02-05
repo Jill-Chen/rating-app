@@ -22,7 +22,9 @@ div.navbar
             })(encodeURIComponent(location.href));
         - else
           li.dropdown
-            a.dropdown-toggle(href='#')= user.email
+            a.dropdown-toggle(data-toggle='dropdown',href='#')
+              |#{user.name}
+              b.caret
             ul.dropdown-menu
               li
                 a(href='/logout') 退出

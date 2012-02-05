@@ -45,6 +45,19 @@ define(function(require, exports, module){
         }
 
     });
+
+    var ViewSwitch = Backbone.View.extend({
+        initialize : function(){
+        },
+        el : '#viewSwitch',
+
+        render : function(viewname){
+            var clsDisabled = 'disabled'
+            $(this.el).find('.'+clsDisabled).removeClass(clsDisabled);
+            $(this.el).find(viewname).addClass(clsDisabled);
+        }
+    });
+
     var ListView = Backbone.View.extend({
         initialize : function(){
             this.template_list = $('#template-list').html();
@@ -202,6 +215,7 @@ define(function(require, exports, module){
             var sharesets = this.sharesets = new Sharesets();
             var calendarView = this.calendarView = new CalendarView();
             var listView = this.listView = new ListView();
+            this.viewSwitch = new ViewSwitch();
 
             sharesets.bind('change',function(){
                 alert('change');
@@ -228,8 +242,7 @@ define(function(require, exports, module){
         month : function(month){
             this.calendarView.show()
             this.listView.hide();
-            $('#viewswitch .v-c').addClass('active');
-            $('#viewswitch .v-l').removeClass('active');
+            this.viewSwitch.render('.v-calendar')
             if(!month){
                 month = moment().format('YYYY-MM');
             }
@@ -246,14 +259,12 @@ define(function(require, exports, module){
             this.sharesets.fetch({});
             this.calendarView.hide()
             this.listView.show();
-            $('#viewswitch .v-l').addClass('active');
-            $('#viewswitch .v-c').removeClass('active');
+            this.viewSwitch.render('.v-list')
         },
         listByName : function(name){
             this.calendarView.hide()
             this.listView.show();
-            $('#viewswitch .v-l').addClass('active');
-            $('#viewswitch .v-c').removeClass('active');
+            this.viewSwitch.render('.v-list')
             this.sharesets.month = null;
             this.sharesets.name = name;
             this.sharesets.fetch({

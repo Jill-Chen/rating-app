@@ -48,7 +48,7 @@ form.well.form-horizontal.ajax-form(action=!isNew?'/shareset/#{shareset.postname
       label.control-label(for='time') 时间 *
       .controls
         - var startTime = ('startTime' in shareset)?shareset.startTime.split(':'):[]
-        select.text.date-time.span2#time(name="startTimeH")
+        select.text.date-time.span1#time(name="startTimeH")
           - if(startTime.length > 1)
             option(value=startTime[0])= startTime[0]
           - else
@@ -65,7 +65,8 @@ form.well.form-horizontal.ajax-form(action=!isNew?'/shareset/#{shareset.postname
           option(value='17') 17
           option(value='18') 18
           option(value='19') 19
-        select.text.date-time.span2(name="startTimeM")
+        &nbsp;
+        select.text.date-time.span1(name="startTimeM")
           - if(startTime.length > 1)
             option(value=startTime[1])= startTime[1]
             option(value='00') 00
@@ -73,9 +74,11 @@ form.well.form-horizontal.ajax-form(action=!isNew?'/shareset/#{shareset.postname
             option(value='00') 00
           option(value='30') 30
 
-        |  到 
+        &nbsp;
+        |到
+        &nbsp;
         - var endTime = shareset.endTime?shareset.endTime.split(':'):[]
-        select.text.date-time.span2(name="endTimeH")
+        select.text.date-time.span1(name="endTimeH")
           - if(endTime.length > 1)
             option(value=endTime[0])= endTime[0]
           - else
@@ -92,8 +95,8 @@ form.well.form-horizontal.ajax-form(action=!isNew?'/shareset/#{shareset.postname
           option(value='17') 17
           option(value='18') 18
           option(value='19') 19
-
-        select.text.date-time.span2(name="endTimeM")
+        &nbsp;
+        select.text.date-time.span1(name="endTimeM")
           - if(endTime.length > 1)
             option(value=endTime[1])= endTime[1]
             option(value='00') 00
@@ -116,11 +119,11 @@ form.well.form-horizontal.ajax-form(action=!isNew?'/shareset/#{shareset.postname
     .control-group
       label.control-label(for='desc') 简介
       .controls
-        textarea.xxlarge(name='desc')= shareset.desc
+        textarea(name='desc')= shareset.desc
         span.help-inline
 
     .form-actions
-      button.btn.primary(type="submit")= !isNew?"确认修改":"创建分享会";
+      button.btn.btn-primary(type="submit")= !isNew?"确认修改":"创建分享会";
 
 script
     KISSY.use('rate/ajax,rate/calendar');

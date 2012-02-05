@@ -19,7 +19,7 @@ p.desc= shareset.desc
       &nbsp;
       a.btn.small.ajax-btn(data-type='delete',data-confirm='你确定要删除吗',href='/shareset/#{shareset.postname}')  删除
       &nbsp;
-      a.primary.btn(href='/share/new?shareset=#{shareset.postname}')添加分享
+      a.btn.btn-primary(href='/share/new?shareset=#{shareset.postname}')添加分享
       &nbsp;
       a(href='/fb/#{shareset._id}') 反馈表地址
       &nbsp;
@@ -35,7 +35,7 @@ p.desc= shareset.desc
       script
         var disqus_shortname="firebird";
         var disqus_identifier = "shareset_#{developmod?'dev_':''}#{shareset.postname}";
-        var disqus_developer = 1;
+        var disqus_developer  = 1;
         (function(){
           var dsq = document.createElement('script');
           dsq.type="text/javascript";

@@ -1,10 +1,5 @@
 @import "app.less";
 
-.home-banner {
-}
-.navback {
-}
-
 // 分享
 .ratelist {
     .clearfix();
@@ -67,6 +62,7 @@
         text-shadow:0px 0px 2px #333;
     }
     .act {
+        color:#fff;
         padding:5px;
         position:absolute;
         bottom:@shareBorder;
@@ -219,8 +215,11 @@ form.login, form.upload-form {
 
 .login-page {
     .login {
-        margin-top:100px;
-        .box-shadow();
+        width:260px;
+        position:fixed;
+        top:100px;
+        left:50%;
+        margin:0 0 0 -150px;
     }
     .alert-message {
         margin-right:20px;
@@ -300,6 +299,6 @@ textarea  {
         margin-bottom:0;
     }
 }
-ks-ext-position {
+.ks-ext-position {
     position:absolute;
 }

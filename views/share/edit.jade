@@ -40,7 +40,7 @@ form.well.form-horizontal.ajax-form(action=isNew?'/share/':'/share/#{share._id}'
         textarea.xxlarge(name='desc',row='3')= share.desc
         span.help-inline
     .form-actions
-      button.btn.primary(type="submit")= isNew?"添加分享":"修改"
+      button.btn.btn-primary(type="submit")= isNew?"添加分享":"修改"
       &nbsp;
       a.btn(href=shareset?'/shareset/#{shareset}':'/share/#{share._id}') 返回
 

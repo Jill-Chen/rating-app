@@ -17,8 +17,8 @@
  * limitations under the License.
  * ============================================================ */
 
-
-!function( $ ){
+define(function(require, exports){
+    var $ = require('jquery');
 
   "use strict"
 
@@ -89,4 +89,5 @@
     $('body').on('click.dropdown.data-api', toggle, Dropdown.prototype.toggle)
   })
 
-}( window.jQuery )
+
+});

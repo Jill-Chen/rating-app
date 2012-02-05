@@ -1,17 +1,16 @@
-.row.login-page
-  .span6.offset5
-    form.login.well(action='/login', method="post")
-      h3 登录
-      label(for=everyauth.password.loginFormFieldName) 邮箱：
-      input.text#input_login(type='text',autofocus="autofocus",name=everyauth.password.loginFormFieldName)
-      .actions
-        - if('undefined' !== typeof errors && errors.length)
-          .alert-message.warning(data-alert)
-            a.close(href='#') ×
-            - each error in errors
-              p.error= error
-        button(type="submit", class='btn primary') 提交
-        &nbsp; 没有帐号？
-        a(href='/register') 注册一个
+.login-page
+  form.login.well(action='/login', method="post")
+    h3 登录
+    - if('undefined' !== typeof errors && errors.length)
+      .alert-message.warning(data-alert)
+        a.close(href='#') ×
+        - each error in errors
+          p.error= error
+    label(for=everyauth.password.loginFormFieldName) 邮箱：
+    input.text#input_login(type='text',autofocus="autofocus",name=everyauth.password.loginFormFieldName)
+    br
+    button(type="submit", class='btn primary') 提交
+    &nbsp; 没有帐号？
+    a(href='/register') 注册一个
 script
   seajs.use('/js/base/alert.js');
