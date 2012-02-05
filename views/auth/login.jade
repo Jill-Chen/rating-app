@@ -1,19 +1,9 @@
 .row.login-page
   .span6.offset5
-    form.form-stacked.login(action='/login', method="post")
+    form.login.well(action='/login', method="post")
       h3 登录
-      p 登录，无须密码
-      fieldset
-        .clearfix
-          label(for=everyauth.password.loginFormFieldName) 邮箱：
-          .input
-            input.text#input_login(type='text',autofocus="autofocus",name=everyauth.password.loginFormFieldName)
-
-      fieldset(style='display:none')
-        .clearfix
-          label(for=everyauth.password.passwordFormFieldName) 密码 (如果你有密码的话)：
-          .input
-            input.text(type='password',value='hello1234',name=everyauth.password.passwordFormFieldName,id=everyauth.password.passwordFormFieldName)
+      label(for=everyauth.password.loginFormFieldName) 邮箱：
+      input.text#input_login(type='text',autofocus="autofocus",name=everyauth.password.loginFormFieldName)
       .actions
         - if('undefined' !== typeof errors && errors.length)
           .alert-message.warning(data-alert)

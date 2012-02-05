@@ -4,7 +4,7 @@
 h1
   #{shareset.subject}
 p.desc= shareset.desc
-.row
+.row-fluid
   .shareset-detail
     .action
       a.btn.big(href='/shareset/#{shareset.postname}/ics') 日历
@@ -24,12 +24,12 @@ p.desc= shareset.desc
       a(href='/fb/#{shareset._id}') 反馈表地址
       &nbsp;
       a(href='/fb/#{shareset.postname}/show') 反馈表数据
-.row
-  .span16
+.row-fluid
+  .span12
     - if (shares && shares.length)
       div!= partial('share-list', shares)
-.row
-  .span16
+.row-fluid
+  .span12
     .disqus-box.mt20
       #disqus_thread
       script

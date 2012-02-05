@@ -14,8 +14,8 @@ script#template-uploader(type='text/template').
   </form>
 .navback
   a(href='/explore/') &#171;所有分享
-.row
-  .span12
+.row-fluid
+  .span9
     h1 #{share.title}
     .meta-box
       | 由&nbsp;
@@ -77,7 +77,7 @@ script#template-uploader(type='text/template').
           dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
-  .span4
+  .span3
     .cover-box
       img(width='195',height='195',src=share.cover)
       .action
