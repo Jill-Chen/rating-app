@@ -1,7 +1,6 @@
 @import "app.less";
 
-
-@cWidth : 940px;
+@cWidth : 100%;
 @daywidth : 14%;
 @gridBorder : #EEE;
 .calendar-tbl {
@@ -64,7 +63,7 @@
         background:#f6f6f6;
         color:#DDD;
         width:@daywidth;
-        height:@cWidth/7*.8;
+        height:80px;
     }
     th {
         text-align:center;
@@ -158,29 +157,8 @@
     }
 }
 .viewswitch {
-    a {
-        display:inline-block;
-        padding:5px;
-        border:1px solid #888;
-        background:#DDD;
-        color:#333;
-    }
-    a:hover {
-        text-decoration:none;
-    }
-    a.active {
-        background:#555;
-        color:#fff;
-        .box-shadow(inset 1px 1px 1px #333);
-    }
-
-    .v-l {
-        .border-radius(0 5px 5px 0);
-        border-left:0;
-    }
-    .v-c {
-        .border-radius(5px 0 0 5px);
-    }
+    float:left;
+    margin-right:20px;
 }
 
 .h-lt {
@@ -213,9 +191,6 @@
 }
 .view-sw {
     float:left;
-}
-.calendar-view-hd {
-    margin-left:140px;
 }
 .calendar-hd-handle {
     position:absolute;

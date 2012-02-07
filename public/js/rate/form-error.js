@@ -19,7 +19,7 @@ KISSY.add('rate/form-error', function(S){
         showError : function(field, oError){
             var self = this,
                 input = self.form.all('[name='+field+']'),
-                formitem = input?input.parent('.clearfix'):null,
+                formitem = input?input.parent('.control-group'):null,
                 elMsg;
 
             if(!formitem ){

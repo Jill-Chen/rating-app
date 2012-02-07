@@ -1,32 +1,22 @@
-.row.login-page
-  .span6.offset5
-    form.form-stacked.login(action='/register', method="post")
-      h3= title
-      - if('undefined' !== typeof errors && errors.length)
-        .alert-message.warning(data-alert)
-          a.close(href='#') ×
-          - each error in errors
-            p.error= error
-      fieldset
-        .clearfix
-          label(for=everyauth.password.loginFormFieldName) 邮箱：
-          .input
-            input.text#input_login(type='text',name=everyauth.password.loginFormFieldName,autofocus='autofocus',value=userParams[everyauth.password.loginFormFieldName])
-            span.help-block 您的工作的邮箱
+.login-page
+  form.well.login(action='/register', method="post")
+    h3= title
+    - if('undefined' !== typeof errors && errors.length)
+      .alert-message.warning(data-alert)
+        a.close(href='#') ×
+        - each error in errors
+          p.error= error
+    label(for=everyauth.password.loginFormFieldName) 邮箱：
+    input.text#input_login(type='text',name=everyauth.password.loginFormFieldName,autofocus='autofocus',value=userParams[everyauth.password.loginFormFieldName])
+    p.help-block 您的工作的邮箱
 
-        .clearfix
-          label(for="name") 花名：
-          .input
-            input.text#name(type='text', name="name")
-
-      fieldset(style='display:none;')
-        .clearfix
-          label(for=everyauth.password.passwordFormFieldName) 密码 (可选)：
-          .input
-            input.text#input_password(type='password', value='hello1234', name=everyauth.password.passwordFormFieldName)
+    label(for="name") 花名：
+    input.text#name(type='text', name="name")
 
 
-      .actions
-        button(type="submit", class='btn primary') 提交
-        &nbsp;
-        a(href='/') 返回分享平台
+
+    .form-actions
+      input.text#input_password(type='hidden', value='hello1234', name=everyauth.password.passwordFormFieldName)
+      button(type="submit", class='btn primary') 提交
+      &nbsp;
+      a(href='/') 返回分享平台

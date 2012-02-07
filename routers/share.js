@@ -117,30 +117,23 @@ exports.create = function(req,res,next){
 
 };
 
-exports.show = function(req,res){
+exports.show = function(req,res, next){
     var share = req.share;
-    if(!share.shareset){
-        res.render('share/show', {
-            title : share.authors.join(',') + ':' + share.title
-           ,share : share
-           ,navtab : 'share'
-           ,shareset : null
-        });
-        return;
-    }
 
-    share.viewCount += 1;
-
-    ShareSet.findById(share.shareset, function(err, doc){
+    ShareSet.find({
+        shares : share._id
+    }, function(err, docs){
         if(err) return next(err);
+        share.viewCount += 1;
         res.render('share/show', {
             title : share.authors.join(',') + ':' + share.title
            ,share : share
            ,navtab : 'share'
-           ,shareset : doc
+           ,sharesets : docs
         });
         share.save();
     });
+
 
 };
 
