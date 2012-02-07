@@ -1,4 +1,4 @@
-form.upload-form(action='/share/#{share._id}/upload-cover',method='post',enctype="multipart/form-data")
+form.well(action='/share/#{share._id}/upload-cover',method='post',enctype="multipart/form-data")
   input(type='hidden', value=backurl,name='backurl')
   fieldset
     legend= share.title
@@ -12,7 +12,7 @@ form.upload-form(action='/share/#{share._id}/upload-cover',method='post',enctype
         input.input-file(type='file', name='cover',multiple="multiple")
         span.help-block 为了最好的显示效果，图片分辨率请设为 195px * 195px;
     .actions
-      button.btn.primary(type='submit') 上传
+      button.btn.btn-primary(type='submit') 上传
       - if(backurl)
         &nbsp;
         a.btn(href=backurl) 返回
