@@ -1,8 +1,8 @@
 script#template-uploader(type='text/template').
   <iframe src="about:blank" name="uploadIfm" width="0" height="0" border="0" scrolling="0" style="display:none;"></iframe>
-  <form action="/uploadmgr" method="post" target="uploadIfm" enctype="multipart/form-data">
+  <form class='well' action="/uploadmgr" method="post" target="uploadIfm" enctype="multipart/form-data">
     <div class="clearfix">
-      <label for="fileupload">选择文件</label>
+      <label for="fileupload">文件上传</label>
       <div class="input">
         <input id="fileupload" type="file" name="uploader" multiple="multiple" class="input-file">
       </div>
@@ -14,8 +14,8 @@ script#template-uploader(type='text/template').
   </form>
 .navback
   a(href='/explore/') &#171;所有分享
-.row
-  .span12
+.row-fluid
+  .span9
     h1 #{share.title}
     .meta-box
       | 由&nbsp;
@@ -33,7 +33,7 @@ script#template-uploader(type='text/template').
     .share-content.content-editor
       .bd.content-bd!= share.contentHTML
       .editor(style='display:none;')
-        form.editor-form(method='post',data-url='/share/' + share._id + '/content',action=)
+        form.well.editor-form(method='post',data-url='/share/' + share._id + '/content',action=)
           h3 MD编辑器
           .toolbar
             a.toggle-tips(href='#') 显示语法提示
@@ -77,21 +77,28 @@ script#template-uploader(type='text/template').
           dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
-  .span4
-    .cover-box
-      img(width='195',height='195',src=share.cover)
-      .action
-        a(href='/share/#{share._id}/upload-cover') 更改封面
-    .action
-      a(href='/share/#{share._id}/edit') 编辑分享信息
-    - if(share.tags && share.tags.length);
-      .tags
-        h3 此分享的标签
-        ul.tags
-          -share.tags.forEach(function(tag){
-            li
-              a(href="/explore#tags/#{tag}")= tag
-          -})
+  .span3
+    .well(style='padding:8px 0;')
+      ul.nav.nav-list
+        li.nav-header
+          .cover-box
+            img(width='195',height='195',src=share.cover)
+            .action
+              a(href='/share/#{share._id}/upload-cover') 更改封面
+        li
+          a(href='/share/#{share._id}/edit') <i class='icon-pencil'></i> 编辑分享信息
+        - if(share.tags && share.tags.length);
+        li.nav-header 标签
+        li
+          .tags
+            ul.tags
+              -share.tags.forEach(function(tag){
+                li
+                  a(href="/explore#tags/#{tag}")= tag
+              -})
+        li.nav-header 分享会
+        - each shareset in sharesets
+          li: a(href='/shareset/#{shareset.postname}')= shareset.name
 
 script
-  KISSY.use('rate/app,rate/ajax,rate/share');
+  KISSY.use('rate/ajax,rate/share');

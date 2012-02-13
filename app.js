@@ -14,14 +14,18 @@ var md = require('node-markdown').Markdown;
 var ejs = require('ejs');
 var jade = require('jade');
 var developmod = false;
+var init = require('./mods/init');
 
 var app = module.exports = express.createServer();
 
+//Modules
 var User = modules.User;
 var File = modules.File;
 var Share = modules.Share;
 var ShareSet = modules.ShareSet;
 var Post = modules.Post;
+var Feedback = modules.Feedback;
+
 var Errors = require('./mods/errors');
 
 function redirect(req, res, next){
@@ -150,14 +154,13 @@ app.get('/feedback', function(req, res){
  * 异步获取全部标签
  */
 app.get('/json/tags', function(req, res,next){
-    Share.distinct('tags',{}, function(err, docs){
-
-        if(err) return next(err);
-
-        res.send({
-            isSuccess : true,
-            tags : docs
+    init.getTags(function(err,docs){
+        if(err) throw new Error(err);
+        var tags = [];
+        _(docs).each(function(v,k){
+            tags.push({tag:k, count :v});
         });
+        res.send(tags);
     });
 });
 
@@ -173,6 +176,16 @@ app.get('/api/summary',function(req,res,next){
 app.resource('shareset', require('./routers/shareset'));
 app.resource('share', require('./routers/share'));
 
+app.param('sharesetId', function(req,res,next,id){
+    ShareSet.findById(id)
+        .populate('shares')
+        .exec(function(err,doc){
+            if(err) throw new Error(500);
+            if(!doc) throw new Error.NotFound();
+            req.shareset = doc;
+            next();
+        });
+})
 
 
 
@@ -360,6 +373,60 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
     });
 });
 
+app.get('/fb/:sharesetId',function(req,res){
+    res.render('feedback/feedback', {
+        layout : 'layout-feedback',
+        shareset : req.shareset,
+        title : '谢谢您的反馈'
+    });
+});
+
+app.post('/fb/:sharesetId',function(req,res){
+    var body = req.body,
+        shares = {},
+        toshare = [];
+
+    _(req.shareset.shares).each(function(v){
+        shares[v._id] = v;
+    });
+
+    _(body.toShare).each(function(v,k){
+        v.share = k;
+        v.title = shares[k].title;
+        v.authors = shares[k].authors.join(', ');
+        toshare.push(v);
+    });
+
+    var fb = new Feedback({
+        shareset : req.params.sharesetId,
+        toShareset : body.toShareset,
+        toShares : toshare
+    });
+
+    fb.save(function(err, saved){
+        res.redirect('/fb/'+req.params.sharesetId + '/success');
+    });
+
+});
+
+app.get('/fb/:shareset/show',function(req,res){
+    var shareset = req.shareset;
+    Feedback.find({
+        shareset : req.shareset
+    }, function(err,docs){
+        res.send({
+            feedbacks : docs,
+        });
+    });
+});
+
+app.get('/fb/:sharesetId/success',function(req,res){
+    res.render('feedback/feedback-success', {
+        layout : 'layout-feedback',
+        shareset : req.shareset,
+        title : '谢谢您的反馈'
+    });
+})
 
 
 app.get('/404', function(req,res,next){

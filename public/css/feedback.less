@@ -1,0 +1,109 @@
+// CSS Reset
+@import "boot/reset.less";
+// Core variables and mixins
+@import "boot/variables.less"; // Modify this for custom colors, font-sizes, etc
+@import "boot/mixins.less";
+@import "boot/type.less";
+html,body {
+    font-size:14px;
+    background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;
+}
+#page {
+    width:940px;
+    margin:0 auto;
+}
+h1 {
+    font-size:22px;
+    line-height:24px;
+    margin:10px 0;
+}
+h2 {
+    color:#f30;
+    font-size:20px;
+}
+legend {
+    color:#f30;
+    font-size:20px;
+}
+.feedback {
+    background:#fff;
+    padding:20px;
+    min-height:200px;
+    .border-radius(10px);
+}
+.center {
+    position:absolute;
+    background:#fff;
+    padding:20px;
+    width:800px;
+    .border-radius(10px);
+    padding:30px 0;
+    text-align:center;
+    top:50%;
+    margin-top:-130px;
+}
+.ctl-score {
+    td {
+        display:inline-block;
+        padding:10px 5px;
+    }
+    border-top:1px solid #999;
+    border-bottom:1px solid #999;
+    color:#999;
+}
+label {
+    font-size:14px;
+    display:block;
+    font-weight:bold;
+
+}
+fieldset {
+    padding:20px;
+}
+form .clearfix {
+    margin-bottom:25px;
+}
+form .input {
+    margin-top:10px;
+}
+textarea {
+    width:580px;
+    height:100px;
+    padding:20px;
+}
+.low {
+    /*color:@red;*/
+}
+.high {
+    /*color:@green;*/
+}
+.actions {
+    .clearfix();
+    padding:10px;
+    button {
+        float:right;
+        margin-left:10px;
+    }
+}
+button {
+    padding:10px 20px;
+}
+.ks-switchable-content{
+	width:665px;
+	overflow:hidden;
+}
+.switchable-nav{
+	float:right;
+	margin:0;
+	padding:0;
+}
+.switchable-nav li{
+	display:inline-block;
+	width:20px;
+	height:10px;
+	background:#000;
+	margin-right:5px;
+}
+#indicator {
+    display:none;
+}

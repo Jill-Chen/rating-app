@@ -1,9 +1,10 @@
 var mongoose = require('mongoose');
 var _ = require('underscore');
 var helper = require('./helper')
-require('./user.js');
-require('./file.js');
-require('./post.js');
+require('./user');
+require('./file');
+require('./post');
+require('./feedback')
 
 var Schema   = mongoose.Schema;
 
@@ -142,3 +143,4 @@ exports.Share = db.model('share');;
 exports.ShareSet= db.model('shareset');;
 exports.File = db.model('file');;
 exports.Post = db.model('post');;
+exports.Feedback = db.model('feedback');

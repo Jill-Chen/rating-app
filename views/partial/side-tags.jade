@@ -1,7 +1,7 @@
 script#tmpl-tags(type='kissy/template')
   |<ul class='tags'>
   |  {{#tags}}
-  |    <li><a href='/explore#tags/{{.}}'>{{.}}</a></li>
+  |    <li><a href='/explore#tags/{{tag}}'>{{tag}} - {{count}}</a></li>
   |  {{/tags}}
   |</ul>
 div#tags.box

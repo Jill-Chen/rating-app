@@ -1,0 +1,14 @@
+!!!5
+html
+  head
+    title= title
+    - if(developmod)
+      link(rel='stylesheet/less', href='/css/feedback.less')
+      script(src='/lib/less/1.2.1/less.min.js')
+    - else
+      link(rel='stylesheet', href='/css/feedback.css?t=20120103')
+    script(src='/js/modules/seajs/1.1.1/sea.js',data-main='/js/main.js')
+    script(src='http://a.tbcdn.cn/??s/kissy/1.2.0/kissy-min.js')
+    script(src='/js/feedback/feedTable.js')
+  body
+    div#main.container!= body

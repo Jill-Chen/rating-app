@@ -19,6 +19,7 @@ script#template-list(type='text/template').
           <div class="desc">{{desc}}</div>
           <div class="act">
             <span class="author">{{authors}}</span>
+            <span title='热度'><b class='icon-fire'></b>{{viewCount}}</span>
           </div>
         </div>
       </a>
@@ -28,7 +29,7 @@ script#template-list(type='text/template').
 script#template-tags(type='text/template').
   <ul class='tags'>
     {{#tags}}
-      <li><a href='#tags/{{.}}'>{{.}}</a></li>
+      <li><a href='#tags/{{tag}}'>{{tag}} {{count}}</a></li>
     {{/tags}}
   </ul>
 
@@ -40,11 +41,11 @@ script#template-tagquery(type='text/template').
 
 
 #page
-  .row
-    .span11
+  .row-fluid
+    .span8
       #Query
       #Explore
-    .span5
+    .span4
       #Tags
 
 script

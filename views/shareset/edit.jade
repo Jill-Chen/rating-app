@@ -6,48 +6,49 @@ script#temp-errors(type='text/template')
   |</div>
   |{{/each}}
 
-form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', method=!isNew?"put":"post")
+form.well.form-horizontal.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', method=!isNew?"put":"post")
   .error-holder
   fieldset
     legend= !isNew? "编辑" : "组织一次分享会"
-    .clearfix
-      label(for="subject") 主题 *
-      .input
+    .control-group
+      label.control-label(for="subject") 主题 *
+      .controls
         input.text#subject(name="subject",value=shareset.subject)
         span.help-inline
-    .clearfix
-      label(for="subject") 分享会名称 *
-      .input
+    .control-group
+      label.control-label(for="subject") 分享会名称 *
+      .controls
         input.text#subject(name="name",value=shareset.name)
         span.help-inline
-    .clearfix
-      label(for='postname') 个性url *
-      .input
+    .control-group
+      label.control-label(for='postname') 个性url *
+      .controls
         - if(!isNew)
           input.text#postname(type='text',disabled='disabled',value=shareset.postname)
           span.help-inline
         - else
           input.text#postname(type='text',name='postname',value=shareset.postname)
           span.help-inline
-        span.help-block http://<script>document.write(location.hostname)</script>/shareset/<strong>your-shareset-name</strong> 创建后不可更改
-    .clearfix
-      label(for="position") 分享地址 *
-      .input
+        p.help-block http://<script>document.write(location.hostname)</script>/shareset/<strong>your-shareset-name</strong> 创建后不可更改
+
+    .control-group
+      label.control-label(for="position") 分享地址 *
+      .controls
         input.text#position(name="position",value=shareset.position)
         span.help-inline
         span.help-block
             a(href='https://is.taobao.org/meeting/',target='blank')  会议室预定
-    .clearfix
-      label(for="date")  分享日期 *
-      .input
+    .control-group
+      label.control-label(for="date")  分享日期 *
+      .controls
         input.text.ctl-date.span3#date(name="date",value=moment(shareset.date).format('YYYY-MM-DD'))
         span.help-inline
 
-    .clearfix
-      label(for='time') 时间 *
-      .input
+    .control-group
+      label.control-label(for='time') 时间 *
+      .controls
         - var startTime = ('startTime' in shareset)?shareset.startTime.split(':'):[]
-        select.text.date-time.span2#time(name="startTimeH")
+        select.text.date-time.span1#time(name="startTimeH")
           - if(startTime.length > 1)
             option(value=startTime[0])= startTime[0]
           - else
@@ -64,7 +65,8 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='17') 17
           option(value='18') 18
           option(value='19') 19
-        select.text.date-time.span2(name="startTimeM")
+        &nbsp;
+        select.text.date-time.span1(name="startTimeM")
           - if(startTime.length > 1)
             option(value=startTime[1])= startTime[1]
             option(value='00') 00
@@ -72,9 +74,11 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
             option(value='00') 00
           option(value='30') 30
 
-        |  到 
+        &nbsp;
+        |到
+        &nbsp;
         - var endTime = shareset.endTime?shareset.endTime.split(':'):[]
-        select.text.date-time.span2(name="endTimeH")
+        select.text.date-time.span1(name="endTimeH")
           - if(endTime.length > 1)
             option(value=endTime[0])= endTime[0]
           - else
@@ -91,8 +95,8 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='17') 17
           option(value='18') 18
           option(value='19') 19
-
-        select.text.date-time.span2(name="endTimeM")
+        &nbsp;
+        select.text.date-time.span1(name="endTimeM")
           - if(endTime.length > 1)
             option(value=endTime[1])= endTime[1]
             option(value='00') 00
@@ -100,9 +104,9 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
             option(value='00') 00
           option(value='30') 30
         span.help-inline
-    .clearfix
-      label(for='category') 分类
-      .input
+    .control-group
+      label.control-label(for='category') 分类
+      .controls
         select#category(name='category')
           option(value='') 选择类别
           option(value='前端') 前端
@@ -112,14 +116,14 @@ form.ajax-form(action=!isNew?'/shareset/#{shareset.postname}':'/shareset', metho
           option(value='产品') 产品
           option(value='其他') 其他
 
-    .clearfix
-      label(for='desc') 简介
-      .input
-        textarea.xxlarge(name='desc')= shareset.desc
+    .control-group
+      label.control-label(for='desc') 简介
+      .controls
+        textarea(name='desc')= shareset.desc
         span.help-inline
 
-    .actions
-      button.btn.primary(type="submit")= !isNew?"确认修改":"创建分享会";
+    .form-actions
+      button.btn.btn-primary(type="submit")= !isNew?"确认修改":"创建分享会";
 
 script
     KISSY.use('rate/ajax,rate/calendar');

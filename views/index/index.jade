@@ -1,14 +1,14 @@
 .home-banner
-  img(src='img/banner-yubo.jpg')
-.row
-  .span15
-    div.box
-    .hd
-      h3 最近的分享，看一看有没有自己喜欢的
-    .bd
-      .ratelist
 .row
   .span10
+  img(src='http://img02.taobaocdn.com/tps/i2/T16_GNXe4cXXXXXXXX-940-160.jpg')
+.row.fluid
+  .span9
+    div.box
+      .hd
+        h3 最近的分享，看一看有没有自己喜欢的
+      .bd
+      .ratelist
     div.box
       .hd 
         h3 分享平台希望能帮你
@@ -20,18 +20,9 @@
     div.box
       .hd
         h3 热门分享
-      .bd!= partial('partial/links')
+      .bd
     != partial('partial/side-tags')
-  .span6
-    - if(!everyauth.loggedIn)
-      .box
-        .hd
-          h3
-            登录
-        form.bd(action="/login?redirect=/",method='post')
-          input.span3(type='text',name='email',placeholder='email')
-          br
-          button.btn.small(type='submit',style='padding:4px 9px;') 登录
+  .span3
     .box
       .hd
         h3  常用链接

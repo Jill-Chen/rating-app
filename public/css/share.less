@@ -1,10 +1,5 @@
 @import "app.less";
 
-.home-banner {
-}
-.navback {
-}
-
 // 分享
 .ratelist {
     .clearfix();
@@ -67,6 +62,7 @@
         text-shadow:0px 0px 2px #333;
     }
     .act {
+        color:#fff;
         padding:5px;
         position:absolute;
         bottom:@shareBorder;
@@ -103,9 +99,6 @@ ul.links {
     border:1px solid @grayLight;
     background:@grayLighter;
     overflow:hidden;
-    a {
-        color:#00f;
-    }
     .desc {
         color:#333;
         margin:10px 0;
@@ -216,10 +209,11 @@ form.login, form.upload-form {
     background:#fff;
     padding-top:20px;
 }
+
 .login-page {
     .login {
-        margin-top:100px;
-        .box-shadow();
+        width:260px;
+        margin:100px auto;
     }
     .alert-message {
         margin-right:20px;
@@ -258,8 +252,6 @@ form.login, form.upload-form {
     }
     textarea {
         font-family:monospace;
-        background:#000;
-        color:@green;
     }
 }
 
@@ -289,18 +281,9 @@ textarea  {
     min-height:60px;
 }
 .uploader {
-    padding:20px 0 0 0;
-    width:400px;
-    background:#fff;
-    form {
-        margin-bottom:0;
-    }
     .actions {
         margin-bottom:0;
     }
-}
-.meta-box {
-    margin-top:-20px;
 }
 .ks-ext-position {
     position:absolute;

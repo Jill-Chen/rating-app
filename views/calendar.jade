@@ -40,6 +40,8 @@
       {{/weeks}}
       </tbody>
     </table>
+  script#template-shareset(type='text/template').
+    <li><a href="/shareset/{{postname}}" title='{{position}} {{startTime}} - {{endTime}}'>{{name}} / {{subject}}</a></li>
 
   script#template-list(type='text/template').
     <div class='ss-list'>
@@ -48,8 +50,6 @@
     {{/list}}
     </div>
 
-  script#template-shareset(type='text/template').
-    <li><a href="/shareset/{{postname}}" title='{{position}} {{startTime}} - {{endTime}}'>{{subject}}</a></li>
 
   script#template-list-shareset(type='text/template').
     <div class='ss'>
@@ -66,18 +66,29 @@
       </div>
     </div>
 
+  script#template-list-hd(type='text/template').
+    <span class="title">
+      <a href='#list'>&#171;</a>
+      {{title}}
+    </span>
+
 
   div.v-hd
-    div.view-sw#viewswitch.viewswitch
-      a.v-c(href='#') 日历视图
-      a.v-l(href='#list') 列表视图
+    div.btn-group#viewSwitch.viewswitch
+      a.btn.v-calendar(href='#')
+        i.icon-calendar
+        |日历视图
+      a.btn.v-list(href='#list')
+        i.icon-list
+        |列表视图
     div.calendar-view-hd#calendar-hd
       span.title
       .calendar-hd-handle
-        a.btn.prevMonth(href="#"): span.h-lt
-        a.btn(href='#') 本月
-        a.btn.nextMonth(href="#"): span.h-rt
-    div.list-view-hd
+        .btn-group
+          a.btn.prevMonth(href="#"): span.h-lt
+          a.btn(href='#') 本月
+          a.btn.nextMonth(href="#"): span.h-rt
+    div.calendar-view-hd#list-hd
   #cal-container
   #list-container
 script

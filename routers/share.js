@@ -20,21 +20,30 @@ var getList = function(source){
 
 //auto load
 exports.load = function(id,next){
-    Share.findById(id,function(err,doc){
+    Share.findById(id, function(err,doc){
         next(err,doc)
     });
 };
 
 exports.index = function(req,res){
-    var query = req.query;
-    query.deleted = {"$ne":true};
-    var sharequery = Share.find(query);
-    sharequery.sort('_id', -1);
+    var q= req.query,
+        sharequery = {},
+        pageSize = q.size? parseInt(q.size,10) : 20,
+        page = q.page? parseInt(q.page,10) : 1;
 
-    sharequery.exec(function(err,shares){
-        if(err) return next(err);
-        res.send(shares);
-    });
+    if(q.tags){
+        sharequery.tags = q.tags;
+    }
+
+    Share.find(sharequery)
+        .sort('_id', -1)
+        .ne('deleted', true)
+        .limit(pageSize)
+        .skip((page-1)*pageSize)
+        .exec(function(err,shares){
+            if(err) return next(err);
+            res.send(shares);
+        });
 
 };
 
@@ -108,30 +117,23 @@ exports.create = function(req,res,next){
 
 };
 
-exports.show = function(req,res){
+exports.show = function(req,res, next){
     var share = req.share;
-    if(!share.shareset){
-        res.render('share/show', {
-            title : share.authors.join(',') + ':' + share.title
-           ,share : share
-           ,navtab : 'share'
-           ,shareset : null
-        });
-        return;
-    }
 
-    share.viewCount += 1;
-
-    ShareSet.findById(share.shareset, function(err, doc){
+    ShareSet.find({
+        shares : share._id
+    }, function(err, docs){
         if(err) return next(err);
+        share.viewCount += 1;
         res.render('share/show', {
             title : share.authors.join(',') + ':' + share.title
            ,share : share
            ,navtab : 'share'
-           ,shareset : doc
+           ,sharesets : docs
         });
         share.save();
     });
+
 
 };
 

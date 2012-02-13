@@ -3,15 +3,17 @@
   , "version": "0.0.3"
   , "private": true
   , "dependencies": {
-      "express": ">= 2.3.11"
-    , "jade": ">= 0.19.0"
+      "express": "2.5.5"
+    , "jade": "0.20.0"
     , "underscore" : ">= 1.1.7"
-    , "mongoose" : ">= 2.0.4"
+    , "mongoose" : "2.4.10"
     , "connect-redis" : ">=1.0.7"
     , "everyauth" : ">= 0.2.18"
     , "express-resource" : ">= 0.2.1"
     , "moment" : ">= 1.1.1"
     , "node-markdown" : ">= 0.1.0"
     , "ejs" : ">= 0.6.1"
+    , "async" : "0.1.15"
+    , "redis" : "0.7.1"
   }
 }
