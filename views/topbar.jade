@@ -1,8 +1,12 @@
 div.navbar
   div.navbar-inner
     .container-fluid
+      a.btn.btn-navbar(data-toggle='collapse',data-target='.nav-collapse')
+        span.icon-bar
+        span.icon-bar
+        span.icon-bar
       a.brand(href='/')  分享平台
-      ul.nav
+      ul.nav-collapse.nav
         li(class=(tab ==='home')?'active':'')
           a(href="/") 首页
         li(class=(tab ==='shareset')?'active':'')
@@ -11,20 +15,13 @@ div.navbar
           a(href="/explore") 发现分享
         li(class=(tab ==='create')?'active':'')
           a(href='/shareset/new') 组织分享会
-      ul.nav.pull-right
-        li(class=(tab ==='feedback')?'active':'')
-          a(href='/feedback') 反馈
+      p.navbar-text.pull-right
         - if(!everyauth.loggedIn)
           script.
             (function(url){
-              document.write('<li><a href="/login?redirect='+url+'" class="login-url">登录</a></li>')
-              document.write('<li><a href="/register?redirect='+url+'" title="想要组织分享，先来注册一个吧" class="login-url">注册</a></li>')
+              document.write('<a href="/login?redirect='+url+'" class="login-url">登录</a>&nbsp;')
+              document.write('<a href="/register?redirect='+url+'" title="想要组织分享，先来注册吧" class="login-url">注册</a>')
             })(encodeURIComponent(location.href));
         - else
-          li.dropdown
-            a.dropdown-toggle(data-toggle='dropdown',href='#')
-              |#{user.name}
-              b.caret
-            ul.dropdown-menu
-              li
-                a(href='/logout') 退出
+          span #{user.name}
+          a(href='/logout') 退出
