@@ -7,7 +7,7 @@ KISSY.use('sizzle',function(S){
 
 		var createNav = function(navNum){
 			DOM.hide('#submit-form');
-			DOM.css('.ks-switchable-content','height','400px');
+			DOM.css('.ks-switchable-content','height','440px');
             for(var j=0;j<navNum;j++){
 				$('ul.switch-nav').append('<li>'+j+'</li>');
 			}
@@ -54,7 +54,7 @@ KISSY.use('sizzle',function(S){
                 $('form.feedback')[0].submit();
             }
 
-            DOM.css('.ks-switchable-content','height','600px');
+            DOM.css('.ks-switchable-content','height','630px');
         }
 
 		var initPage = function(listNum){
