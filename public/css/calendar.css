@@ -704,6 +704,7 @@ a.thumbnail:hover{border-color:#0088cc;-webkit-box-shadow:0 1px 4px rgba(0, 105,
 .dsq-comment-text{color:#333;}
 html,body{font-size:12px;background:#cdcdcd url(http://img04.taobaocdn.com/tps/i4/T1KWCyXo0pXXXXXXXX-164-164.png) 0 0;height:100%;}
 form{background:white;}
+.footer{padding:20px;text-align:right;}
 .calendar-tbl{*zoom:1;*zoom:1;width:100%;}.calendar-tbl:before,.calendar-tbl:after{display:table;content:"";}
 .calendar-tbl:after{clear:both;}
 .calendar-tbl:before,.calendar-tbl:after{display:table;content:"";}
