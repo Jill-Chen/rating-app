@@ -10,12 +10,21 @@
 @shareBorder : 10px;
 @shareBorderRadius:3px;
 
+.filter {
+    margin-bottom:10px;
+    text-align:right;
+    .tags li {
+        float:right;
+        margin:0 0 0 10px;
+    }
+}
 .shareitem{
     width:@shareWidth;
     height:@shareWidth;
     margin:0 18px 18px 0;
     color:#666;
     float:left;
+    .box-shadow(2px 2px 10px #666);
     position:relative;
     a {
         text-decoration:none;
@@ -142,10 +151,10 @@ ul.links {
         margin: 5px 5px 0 0;
     }
     a {
-        display:inline-block;
+        display:block;
         padding:5px;
         background:#eee;
-        color:#666;
+        color:#444;
         border:1px solid #999;
         border-right:2px solid #278ac4;
         .border-radius(3px 0 0 3px);
@@ -156,6 +165,11 @@ ul.links {
         text-decoration:none;
         color:#999;
         /*#gradient .vertical(#f8f8f8, #f1f1f1);*/
+    }
+    span {
+        font-size:12px;
+        color:#AAA;
+        vertical-align:top;
     }
 }
 

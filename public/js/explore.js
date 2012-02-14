@@ -51,6 +51,11 @@ define(function(require, exports, module){
         },
         className : 'tags',
         render : function(tags){
+            _(tags).each(function(tag){
+                //字体大小
+                tag.size = 12+Math.round(tag.count/10);
+            });
+
             $(this.el).html(mustache.to_html(this.template, {
                 tags : tags
             }));
