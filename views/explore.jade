@@ -26,27 +26,28 @@ script#template-list(type='text/template').
     </div>
     {{/list}}
   </div>
+
 script#template-tags(type='text/template').
+  <h3>标签</h3>
   <ul class='tags'>
     {{#tags}}
-      <li><a href='#tags/{{tag}}'>{{tag}} {{count}}</a></li>
+      <li style='font-size:{{size}}px;'><a href='#tags/{{tag}}'>{{tag}}<span>{{count}}</span></a></li>
     {{/tags}}
   </ul>
 
 script#template-tagquery(type='text/template').
-  <div class="navback">
-    <a href="#">所有分享</a>
-  </div>
-  <h1>标签为 {{tag}} 的分享</h1>
+  
+  <h1>{{tag}}标签<a class='icon-remove-sign' title='移除' href="#"></a></h1>
 
 
 #page
+
+  .row-fluid.filter
+    #Tags
   .row-fluid
-    .span8
+    .span12
       #Query
       #Explore
-    .span4
-      #Tags
 
 script
   seajs.use('/js/explore.js?t=20120104')
