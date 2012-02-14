@@ -20,10 +20,9 @@ KISSY.use('sizzle',function(S){
 			DOM.css(DOM.children('ul.switch-nav')[current],'background','red');
 		}
 
-        var optCheck = function(current){
+        var optCheck = function(current,tag){
             var chk = $('fieldset:eq('+current+') :checked').length,
                 baseline = $('fieldset:eq('+current+') .ctl-score').length;
-            console.log(current);
             if(current == 0){
                 if(chk<optionSize[0]){
                     for(var i=0;i<baseline;i++){
@@ -43,30 +42,30 @@ KISSY.use('sizzle',function(S){
                     return;
                 }
             }
-            if(current < end){
+            if(current < end-1){
                 DOM.hide(papers[current]);
                 current++;
             }
-            if(current == end-1){
+            if(current == end-1 && tag == 0){
                 DOM.show('#submit-form');
                 DOM.hide('#scroller-next');
             }
-            if(current == end){
-                $('form.feedback').submit();
+            if(current == end-1 && tag == 1){
+                $('form.feedback')[0].submit();
             }
 
-            DOM.css('.ks-switchable-content','height','640px');
+            DOM.css('.ks-switchable-content','height','600px');
         }
 
 		var initPage = function(listNum){
 			createNav(listNum);
 			Event.on('#scroller-next','click',function(e){
-				optCheck(current);
+				optCheck(current,0);
 				changeNav(current);
 			});
             Event.on('#submit-form','click',function(e){
                 e.preventDefault();
-                optCheck(end);
+                optCheck(end-1,1);
             });
 		}
 		initPage(end);
