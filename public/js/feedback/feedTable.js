@@ -20,14 +20,14 @@ KISSY.use('sizzle',function(S){
 			DOM.css(DOM.children('ul.switch-nav')[current],'background','red');
 		}
 
-        var optCheck = function(current,tag){
-            var chk = $('fieldset:eq('+current+') :checked').length,
-                baseline = $('fieldset:eq('+current+') .ctl-score').length;
-            if(current == 0){
+        var optCheck = function(cur,tag){
+            var chk = $('fieldset:eq('+cur+') :checked').length,
+                baseline = $('fieldset:eq('+cur+') .ctl-score').length;
+            if(cur == 0){
                 if(chk<optionSize[0]){
                     for(var i=0;i<baseline;i++){
-                        if($('fieldset:eq('+current+') .ctl-score:eq('+i+') :checked').length == 0){
-                            DOM.css($('fieldset:eq('+current+') .clearfix:eq('+i+') label'),'color','red');
+                        if($('fieldset:eq('+cur+') .ctl-score:eq('+i+') :checked').length == 0){
+                            DOM.css($('fieldset:eq('+cur+') .clearfix:eq('+i+') label'),'color','red');
                         }
                     }
                     return;
@@ -35,15 +35,15 @@ KISSY.use('sizzle',function(S){
             }else {
                 if(chk<optionSize[1]){
                     for(var i=0;i<baseline;i++){
-                        if($('fieldset:eq('+current+') .ctl-score:eq('+i+') :checked').length == 0){
-                            DOM.css($('fieldset:eq('+current+') .clearfix:eq('+i+') label'),'color','red');
+                        if($('fieldset:eq('+cur+') .ctl-score:eq('+i+') :checked').length == 0){
+                            DOM.css($('fieldset:eq('+cur+') .clearfix:eq('+i+') label'),'color','red');
                         }
                     }
                     return;
                 }
             }
             if(current < end-1){
-                DOM.hide(papers[current]);
+                DOM.hide(papers[cur]);
                 current++;
             }
             if(current == end-1 && tag == 0){
@@ -60,8 +60,9 @@ KISSY.use('sizzle',function(S){
 		var initPage = function(listNum){
 			createNav(listNum);
 			Event.on('#scroller-next','click',function(e){
-				optCheck(current,0);
-				changeNav(current);
+				console.log(current);
+                optCheck(current,0);
+				//changeNav(current);
 			});
             Event.on('#submit-form','click',function(e){
                 e.preventDefault();
