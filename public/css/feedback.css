@@ -121,7 +121,7 @@ label{font-size:14px;display:block;font-weight:bold;}
 fieldset{padding:20px;}
 form .clearfix{margin-bottom:25px;}
 form .input{margin-top:10px;}
-textarea{width:580px;height:100px;padding:20px;}
+textarea{width:580px;height:100px;}
 .low{}
 .high{}
 .actions{*zoom:1;padding:10px;}.actions:before,.actions:after{display:table;content:"";}
