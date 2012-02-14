@@ -7,8 +7,7 @@ KISSY.use('sizzle',function(S){
 
 		var createNav = function(navNum){
 			DOM.hide('#submit-form');
-			DOM.hide('#scroller-prev');
-			DOM.css('.ks-switchable-content','height','447px');
+			DOM.css('.ks-switchable-content','height','400px');
             for(var j=0;j<navNum;j++){
 				$('ul.switch-nav').append('<li>'+j+'</li>');
 			}
@@ -44,6 +43,7 @@ KISSY.use('sizzle',function(S){
             }
             if(current < end-1){
                 DOM.hide(papers[cur]);
+                DOM.show(papers[cur+1]);
                 current++;
             }
             if(current == end-1 && tag == 0){
