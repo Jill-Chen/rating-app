@@ -4,11 +4,13 @@ html
   head
     title= title
     meta(name='viewport',content='width=device-width, initial-scale = 1.0, user-scalable = no')
+    link(rel='stylesheet',href='/css/bootstrap.min.css')
+    link(rel='stylesheet',href='/css/bootstrap-responsive.min.css')
     - if(developmod)
       link(rel='stylesheet/less', href='/css/calendar.less')
       script(src='/lib/less/1.2.1/less.min.js')
     - else
-      link(rel='stylesheet', href='/css/calendar.css?t=20120103')
+      link(rel='stylesheet', href='/css/calendar.css?t=20120213')
     script(src='/js/modules/seajs/1.1.1/sea.js',data-main='/js/main.js')
   body
     include topbar
