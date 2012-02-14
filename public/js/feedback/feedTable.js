@@ -7,8 +7,7 @@ KISSY.use('sizzle',function(S){
 
 		var createNav = function(navNum){
 			DOM.hide('#submit-form');
-			DOM.hide('#scroller-prev');
-			DOM.css('.ks-switchable-content','height','447px');
+			DOM.css('.ks-switchable-content','height','400px');
             for(var j=0;j<navNum;j++){
 				$('ul.switch-nav').append('<li>'+j+'</li>');
 			}
@@ -20,15 +19,14 @@ KISSY.use('sizzle',function(S){
 			DOM.css(DOM.children('ul.switch-nav')[current],'background','red');
 		}
 
-        var optCheck = function(current){
-            var chk = $('fieldset:eq('+current+') :checked').length,
-                baseline = $('fieldset:eq('+current+') .ctl-score').length;
-            console.log(current);
-            if(current == 0){
+        var optCheck = function(cur,tag){
+            var chk = $('fieldset:eq('+cur+') :checked').length,
+                baseline = $('fieldset:eq('+cur+') .ctl-score').length;
+            if(cur == 0){
                 if(chk<optionSize[0]){
                     for(var i=0;i<baseline;i++){
-                        if($('fieldset:eq('+current+') .ctl-score:eq('+i+') :checked').length == 0){
-                            DOM.css($('fieldset:eq('+current+') .clearfix:eq('+i+') label'),'color','red');
+                        if($('fieldset:eq('+cur+') .ctl-score:eq('+i+') :checked').length == 0){
+                            DOM.css($('fieldset:eq('+cur+') .clearfix:eq('+i+') label'),'color','red');
                         }
                     }
                     return;
@@ -36,37 +34,39 @@ KISSY.use('sizzle',function(S){
             }else {
                 if(chk<optionSize[1]){
                     for(var i=0;i<baseline;i++){
-                        if($('fieldset:eq('+current+') .ctl-score:eq('+i+') :checked').length == 0){
-                            DOM.css($('fieldset:eq('+current+') .clearfix:eq('+i+') label'),'color','red');
+                        if($('fieldset:eq('+cur+') .ctl-score:eq('+i+') :checked').length == 0){
+                            DOM.css($('fieldset:eq('+cur+') .clearfix:eq('+i+') label'),'color','red');
                         }
                     }
                     return;
                 }
             }
-            if(current < end){
-                DOM.hide(papers[current]);
+            if(current < end-1){
+                DOM.hide(papers[cur]);
+                DOM.show(papers[cur+1]);
                 current++;
             }
-            if(current == end-1){
+            if(current == end-1 && tag == 0){
                 DOM.show('#submit-form');
                 DOM.hide('#scroller-next');
             }
-            if(current == end){
-                $('form.feedback').submit();
+            if(current == end-1 && tag == 1){
+                $('form.feedback')[0].submit();
             }
 
-            DOM.css('.ks-switchable-content','height','640px');
+            DOM.css('.ks-switchable-content','height','600px');
         }
 
 		var initPage = function(listNum){
 			createNav(listNum);
 			Event.on('#scroller-next','click',function(e){
-				optCheck(current);
-				changeNav(current);
+				console.log(current);
+                optCheck(current,0);
+				//changeNav(current);
 			});
             Event.on('#submit-form','click',function(e){
                 e.preventDefault();
-                optCheck(end);
+                optCheck(end-1,1);
             });
 		}
 		initPage(end);
