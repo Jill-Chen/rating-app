@@ -8,6 +8,7 @@ KISSY.use('sizzle',function(S){
 		var createNav = function(navNum){
 			DOM.hide('#submit-form');
 			DOM.css('.ks-switchable-content','height','440px');
+            DOM.css('.ctl-score td','cursor','pointer');
             for(var j=0;j<navNum;j++){
 				$('ul.switch-nav').append('<li>'+j+'</li>');
 			}
@@ -67,6 +68,9 @@ KISSY.use('sizzle',function(S){
             Event.on('#submit-form','click',function(e){
                 e.preventDefault();
                 optCheck(end-1,1);
+            });
+            $('.ctl-score td').on('click',function(e){
+                DOM.prop(DOM.children(this)[0],'checked','checked');
             });
 		}
 		initPage(end);

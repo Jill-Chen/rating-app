@@ -14,7 +14,7 @@
               tr
                 td.label.low 很不满意
                 - each score in scores
-                  td: input(type='radio',name='toShareset[rateSubject]',value=score)
+                  td: input.opt10(type='radio',name='toShareset[rateSubject]',value=score)
                 td.label.high 非常满意
         .clearfix
           label 整体满意度
