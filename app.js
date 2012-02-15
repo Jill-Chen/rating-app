@@ -3,6 +3,7 @@
  */
 
 var express = require('express');
+var sys = require('sys');
 
 var _ = require("underscore");
 var modules = require('./modules/');
@@ -17,6 +18,7 @@ var developmod = false;
 var init = require('./mods/init');
 
 var app = module.exports = express.createServer();
+sys.debug('starging...');
 
 //Modules
 var User = modules.User;
@@ -49,18 +51,17 @@ app.configure(function(){
     app.use(redirect);
     app.use(everyauth.middleware());
     app.use(express.methodOverride());
-    app.use(app.router);
     app.use(function(req,res,next){
         //上传列表
-        if(!req.files || req.files.length === 0){
+        if(!req.files){
             next();
             return;
         }
-        next();
         _(req.files).each(function(oFile){
             if(oFile.size === 0){
                 return;
             }
+            oFile.path = oFile.path.replace(/^.*\/public\/upload/,'/upload')
             var file = new File({
                 name : oFile.name
                ,size : oFile.size
@@ -70,7 +71,9 @@ app.configure(function(){
             });
             file.save();
         });
+        next();
     });
+    app.use(app.router);
 
     //个性错误处理
     app.error(function(err, req, res, next){
@@ -245,6 +248,7 @@ app.post('/share/:share/upload-cover', function(req, res){
         return res.redirect('back');
     }
 
+
     files = req.files;
 
     if(!files.cover){
@@ -252,7 +256,7 @@ app.post('/share/:share/upload-cover', function(req, res){
         return;
     }
 
-    share.cover = files.cover.path.replace(/^public/,'');
+    share.cover = files.cover.path;
 
     share.save(function(err, saved){
         res.render('shareset/share-cover-upload',{
