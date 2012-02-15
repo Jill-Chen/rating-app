@@ -41,7 +41,7 @@ app.configure(function(){
     app.set('views', __dirname + '/views');
     app.set('view engine', 'jade');
     app.use(express.bodyParser({
-        uploadDir: './public/upload'
+        uploadDir: __dirname + '/public/upload'
        ,keepExtensions : true
     }));
     app.use(express.cookieParser());
