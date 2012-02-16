@@ -1,3 +1,20 @@
+script#template-latest(type='text/template').
+  <div class='ratelist'>
+    {{#list}}
+    <div class='shareitem'>
+      <a href='/share/{{_id}}' style='background-image:url({{cover}})'>
+        <div class="wrap">
+          <h3 class="title"> {{title}} </h3>
+          <div class="desc">{{desc}}</div>
+          <div class="act">
+            <span class="author">{{authors}}</span>
+            <span title="热度"><b class="icon-fire"></b>{{viewCount}}</span>
+          </div>
+        </div>
+      </a>
+    </div>
+    {{/list}}
+  </div>
 .home-banner
 .row
   .span10
@@ -8,7 +25,7 @@
       .hd
         h3 最近的分享，看一看有没有自己喜欢的
       .bd
-      .ratelist
+        #Latest
     div.box
       .hd 
         h3 分享平台希望能帮你
@@ -30,3 +47,5 @@
         ul.links
           li
             a(href='https://is.taobao.org/meeting/')  会议室预定
+script
+  seajs.use('/js/latest.js')
