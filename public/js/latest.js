@@ -1,9 +1,8 @@
 define(function(require, exports, module){
     var mustache = require('mustache'),
         $ = require('jquery');
-    
     $.ajax({
-        url : '/share?size=8',
+        url : '/share?size=8&sort=viewCount',
         dataType : 'json',
         success : function(data){
             this.template = $('#template-latest').html();

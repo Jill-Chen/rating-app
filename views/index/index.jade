@@ -15,27 +15,25 @@ script#template-latest(type='text/template').
     </div>
     {{/list}}
   </div>
-.home-banner
-.row
+.row-fluid.hide
   .span10
   img(src='http://img02.taobaocdn.com/tps/i2/T16_GNXe4cXXXXXXXX-940-160.jpg')
-.row.fluid
+.row-fluid
   .span9
     div.box
-      .hd 
+      .hd
+        h3 热门分享
+      .bd
+        #Latest
+  .span3
+    div.box
+      .hd
         h3 分享平台希望能帮你
       .bd
         ul
           li 组织分享
           li 记录分享
           li 反馈与交流
-    div.box
-      .hd
-        h3 热门分享
-      .bd
-        #Latest
-    != partial('partial/side-tags')
-  .span3
     .box
       .hd
         h3  常用链接
@@ -43,5 +41,6 @@ script#template-latest(type='text/template').
         ul.links
           li
             a(href='https://is.taobao.org/meeting/')  会议室预定
+    != partial('partial/side-tags')
 script
   seajs.use('/js/latest.js')
