@@ -14,7 +14,7 @@
               tr
                 td.label.low 很不满意
                 - each score in scores
-                  td: input.opt10(type='radio',name='toShareset[rateSubject]',value=score)
+                  td: input.opt10(type='radio',name='toshareset[rateSubject]',value=score)
                 td.label.high 非常满意
         .clearfix
           label 整体满意度
@@ -24,7 +24,7 @@
               tr
                 td.label.low 很不满意
                 - each score in scores
-                  td: input(type='radio',name='toShareset[rateGeneral]',value=score)
+                  td: input(type='radio',name='toshareset[rateGeneral]',value=score)
                 td.label.high 非常满意
         .clearfix
           label 您对 #{shareset.name} 有什么其他建议？
@@ -41,7 +41,7 @@
                 tr
                   td.label.low 很不满意
                   - each score in scores
-                    td: input(type='radio',name='toShare[#{share._id}][rateTopic]',value=score)
+                    td: input(type='radio',name='toshare[#{share._id}][rateTopic]',value=score)
                   td.label.high 非常满意
           .clearfix
             label 幻灯片及分享材料
@@ -51,7 +51,7 @@
                 tr
                   td.label.low 很不满意
                   - each score in scores
-                    td: input(type='radio',name='toShare[#{share._id}][rateSlider]',value=score)
+                    td: input(type='radio',name='toshare[#{share._id}][rateSlider]',value=score)
                   td.label.high 非常满意
           .clearfix
             label 时间控制
@@ -61,7 +61,7 @@
                 tr
                   td.label.low 很不满意
                   - each score in scores
-                    td: input(type='radio',name='toShare[#{share._id}][rateTimeControl]',value=score)
+                    td: input(type='radio',name='toshare[#{share._id}][rateTimeControl]',value=score)
                   td.label.high 非常满意
           .clearfix
             label 演讲技巧
@@ -71,12 +71,12 @@
                 tr
                   td.label.low 很不满意
                   - each score in scores
-                    td: input(type='radio',name='toShare[#{share._id}][rateSpeak]',value=score)
+                    td: input(type='radio',name='toshare[#{share._id}][rateSpeak]',value=score)
                   td.label.high 非常满意
           .clearfix
             label 您对 #{share.authors.join(',')} 有什么其他建议？
             .input
-              textarea(name='toShare[#{share._id}][review]')
+              textarea(name='toshare[#{share._id}][review]')
     ul.switchable-nav
     .actions
       button#submit-form(type='submit') 提交

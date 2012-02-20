@@ -94,7 +94,7 @@ exports.create = function(req,res){
         reqbody = req.body,
         error = {},
         user = req.user;
-    //检查URL是否已被使用
+
     shareset.subject = reqbody.subject;
     shareset.name = reqbody.name;
     shareset.date = reqbody.date;
@@ -106,28 +106,45 @@ exports.create = function(req,res){
     shareset.category = reqbody.category;
     shareset.owner = req.user._id;
 
-    if(shareset.postname){
-        checkPostname(save)
-    }else{
-        save();
-    }
+    //检查URL是否已被使用
+    checkPostname(save, shareset);
 
-    function checkPostname(fn){
+    function checkPostname(fn, shareset){
+
+        if(!shareset.postname){
+            fn({
+                postname : {
+                    type : '请输入个性URL'
+                }
+            });
+        }
+
         ShareSet.findOne({
             postname : shareset.postname
         }, function(err,doc){
+            var error = null;
             if(err) return next(err);
             if(doc){
-                error.postname = {
-                    type : '这个名称已经被人用过了'
-                }
+                error = {
+                    postname : {
+                        type : '这个url已经被人用过了'
+                    }
+                };
             }
-            fn();
+            fn(error, shareset);
         });
     }
 
 
-    function save(){
+    function save(err,shareset){
+
+        if(err){
+            res.send({
+                errors : err
+            });
+            return ;
+        }
+
         shareset.save(function(err,saved){
             if(_(error).keys() > 0){
                 err = err || {};

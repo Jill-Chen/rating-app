@@ -179,18 +179,6 @@ app.get('/api/summary',function(req,res,next){
 app.resource('shareset', require('./routers/shareset'));
 app.resource('share', require('./routers/share'));
 
-app.param('sharesetId', function(req,res,next,id){
-    ShareSet.findById(id)
-        .populate('shares')
-        .exec(function(err,doc){
-            if(err) throw new Error(500);
-            if(!doc) throw new Error.NotFound();
-            req.shareset = doc;
-            next();
-        });
-})
-
-
 
 app.get('/500', function(req,res){
     throw new Error('just an small error;');
@@ -377,7 +365,7 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
     });
 });
 
-app.get('/fb/:sharesetId',function(req,res){
+app.get('/fb/:shareset',function(req,res){
     res.render('feedback/feedback', {
         layout : 'layout-feedback',
         shareset : req.shareset,
@@ -385,30 +373,30 @@ app.get('/fb/:sharesetId',function(req,res){
     });
 });
 
-app.post('/fb/:sharesetId',function(req,res){
+app.post('/fb/:shareset',function(req,res){
     var body = req.body,
         shares = {},
-        toshare = [];
+        toshares = [];
 
     _(req.shareset.shares).each(function(v){
         shares[v._id] = v;
     });
 
-    _(body.toShare).each(function(v,k){
+    _(body.toshare).each(function(v,k){
         v.share = k;
         v.title = shares[k].title;
         v.authors = shares[k].authors.join(', ');
-        toshare.push(v);
+        toshares.push(v);
     });
 
     var fb = new Feedback({
-        shareset : req.params.sharesetId,
-        toShareset : body.toShareset,
-        toShares : toshare
+        shareset : req.shareset._id,
+        toShareset : body.toshareset,
+        toShares : toshares
     });
 
     fb.save(function(err, saved){
-        res.redirect('/fb/'+req.params.sharesetId + '/success');
+        res.redirect('/fb/'+req.shareset.postname+ '/success');
     });
 
 });
@@ -416,7 +404,7 @@ app.post('/fb/:sharesetId',function(req,res){
 app.get('/fb/:shareset/show',function(req,res){
     var shareset = req.shareset;
     Feedback.find({
-        shareset : req.shareset
+        shareset : shareset._id
     }, function(err,docs){
         res.send({
             feedbacks : docs,
@@ -425,7 +413,6 @@ app.get('/fb/:shareset/show',function(req,res){
 });
 
 app.get('/user/edit',function(req,res){
-    console.log(req.user);
     res.render('auth/edit', {
         title : '修改用户名',
         user : req.user
@@ -447,7 +434,7 @@ app.post('/user/edit',function(req,res){
 
 });
 
-app.get('/fb/:sharesetId/success',function(req,res){
+app.get('/fb/:shareset/success',function(req,res){
     res.render('feedback/feedback-success', {
         layout : 'layout-feedback',
         shareset : req.shareset,
