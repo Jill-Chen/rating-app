@@ -2,15 +2,14 @@
   form.well.login(action='/register', method="post")
     h3= title
     - if('undefined' !== typeof errors && errors.length)
-      .alert-message.warning(data-alert)
-        a.close(href='#') ×
+      .alert-error.alert(data-alert)
         - each error in errors
-          p.error= error
+          div=error
     label(for=everyauth.password.loginFormFieldName) 邮箱：
     input.text#input_login(type='text',name=everyauth.password.loginFormFieldName,autofocus='autofocus',value=userParams[everyauth.password.loginFormFieldName])
     p.help-block 您的工作的邮箱
 
-    label(for="name") 花名：
+    label(for="name") 花名或真名：
     input.text#name(type='text', name="name")
 
 

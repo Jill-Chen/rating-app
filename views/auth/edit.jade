@@ -1,30 +1,18 @@
-.row.login-page
-  .span6.offset5
-    form.form-stacked.login(action='/register', method="post")
-      h3 注册
-      - if('undefined' !== typeof errors && errors.length)
-        .alert-message.warning(data-alert)
-          a.close(href='#') ×
-          - each error in errors
-            p.error= error
-      fieldset
-        .clearfix
-          label(for=everyauth.password.loginFormFieldName) 邮箱：
-          .input
-            input.text#input_login(type='text',name=everyauth.password.loginFormFieldName,value=userParams[everyauth.password.loginFormFieldName])
-            span.help-block 最好用 @taobao.com 的邮箱
+.login-page
+  form.well.login(action='/user/edit', method="post")
+    h3= title
+    - if('undefined' !== typeof errors && errors.length)
+      .alert-message.warning(data-alert)
+        a.close(href='#') ×
+        - each error in errors
+          p.error= error
+    label(for=everyauth.password.loginFormFieldName) 邮箱：
+    input#input_login(type='text',value=user.email, disabled)
 
-        .clearfix
-          label(for=everyauth.password.passwordFormFieldName) 密码：
-          .input
-            input.text#input_password(type='password', name=everyauth.password.passwordFormFieldName)
+    label(for="name") 花名或真名：
+    input.text#name(type='text',autofocus='autofocus',value=user.name, name="name")
 
-        .clearfix
-          label(for="repeatpassword") 重复密码：
-          .input
-            input.text#repeatpassword(type='password', name="repeatpassword")
-
-        .actions
-          button(type="submit", class='btn primary') 提交
-          &nbsp;
-          a(href='/') 返回分享平台
+    .form-actions
+      button(type="submit", class='btn primary') 提交
+      &nbsp;
+      a(href='/') 返回分享平台

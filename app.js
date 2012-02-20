@@ -424,6 +424,29 @@ app.get('/fb/:shareset/show',function(req,res){
     });
 });
 
+app.get('/user/edit',function(req,res){
+    console.log(req.user);
+    res.render('auth/edit', {
+        title : '修改用户名',
+        user : req.user
+    });
+});
+
+app.post('/user/edit',function(req,res){
+    var user = req.user,
+        name = req.param('name');
+
+    user.name = name;
+    user.save(function(err, user){
+        if(err) return next(err);
+        res.render('auth/edit', {
+            title : '修改成功!',
+            user : req.user
+        });
+    });
+
+});
+
 app.get('/fb/:sharesetId/success',function(req,res){
     res.render('feedback/feedback-success', {
         layout : 'layout-feedback',
