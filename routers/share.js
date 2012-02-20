@@ -28,6 +28,8 @@ exports.load = function(id,next){
 exports.index = function(req,res){
     var q= req.query,
         sharequery = {},
+        sort = '_id',
+        sortType = -1,
         pageSize = q.size? parseInt(q.size,10) : 20,
         page = q.page? parseInt(q.page,10) : 1;
 
@@ -35,8 +37,13 @@ exports.index = function(req,res){
         sharequery.tags = q.tags;
     }
 
+    if(q.sort){
+        sort = req.sort,
+        sortType = 1
+    }
+
     Share.find(sharequery)
-        .sort('_id', -1)
+        .sort(sort, sortType)
         .ne('deleted', true)
         .limit(pageSize)
         .skip((page-1)*pageSize)
