@@ -97,7 +97,7 @@ define(function(require,exports, module){
 
         _(fb.rates).each(function(num,nidx){
             ctx.fillStyle = lightGray;
-            ctx.fillRect(pLeft, pTop, bWidth * num/ 10, bar_height);
+            ctx.fillRect(pLeft, pTop + nidx*(bar_height+1), bWidth * num/ 10, bar_height);
         });
         pTop += bHeight;
 
