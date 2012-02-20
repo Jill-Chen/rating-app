@@ -25,6 +25,7 @@ p.desc= shareset.desc
       a(href='/fb/#{shareset._id}') 反馈表地址
       &nbsp;
       a(href='/fb/#{shareset.postname}/show') 反馈表数据
+  canvas#chart(width="600",height="800");
 .row-fluid
   .span12
     - if (shares && shares.length)
@@ -44,5 +45,9 @@ p.desc= shareset.desc
           dsq.src = "http://"+disqus_shortname + '.disqus.com/embed.js';
           document.getElementsByTagName("head")[0].appendChild(dsq);
         })()
+script
+  seajs.use('/js/feedback',function(feedback){
+    feedback.init('/fb/#{shareset.postname}/show');
+  });
 script
   KISSY.use('rate/ajax');
