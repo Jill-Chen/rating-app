@@ -1,11 +1,21 @@
 div.footer.container-fluid
   a(href='/feedback') 反馈
+  |/Powerd by:
+  a(href='http://seajs.com') Seajs
+  ;
+  a(href='http://nodejs.org') Node
+  ;
+  a(href='http://lesscss.org') Less
+  ;
+  a(href='http://twitter.github.com/bootstrap')BootStrap
   &nbsp;
-  span Powerd by: Seajs Node Less BootStrap
+  |/source:
+  a(href='https://github.com/maxbbn/rating-app') github
   &nbsp;
-  a(href='https://github.com/maxbbn/rating-app') fork on github
-  &nbsp;
-  author: 文龙， 祁幽， 妙净
+  |/authors:
+  span 文龙
+  span 祁幽
+  span 妙净
 script
   seajs.use("/js/modules/bootstrap/bootstrap-dropdown")
   seajs.use("/js/modules/bootstrap/bootstrap-collapse")
