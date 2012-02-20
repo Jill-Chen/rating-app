@@ -19,10 +19,13 @@ div.navbar
         - if(!everyauth.loggedIn)
           script.
             (function(url){
-              document.write('<a href="/login?redirect='+url+'" class="login-url">登录</a>&nbsp;')
-              document.write('<a href="/register?redirect='+url+'" title="想要组织分享，先来注册吧" class="login-url">注册</a>')
+              document.write('<a href="/login?redirect='+url+'" class="login-url">登录</a>&nbsp;');
             })(encodeURIComponent(location.href));
+          a(href="/register",title="想要组织分享，先来注册吧") 注册
         - else
-          span #{user.name}
+          - if(user.name)
+            span #{user.name}
+          - else
+            a(href='/user/edit') 添加名字
           &nbsp;
           a(href='/logout') 退出
