@@ -72,6 +72,12 @@ KISSY.use('sizzle',function(S){
             $('.ctl-score td').on('click',function(e){
                 DOM.prop(DOM.children(this)[0],'checked','checked');
             });
+            //$('.ctl-score td').on('mouseenter',function(e){
+            //    DOM.css(this,'background-color','yellow');
+            //});
+            //$('.ctl-score td').on('mouseleave',function(e){
+            //    DOM.css(this,'background-color','');
+            //});
 		}
 		initPage(end);
     });
