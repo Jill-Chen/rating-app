@@ -14,10 +14,15 @@ define(function(require,exports, module){
         //console.log(fb);
         var len = fb.rates.length,
             sum = _(fb.rates).reduce(function(memo,num){
-                return memo + Number(num);
+                var n = Number(num);
+                if(isNaN(n)){
+                    len -= 1;
+                    n = 0;
+                }
+                return memo + n;
             },0);
         //console.log(len,sum);
-        fb.score = len==0?'没有数据':(sum/len).toFixed(2);
+        fb.score = len<=0?'没有数据':(sum/len).toFixed(2);
         return fb.score;
     }
 
@@ -162,5 +167,9 @@ define(function(require,exports, module){
             console.log('ajax done',data);
             drawResult(data.feedbacks);
         });;
+        $('#toggle-chart').on('click',function(ev){
+            ev.preventDefault();
+            $('#chart-container').toggle();
+        });
     };
 });

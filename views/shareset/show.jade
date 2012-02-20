@@ -24,8 +24,9 @@ p.desc= shareset.desc
       &nbsp;
       a(href='/fb/#{shareset.postname}') 反馈表地址
       &nbsp;
-      a(href='/fb/#{shareset.postname}/show') 反馈表数据
-  canvas#chart(width="600",height="800");
+      a#toggle-chart(href='/fb/#{shareset.postname}/show') 反馈数据
+  #chart-container(style='display:none')
+    canvas#chart(width="600",height="800");
 .row-fluid
   .span12
     - if (shares && shares.length)
