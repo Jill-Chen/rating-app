@@ -122,7 +122,7 @@ define(function(require,exports, module){
     }
 
     function draw(obj){
-        //console.log(obj);
+        console.log(obj);
         var canvas = $('#chart'),
             ctx = canvas[0].getContext('2d'),
             pLeft = 80,
