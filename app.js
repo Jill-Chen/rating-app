@@ -365,7 +365,7 @@ app.get('/shareset/:shareset/ics',function(req,res, next){
     });
 });
 
-app.get('/fb/:shareset',function(req,res){
+app.get('/fb/:shareset', function(req,res){
     res.render('feedback/feedback', {
         layout : 'layout-feedback',
         shareset : req.shareset,
@@ -373,7 +373,7 @@ app.get('/fb/:shareset',function(req,res){
     });
 });
 
-app.post('/fb/:shareset',function(req,res){
+app.post('/fb/:shareset', function(req,res){
     var body = req.body,
         shares = {},
         toshares = [];
