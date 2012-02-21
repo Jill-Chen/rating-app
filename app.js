@@ -3,7 +3,6 @@
  */
 
 var express = require('express');
-var sys = require('sys');
 
 var _ = require("underscore");
 var modules = require('./modules/');
@@ -18,7 +17,6 @@ var developmod = false;
 var init = require('./mods/init');
 
 var app = module.exports = express.createServer();
-sys.debug('starging...');
 
 //Modules
 var User = modules.User;

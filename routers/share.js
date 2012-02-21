@@ -38,8 +38,7 @@ exports.index = function(req,res){
     }
 
     if(q.sort){
-        sort = req.sort;
-        sortType = 1;
+        sort = q.sort;
     }
 
     Share.find(sharequery)
