@@ -21,12 +21,15 @@ exports.index = function(req,res,next){
        ,queryObj = {
             deleted : {"$ne" : true}
         }
+       ,sortField = '_id'
+       ,sortDirect = -1
        ,month = query.month //YYYY-MM
        ,start
        ,end;
 
     //日期限定
     if(month){
+        //选取一个指定月份的分享
         start = !month ? moment(moment().format('YYYY-MM')): moment(month, 'YYYY-MM')
         end = moment(start.valueOf()).add('M',1)
         queryObj.date = {
@@ -39,9 +42,21 @@ exports.index = function(req,res,next){
         queryObj.name = query.name;
     }
 
-    var find = ShareSet.find(queryObj)
-        .sort('_id',-1)
-        .limit(20);
+    if(query.type){
+        if(query.type === 'recent'){
+            start = moment().add('w',-1);
+        }
+        queryObj.date = {
+            $gte : start.native()
+        }
+        sortDirect = 1;
+    }
+
+    var find = ShareSet.find(queryObj);
+
+    find.sort(sortField,sortDirect)
+
+    find.limit(20);
 
     find.exec(function(err,sharesets){
         if(err) return next(err);
