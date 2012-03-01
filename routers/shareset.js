@@ -9,21 +9,23 @@ exports.load = function(id, next){
     .findOne({
         postname : id
     })
+    .populate('shares',null,{deleted: {$ne : true}})
     .populate('owner')
-    .populate('shares')
     .run(function(err,doc){
         next(err,doc)
     });
 };
 
 exports.index = function(req,res,next){
-    var query = req.query
+    var q = req.query
        ,queryObj = {
             deleted : {"$ne" : true}
         }
        ,sortField = '_id'
        ,sortDirect = -1
-       ,month = query.month //YYYY-MM
+       ,pageSize = q.size? parseInt(q.size,10) : 20
+       ,page = q.page? parseInt(q.page,10) : 1
+       ,month = q.month //YYYY-MM
        ,start
        ,end;
 
@@ -38,12 +40,12 @@ exports.index = function(req,res,next){
         }
     }
 
-    if(query.name){
-        queryObj.name = query.name;
+    if(q.name){
+        queryObj.name = q.name;
     }
 
-    if(query.type){
-        if(query.type === 'recent'){
+    if(q.type){
+        if(q.type === 'recent'){
             start = moment().add('w',-1);
         }
         queryObj.date = {
@@ -52,30 +54,30 @@ exports.index = function(req,res,next){
         sortDirect = 1;
     }
 
-    var find = ShareSet.find(queryObj);
+    ShareSet.find(queryObj)
+        //.populate('share', ['title','authors'], {deleted : {$ne : true}})
+        .populate('shares')
+        .sort(sortField, sortDirect)
+        .limit(pageSize)
+        .skip((page-1)*pageSize)
+        .run(function(err, sharesets){
+            if(err) return next(err);
+            res.send( _(sharesets).map(function(ss){
+                return {
+                    _id : ss._id,
+                    subject : ss.subject,
+                    owner : ss.owner,
+                    name : ss.name,
+                    date : ss.date.getTime(),
+                    startTime : ss.startTime,
+                    endTime : ss.endTime,
+                    postname : ss.postname,
+                    position: ss.position,
+                    desc : ss.desc
 
-    find.sort(sortField,sortDirect)
-
-    find.limit(20);
-
-    find.exec(function(err,sharesets){
-        if(err) return next(err);
-        res.send( _(sharesets).map(function(ss){
-            return {
-                _id : ss._id,
-                subject : ss.subject,
-                owner : ss.owner,
-                name : ss.name,
-                date : ss.date.getTime(),
-                startTime : ss.startTime,
-                endTime : ss.endTime,
-                postname : ss.postname,
-                position: ss.position,
-                desc : ss.desc
-
-            }
-        }));
-    });
+                }
+            }));
+        });
 };
 
 exports.new = function(req,res){
@@ -187,16 +189,11 @@ exports.create = function(req,res){
 
 exports.show = function(req,res, next){
     var ss = req.shareset;
-    Share.find({shareset : ss._id, deleted : {$ne : true}}, function(err, docs){
-        //var isOwner = req.loggedIn && req.user._id.toString() == ss.owner.toString();
-        if(err) return next(err);
-        res.render('shareset/show',{
-            title : ss.subject
-           ,shareset : ss
-           ,navtab : 'shareset'
-           //,isOwner : isOwner
-           ,shares : ss.shares
-        });
+    res.render('shareset/show',{
+        title : ss.subject
+       ,shareset : ss
+       ,navtab : 'shareset'
+       ,shares : ss.shares
     });
 };
 
